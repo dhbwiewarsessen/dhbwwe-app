@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DHBWieWarsEssen</string>
+    <string name="btnSend">Send</string>
+    <string name="tfAdditionalComment">add additional Comment</string>
 </resources>
