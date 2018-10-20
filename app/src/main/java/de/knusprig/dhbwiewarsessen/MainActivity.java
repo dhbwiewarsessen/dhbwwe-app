@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 //imports sind wichtig -Luis
+//test for timetracking
 public class MainActivity extends AppCompatActivity {
 
     @Override
