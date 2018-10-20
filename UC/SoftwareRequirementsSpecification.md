@@ -8,10 +8,6 @@
     - [References](#14-references)
     - [Overview](#15-overview)
 - [Overall Description](#2-overall-description)
-    - [Vision](#21-vision)
-    - [Product perspective](#22-product-perspective)
-    - [User characteristics](#23-user-characteristics)
-    - [Dependencies](#24-dependencies)
 - [Specific Requirements](#3-specific-requirements)
     - [Functionality](#31-functionality--data-analytics)
     - [Usability](#32-usability)
@@ -46,17 +42,8 @@ tbd
 tbd
 
 # 2. Overall Description
-## 2.1 Vision
-tbd
+![uc diagramm.png](UC%20Diagram.png "use case diagram")
 
-## 2.2 Product perspective
-tbd
-
-## 2.3 User characteristics
-tbd
-
-## 2.4 Dependencies
-tbd
 
 # 3. Specific Requirements
 ## 3.1 Functionality
