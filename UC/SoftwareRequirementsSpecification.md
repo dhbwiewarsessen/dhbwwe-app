@@ -39,10 +39,20 @@ This document is designed for internal use only and will outline the development
 tbd
 
 ## 1.5 Overview
-tbd
+The next chapter gives an overall description about the project an requirements such as functionality, usability and performance.
 
 # 2. Overall Description
+## 2.1. Idea
+
+The Idea of our App is that you can improve the food in the Casino of the DHBW-Karlsruhe by giving constructive critic. We want to make this process happen through an Android App where you can rate your food, leave a comment on your rating, see the ratings of the other people and look whether the food got better or worse to the last time they served it. The idea is to put all these information on a server, also on the server are the login data of every person, that uses the App. Only a verified user can rate the dishes but everyone can look at the ratings. Furthermore there should be a website where the people from the DHBW-Casino can look at the ratings an comments.
+
+## 2.2. General overview
+
 ![uc diagramm.png](UC%20Diagram.png "use case diagram")
+
+## 2.3. User characteristics
+
+our target group is obviously the people eating in the Casino of the DHBW-Karlsruhe but also the people working there. So that they can get an better overview of how the food tastes and how it improved, or even what the students want more often.
 
 
 # 3. Specific Requirements
