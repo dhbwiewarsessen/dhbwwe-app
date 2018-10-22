@@ -1,4 +1,4 @@
-# Use-Case Specification: 
+# Use-Case Specification: Logout
 
 # Table of Contents
 - [Analyze Acceleration Behavior](#1-analyze-acceleration-behavior)
@@ -14,22 +14,34 @@
 # 1. Analyze Acceleration Behavior
 ## 1.1 Brief Description
 
+The Use-Case "Logout" defines the process... tbd
 
 ## 1.2 Screenshots
+
+tbd
 
 
 # 2. Flow of Events
 ## 2.1 Basic Flow
 
+![](Logout Diagram.png)
 
 ## 2.2 Alternative Flows
+
+n/a
+
 # 3. Special Requirements
 
+n/a
 
 # 4. Preconditions
 
+A user has to be logged in.
 
 # 5. Postconditions
 
+The previously logged in user has to be logged out.
 
 # 6. Function Points
+
+tbd
