@@ -14,11 +14,11 @@
 # 1. Analyze Acceleration Behavior
 ## 1.1 Brief Description
 
-The process of logging in an unregistered user.
+The process of logging in an registered user.
 
 ## 1.2 Screenshots
 
-![](C:\Studium\Softwareengneering\dev\DHBWieWarsEssen\UC\Login\LogInScreen.png)
+![](LogInScreen.png)
 
 
 # 2. Flow of Events
@@ -34,11 +34,11 @@ If you made a mistake in your username or password you get a message that says, 
 
 # 3. Special Requirements
 
-none
+n/a
 
 # 4. Preconditions
 
-You have to click on LogIn. 
+You have to click on Login. 
 
 # 5. Postconditions
 
