@@ -52,7 +52,7 @@ The Idea of our App is that you can improve the food in the Casino of the DHBW-K
 
 ## 2.3. User characteristics
 
-our target group is obviously the people eating in the Casino of the DHBW-Karlsruhe but also the people working there. So that they can get an better overview of how the food tastes and how it improved, or even what the students want more often.
+Our target group is obviously the people eating in the Casino of the DHBW-Karlsruhe but also the people working there. So that they can get an better overview of how the food tastes and how it improved, or even what the students want more often.
 
 
 # 3. Specific Requirements
