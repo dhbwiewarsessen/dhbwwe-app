@@ -16,22 +16,30 @@
 
 The process of signing up of a new user.
 
-
 ## 1.2 Screenshots
+
+tbd
 
 
 # 2. Flow of Events
 ## 2.1 Basic Flow
 
+![](Sign up Diagram.png)
+
 
 ## 2.2 Alternative Flows
 # 3. Special Requirements
 
+n/a
 
 # 4. Preconditions
 
+No user is logged in.
 
 # 5. Postconditions
 
+The new signed up user is created on server and logged in in the application.
 
 # 6. Function Points
+
+n/a
