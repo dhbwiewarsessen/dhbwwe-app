@@ -1,4 +1,4 @@
-# Use-Case Specification: Sign up
+# Use-Case Specification: Register
 
 # Table of Contents
 - [Analyze Acceleration Behavior](#1-analyze-acceleration-behavior)
@@ -14,7 +14,7 @@
 # 1. Analyze Acceleration Behavior
 ## 1.1 Brief Description
 
-The process of signing up of a new user.
+The process of registration of a new user.
 
 ## 1.2 Screenshots
 
@@ -24,7 +24,7 @@ tbd
 # 2. Flow of Events
 ## 2.1 Basic Flow
 
-![](Sign up Diagram.png)
+![](Register Diagram.png)
 
 
 ## 2.2 Alternative Flows
@@ -38,7 +38,7 @@ No user is logged in.
 
 # 5. Postconditions
 
-The new signed up user is created on server and logged in in the application.
+The new registered user is created on server and logged in in the application.
 
 # 6. Function Points
 
