@@ -1,4 +1,6 @@
 Feature: Register
+  As a User
+  I want to create a new account and be logged in afterwards
 
   Scenario: Register successful
     When User navigates to "/Register"
@@ -8,7 +10,7 @@ Feature: Register
     And User clicks on Button with text "Register"
     Then User should be logged in as "max"
 
-  Scenario: Wrong confirm password
+  Scenario: Passwords are not equal
     When User navigates to "/Register"
     And User enters "max" into input field with id "username"
     And User enters "123456" into input field with id "password"
