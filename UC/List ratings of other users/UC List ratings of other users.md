@@ -18,12 +18,12 @@ This action is executed whenever ratings are fetched from the database. Dependin
 
 ## 1.2 Screenshots
 
-<img src="C:\dev\android studio\DHBWieWarsEssen\UC\List ratings of other users\List ratings of other users.png" width="400" />
+<img src="List ratings of other users.png" width="400" />
 
 # 2. Flow of Events
 
 ## 2.1 Basic Flow
-<img src="C:\dev\android studio\DHBWieWarsEssen\UC\List ratings of other users\flowdiagram_Listratingofusers.png" width="500" />
+<img src="flowdiagram_Listratingofusers.png" width="500" />
 
 
 
