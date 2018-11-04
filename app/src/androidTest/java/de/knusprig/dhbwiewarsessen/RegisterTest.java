@@ -13,7 +13,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 @RunWith(AndroidJUnit4.class)
-public class SignUpTest {
+public class RegisterTest {
 
     @Rule public final ActivityTestRule<SignUpActivity> main = new ActivityTestRule<>(SignUpActivity.class);
 
@@ -47,7 +47,7 @@ public class SignUpTest {
         throw new PendingException();
     }
 
-    @Given("^User \"([^\"]*)\" is signed up$")
+    @Given("^User \"([^\"]*)\" is registered$")
     public void userIsSignedUp(String username) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
