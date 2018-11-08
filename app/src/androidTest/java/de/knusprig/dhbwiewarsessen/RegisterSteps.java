@@ -19,7 +19,7 @@ import org.junit.Rule;
 public class RegisterSteps extends GreenCoffeeSteps
 {
     @Rule
-    public final ActivityTestRule<SignUpActivity> main = new ActivityTestRule<>(SignUpActivity.class);
+    public final ActivityTestRule<RegisterActivity> main = new ActivityTestRule<>(RegisterActivity.class);
 
     @When("^User navigates to \"([^\"]*)\"$")
     public void userNavigatesTo(String arg0) throws Throwable {
