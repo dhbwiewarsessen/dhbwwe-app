@@ -17,7 +17,7 @@ import java.io.IOException;
 public class RegisterTest extends GreenCoffeeTest
 {
     @Rule
-    public ActivityTestRule activity = new ActivityTestRule<>(SignUpActivity.class);
+    public ActivityTestRule activity = new ActivityTestRule<>(RegisterActivity.class);
 
     public RegisterTest(ScenarioConfig scenarioConfig)
     {

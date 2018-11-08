@@ -2,7 +2,7 @@
     <string name="app_name">DHBWieWarsEssen</string>
     <string name="btnSend">Send</string>
     <string name="tfAdditionalComment">add additional Comment</string>
-    <string name="title_activity_sign_up">Sign up</string>
+    <string name="title_activity_register">Register</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>

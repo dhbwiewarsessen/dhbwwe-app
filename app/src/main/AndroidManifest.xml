@@ -15,8 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SignUpActivity"
-            android:label="@string/title_activity_sign_up" />
+            android:name=".RegisterActivity"
+            android:label="@string/title_activity_register" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
