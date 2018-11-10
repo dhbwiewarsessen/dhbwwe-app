@@ -1,5 +1,6 @@
-package de.knusprig.dhbwiewarsessen;
+package de.knusprig.dhbwiewarsessen.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,6 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import de.knusprig.dhbwiewarsessen.R;
+import de.knusprig.dhbwiewarsessen.activities.main.fragments.CreateRatingFragment;
+import de.knusprig.dhbwiewarsessen.activities.main.fragments.MainPageFragment;
+import de.knusprig.dhbwiewarsessen.activities.main.fragments.RatingsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -43,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.nav_create_rating:
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                                         new CreateRatingFragment()).commit();
+                                break;
+
+                            case R.id.nav_login:
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(intent);
                                 break;
 
                         }

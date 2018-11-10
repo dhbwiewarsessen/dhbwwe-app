@@ -1,4 +1,4 @@
-package de.knusprig.dhbwiewarsessen;
+package de.knusprig.dhbwiewarsessen.activities.main.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import de.knusprig.dhbwiewarsessen.R;
+
 public class CreateRatingFragment extends Fragment {
-    
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
