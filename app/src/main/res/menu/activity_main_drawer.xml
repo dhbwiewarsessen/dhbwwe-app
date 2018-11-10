@@ -13,6 +13,16 @@
         <item
             android:id="@+id/nav_all_ratings"
             android:title="All ratings" />
+        <item
+            android:id="@+id/nav_create_rating"
+            android:title="Create Rating"/>
     </group>
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/nav_login"
+                android:title="Login" />
+        </menu>
+    </item>
 
 </menu>
