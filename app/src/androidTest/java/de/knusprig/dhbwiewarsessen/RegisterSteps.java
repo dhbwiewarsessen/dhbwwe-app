@@ -10,6 +10,8 @@ import com.mauriciotogneri.greencoffee.annotations.When;
 
 import org.junit.Rule;
 
+import de.knusprig.dhbwiewarsessen.activities.RegisterActivity;
+
 //import cucumber.api.java.en.And;
 //import cucumber.api.java.en.Given;
 //import cucumber.api.java.en.Then;
