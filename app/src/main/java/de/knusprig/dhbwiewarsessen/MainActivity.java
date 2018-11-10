@@ -1,6 +1,5 @@
 package de.knusprig.dhbwiewarsessen;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,8 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
 
@@ -29,6 +27,25 @@ public class MainActivity extends AppCompatActivity
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.nav_main:
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                        new MainPageFragment()).commit();
+                                break;
+                            case R.id.nav_my_ratings:
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                        new RatingsFragment()).commit();
+                                break;
+                            case R.id.nav_all_ratings:
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                        new RatingsFragment()).commit();
+                                break;
+                            case R.id.nav_create_rating:
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                        new CreateRatingFragment()).commit();
+                                break;
+
+                        }
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
@@ -66,7 +83,6 @@ public class MainActivity extends AppCompatActivity
         );
 
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -76,6 +92,11 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        if(savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new MainPageFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_main);
+        }
         //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //navigationView.setNavigationItemSelectedListener(this);
     }
@@ -112,7 +133,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    /*@SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -129,5 +150,5 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
+    }*/
 }
