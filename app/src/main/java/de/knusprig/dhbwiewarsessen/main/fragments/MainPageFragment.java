@@ -1,6 +1,7 @@
-package de.knusprig.dhbwiewarsessen.activities.main.fragments;
+package de.knusprig.dhbwiewarsessen.main.fragments;
 
 import android.os.Bundle;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,11 +11,11 @@ import android.view.ViewGroup;
 
 import de.knusprig.dhbwiewarsessen.R;
 
-public class RatingsFragment extends Fragment {
+public class MainPageFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_ratings, container, false);
+        return inflater.inflate(R.layout.fragment_main, container, false);
     }
 }
