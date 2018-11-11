@@ -13,9 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import de.knusprig.dhbwiewarsessen.R;
-import de.knusprig.dhbwiewarsessen.activities.main.fragments.CreateRatingFragment;
-import de.knusprig.dhbwiewarsessen.activities.main.fragments.MainPageFragment;
-import de.knusprig.dhbwiewarsessen.activities.main.fragments.RatingsFragment;
+import de.knusprig.dhbwiewarsessen.main.fragments.CreateRatingFragment;
+import de.knusprig.dhbwiewarsessen.main.fragments.MainPageFragment;
+import de.knusprig.dhbwiewarsessen.main.fragments.RatingsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
