@@ -1,7 +1,10 @@
 package de.knusprig.dhbwiewarsessen.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,8 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
+import com.google.android.gms.auth.api.credentials.Credentials;
+import com.google.android.gms.auth.api.credentials.CredentialsClient;
 
 import de.knusprig.dhbwiewarsessen.R;
+import de.knusprig.dhbwiewarsessen.User;
 import de.knusprig.dhbwiewarsessen.main.fragments.CreateRatingFragment;
 import de.knusprig.dhbwiewarsessen.main.fragments.MainPageFragment;
 import de.knusprig.dhbwiewarsessen.main.fragments.RatingsFragment;
@@ -20,11 +28,20 @@ import de.knusprig.dhbwiewarsessen.main.fragments.RatingsFragment;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
+    private SharedPreferences prefs;
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String username = prefs.getString("username","default-username");
+        String password = prefs.getString("password", "default-password");
+        String name = prefs.getString("name","default-name");
+        String email = prefs.getString("email","default-email");
+        currentUser = new User(username,email,name,password);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
@@ -53,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
                             case R.id.nav_login:
                                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                startActivity(intent);
+                                startActivityForResult(intent,1);
                                 break;
 
                         }
@@ -92,8 +109,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -126,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        ((TextView) findViewById(R.id.header_name)).setText(currentUser.getName());
+        ((TextView) findViewById(R.id.header_email)).setText(currentUser.getEmail());
         return true;
     }
 
@@ -142,6 +159,31 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editPrefs = prefs.edit();
+        editPrefs.putString("username", currentUser.getUsername());
+        editPrefs.putString("password", currentUser.getPassword());
+        editPrefs.putString("name", currentUser.getName());
+        editPrefs.putString("email", currentUser.getEmail());
+        editPrefs.apply();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK){
+            currentUser.setUsername(data.getStringExtra("username"));
+            currentUser.setPassword(data.getStringExtra("password"));
+            currentUser.setName(data.getStringExtra("name"));
+            currentUser.setEmail(data.getStringExtra("email"));
+
+            System.out.println("main: current user: "+currentUser.getName());
+            ((TextView) findViewById(R.id.main_textview)).setText("current user: "+currentUser.getName());
+        }
     }
 
     /*@SuppressWarnings("StatementWithEmptyBody")

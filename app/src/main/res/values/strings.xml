@@ -26,4 +26,5 @@
     <string name="action_sign_in">Login</string>
     <string name="prompt_password_confirm">Confirm password</string>
     <string name="prompt_username">Username</string>
+    <string name="prompt_name">Name</string>
 </resources>

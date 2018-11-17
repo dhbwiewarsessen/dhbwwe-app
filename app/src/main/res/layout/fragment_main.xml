@@ -5,10 +5,11 @@
     android:background="@android:color/holo_blue_dark">
 
     <TextView
+        android:id="@+id/main_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:text="Main"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"/>
+        android:textSize="30sp" />
 
 </android.support.constraint.ConstraintLayout>
