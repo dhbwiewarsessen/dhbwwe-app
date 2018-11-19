@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.knusprig.dhbwiewarsessen.R;
+import de.knusprig.dhbwiewarsessen.Validation;
 
 /**
  * A login screen that offers login via email/password.
@@ -66,6 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
                 attemptRegister();
             }
         });
+
     }
 
 
@@ -79,15 +81,48 @@ public class RegisterActivity extends AppCompatActivity {
         final String username = mUsernameView.getText().toString();
         final String email = mEmailView.getText().toString();
         final String password = mPasswordView.getText().toString();
+        final String passwordConf = mPasswordConfirmView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
+        //Sets all fields on required
+        if (TextUtils.isEmpty(name)) {
+            mNameView.setError(getString(R.string.error_field_required));
+            focusView = mNameView;
             cancel = true;
+        }
+        if (TextUtils.isEmpty(username)) {
+            mUsernameView.setError(getString(R.string.error_field_required));
+            focusView = mUsernameView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(passwordConf)) {
+            mPasswordConfirmView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordConfirmView;
+            cancel = true;
+        }
+
+        // Check for a valid password, if the user entered one.
+        if (!TextUtils.isEmpty(password)) {
+            if (!Validation.isPasswordTooShort(password)) {
+                mPasswordView.setError(getString(R.string.error_short_password));
+                focusView = mPasswordView;
+                cancel = true;
+            }
+            if (!Validation.isPasswordValid(password)) {
+                mPasswordView.setError(getString(R.string.error_invalid_password));
+                focusView = mPasswordView;
+                cancel = true;
+            }
+            if (!password.equals(passwordConf)) {
+                mPasswordView.setError(getString(R.string.error_not_matching_password));
+                mPasswordConfirmView.setError(getString(R.string.error_not_matching_password));
+                focusView = mPasswordConfirmView;
+                cancel = true;
+            }
+        } else {
+            mPasswordView.setError(getString(R.string.error_field_required));
         }
 
         // Check for a valid email address.
@@ -95,7 +130,7 @@ public class RegisterActivity extends AppCompatActivity {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } else if (!Validation.isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -144,16 +179,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        //return email.contains("@");
-        return true;
-    }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
 
 }
 
