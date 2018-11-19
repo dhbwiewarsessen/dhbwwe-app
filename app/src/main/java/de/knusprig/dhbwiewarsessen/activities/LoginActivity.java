@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.knusprig.dhbwiewarsessen.R;
+import de.knusprig.dhbwiewarsessen.Validation;
 
 /**
  * A login screen that offers login via email/password.
@@ -74,10 +75,17 @@ public class LoginActivity extends AppCompatActivity{
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
+        if (!TextUtils.isEmpty(password)) {
+            if(!Validation.isPasswordTooShort(password)){
+                mPasswordView.setError(getString(R.string.error_short_password));
+                focusView = mPasswordView;
+                cancel = true;
+            }
+            if(Validation.isPasswordValid(password)){
+                mPasswordView.setError(getString(R.string.error_invalid_password));
+                focusView = mPasswordView;
+                cancel = true;
+            }
         }
 
         // Check for a valid email address.
@@ -151,10 +159,7 @@ public class LoginActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() >= 4;
-    }
+
 
 }
 
