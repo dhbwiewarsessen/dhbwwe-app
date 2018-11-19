@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
                             case R.id.nav_login:
                                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                startActivityForResult(intent,1);
+                                startActivityForResult(intent,123);
                                 break;
 
                         }
@@ -175,11 +175,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("onActivityResult");
         if (resultCode==RESULT_OK){
             currentUser.setUsername(data.getStringExtra("username"));
             currentUser.setPassword(data.getStringExtra("password"));
             currentUser.setName(data.getStringExtra("name"));
             currentUser.setEmail(data.getStringExtra("email"));
+
+            invalidateOptionsMenu();
 
             System.out.println("main: current user: "+currentUser.getName());
             ((TextView) findViewById(R.id.main_textview)).setText("current user: "+currentUser.getName());

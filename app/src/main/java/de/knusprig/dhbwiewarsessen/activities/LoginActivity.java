@@ -32,16 +32,15 @@ public class LoginActivity extends AppCompatActivity{
     // UI references.
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
-    private MainActivity mainActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
+        mUsernameView = findViewById(R.id.username);
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -109,16 +108,15 @@ public class LoginActivity extends AppCompatActivity{
 
                             System.out.println("current user: "+name);
 
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("username", username);
-                            intent.putExtra("password", password);
-                            intent.putExtra("name",name);
-                            intent.putExtra("email", email);
+                            Intent data = new Intent();
+                            data.putExtra("username", username);
+                            data.putExtra("password", password);
+                            data.putExtra("name",name);
+                            data.putExtra("email", email);
 
-
-                            setResult(1, intent);
-                            System.out.println("resultcode 1");
-                            System.out.println("intent: "+intent.toString());
+                            setResult(RESULT_OK, data);
+                            System.out.println("resultcode " + RESULT_OK);
+                            System.out.println("data: "+data.toString());
                             finish();
                         } else {
                             try {
