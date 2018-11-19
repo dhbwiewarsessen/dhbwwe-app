@@ -185,7 +185,6 @@ public class MainActivity extends AppCompatActivity {
             invalidateOptionsMenu();
 
             System.out.println("main: current user: "+currentUser.getName());
-            ((TextView) findViewById(R.id.main_textview)).setText("current user: "+currentUser.getName());
         }
     }
 
