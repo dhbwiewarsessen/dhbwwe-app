@@ -149,26 +149,37 @@ public class RegisterActivity extends AppCompatActivity {
                         boolean success = jsonResponse.getBoolean("success");
 
                         if (success) {
-                            System.out.println("current user: " + name);
-
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                            intent.putExtra("username", username);
-                            intent.putExtra("password", password);
-                            intent.putExtra("name", name);
-                            intent.putExtra("email", email);
+                            Intent data = new Intent();
+                            data.putExtra("username", username);
+                            data.putExtra("password", password);
+                            data.putExtra("name", name);
+                            data.putExtra("email", email);
 
 
-                            setResult(RESULT_OK, intent);
+                            setResult(RESULT_OK, data);
                             finish();
                         } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(null);
-                            builder.setMessage("Register Failed")
-                                    .setNegativeButton("Retry", null)
-                                    .create()
-                                    .show();
+                            try {
+                                System.out.println("no success");
+                                String error = jsonResponse.getString("error");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                builder.setMessage("Register Failed:\n"+error)
+                                        .setNegativeButton("Retry", null)
+                                        .create()
+                                        .show();
+                            } catch (Exception e) {
+                                System.out.println("Couldn't create Error Message 'Register failed'");
+                                e.printStackTrace();
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        String error = "There is a problem with the DB Server";
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                        builder.setMessage("Register Failed:\n"+error)
+                                .setNegativeButton("Retry", null)
+                                .create()
+                                .show();
                     }
                 }
             };
