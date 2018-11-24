@@ -13,11 +13,14 @@ import org.junit.runners.Parameterized;
 
 import java.io.IOException;
 
+import de.knusprig.dhbwiewarsessen.activities.MainActivity;
+import de.knusprig.dhbwiewarsessen.activities.RegisterActivity;
+
 @RunWith(Parameterized.class)
 public class RegisterTest extends GreenCoffeeTest
 {
     @Rule
-    public ActivityTestRule activity = new ActivityTestRule<>(RegisterActivity.class);
+    public ActivityTestRule activity = new ActivityTestRule<>(MainActivity.class);
 
     public RegisterTest(ScenarioConfig scenarioConfig)
     {
