@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.Validation;
+import de.knusprig.dhbwiewarsessen.httprequest.RegisterRequest;
 
 /**
  * A login screen that offers login via email/password.
