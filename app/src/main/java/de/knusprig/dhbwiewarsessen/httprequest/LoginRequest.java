@@ -1,4 +1,4 @@
-package de.knusprig.dhbwiewarsessen.activities;
+package de.knusprig.dhbwiewarsessen.httprequest;
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
