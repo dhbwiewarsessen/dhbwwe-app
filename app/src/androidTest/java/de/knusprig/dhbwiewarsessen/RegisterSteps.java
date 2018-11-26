@@ -78,6 +78,10 @@ public class RegisterSteps extends GreenCoffeeSteps {
                 throw new Exception();
         }
     }
+    @And("^User enters an unique username into input field with id \"([^\"]*)\"$")
+    public void userEntersIntoInputFieldWithId(String id) throws Throwable {
+        onViewWithId(R.id.username).type("unique_user"+(int)(9999*Math.random()));
+    }
 
     @And("^User clicks on Button with id \"([^\"]*)\"$")
     public void userClicksOnButtonWithId(String id) throws Throwable {
@@ -89,14 +93,27 @@ public class RegisterSteps extends GreenCoffeeSteps {
     }
 
     @Then("^User should be logged in as \"([^\"]*)\"$")
-    public void userShouldBeLoggedInAs(String username) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new Exception();
+    public void userShouldBeLoggedInAs(String name) throws Throwable {
+        try{
+            Thread.sleep(3000);
+        }catch(Exception e){
+
+        }
+
+        onViewWithId(R.id.drawer_layout)
+                .check(matches(isClosed(Gravity.LEFT)))
+                .perform(DrawerActions.open());
+        onViewWithId(R.id.header_name)
+                .check(matches(withText(name)));
+
     }
 
     @Then("^User should see error \"([^\"]*)\"$")
-    public void userShouldSeeError(String errorText) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+    public void userShouldSeeError(String errorText) throws Throwable {try{
+        Thread.sleep(3000);
+    }catch(Exception e){
+
+    }
         throw new Exception();
     }
 
