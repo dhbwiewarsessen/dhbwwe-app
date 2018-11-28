@@ -3,6 +3,7 @@ package de.knusprig.dhbwiewarsessen.activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -108,13 +109,9 @@ public class LoginActivity extends AppCompatActivity{
                         JSONObject jsonResponse = new JSONObject(response);
                         boolean success = jsonResponse.getBoolean("success");
 
-                        System.out.println("success: "+success);
-
                         if (success) {
                             String name = jsonResponse.getString("name");
                             String email = jsonResponse.getString("email");
-
-                            System.out.println("current user: "+name);
 
                             Intent data = new Intent();
                             data.putExtra("username", username);
@@ -123,8 +120,6 @@ public class LoginActivity extends AppCompatActivity{
                             data.putExtra("email", email);
 
                             setResult(RESULT_OK, data);
-                            System.out.println("resultcode " + RESULT_OK);
-                            System.out.println("data: "+data.toString());
                             finish();
                         } else {
                             try {
@@ -134,6 +129,7 @@ public class LoginActivity extends AppCompatActivity{
                                         .create()
                                         .show();
                             }catch(Exception e){
+                                System.out.println("Couldn't create Error Message 'Login failed'");
                                 e.printStackTrace();
                             }
                         }
@@ -157,10 +153,17 @@ public class LoginActivity extends AppCompatActivity{
 
     public void register(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 124);
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==124&&resultCode==RESULT_OK) {
+            setResult(RESULT_OK, data);
+            finish();
+        }
+    }
 
 }
 
