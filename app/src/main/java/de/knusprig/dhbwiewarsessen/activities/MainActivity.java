@@ -31,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private User currentUser;
 
+    public String getCurrentUserName(){
+        return currentUser.getName();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +56,12 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.nav_main:
+                                Bundle mainPageBundle =  new Bundle();
+                                MainPageFragment mpf = new MainPageFragment();
+                                mpf.setArguments(mainPageBundle);
+                                mainPageBundle.putString("username","TEST");//currentUser.getName()
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                        new MainPageFragment()).commit();
+                                        mpf).commit();
                                 break;
                             case R.id.nav_my_ratings:
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
