@@ -1,11 +1,11 @@
 <?php
-
     $con = mysqli_connect("localhost", "dhbwwe_user", "jhgcwbncskijioihe", "dhbwwe_data");
+    $con->set_charset("utf8");
 
-    $date = $_POST["date"];
+    $date = $_GET["date"];
 
     $statement = mysqli_prepare($con, "SELECT * FROM menus WHERE date = ?");
-    mysqli_stmt_bind_param($statement, "s", $date);
+    mysqli_stmt_bind_param($statement, "i", $date);
     mysqli_stmt_execute($statement);
 
     mysqli_stmt_store_result($statement);
@@ -25,5 +25,4 @@
     }
 
     echo json_encode($response);
-
 ?>
