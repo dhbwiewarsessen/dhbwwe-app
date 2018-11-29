@@ -38,12 +38,12 @@ public class TestActivity extends AppCompatActivity {
                     } else {
                         try {
                             AlertDialog.Builder builder = new AlertDialog.Builder(TestActivity.this);
-                            builder.setMessage("")
+                            builder.setMessage("Couldn't retrieve menu")
                                     .setNegativeButton("Retry", null)
                                     .create()
                                     .show();
                         }catch(Exception e){
-                            System.out.println("Couldn't create Error Message 'Login failed'");
+                            System.out.println("Couldn't create Error Message 'Couldn't retrieve menu'");
                             e.printStackTrace();
                         }
                     }
