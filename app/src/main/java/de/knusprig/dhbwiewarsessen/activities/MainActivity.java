@@ -1,10 +1,8 @@
 package de.knusprig.dhbwiewarsessen.activities;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -21,13 +19,6 @@ import android.widget.TextView;
 import com.google.android.gms.auth.api.credentials.Credentials;
 import com.google.android.gms.auth.api.credentials.CredentialsClient;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.util.concurrent.ThreadLocalRandom;
-
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.User;
 import de.knusprig.dhbwiewarsessen.main.fragments.CreateRatingFragment;
@@ -39,34 +30,18 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private SharedPreferences prefs;
     private User currentUser;
-    private boolean serverOnline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Thread checkServerThread = new Thread() {
-            public void run() {
-                Looper.prepare();
-                while (true) {
-                    String url = "dhbwwe.heliohost.org";
-                    serverOnline = isHostReachable(url, 80, 1000);
-                    System.out.println("Server on '" + url + "' is " + (serverOnline ? "online" : "offline"));
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                    }
-                }
-            }
-        };
-        checkServerThread.start();
         setContentView(R.layout.activity_main);
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String username = prefs.getString("username", "default-username");
+        String username = prefs.getString("username","default-username");
         String password = prefs.getString("password", "default-password");
-        String name = prefs.getString("name", "default-name");
-        String email = prefs.getString("email", "default-email");
-        currentUser = new User(username, email, name, password);
+        String name = prefs.getString("name","default-name");
+        String email = prefs.getString("email","default-email");
+        currentUser = new User(username,email,name,password);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
@@ -95,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
                             case R.id.nav_login:
                                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                startActivityForResult(intent, 123);
+                                startActivityForResult(intent,123);
                                 break;
 
                         }
@@ -143,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        if (savedInstanceState == null) {
+        if(savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new MainPageFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_main);
@@ -201,35 +176,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         System.out.println("onActivityResult");
-        if (resultCode == RESULT_OK) {
+        if (resultCode==RESULT_OK){
             currentUser.setUsername(data.getStringExtra("username"));
             currentUser.setPassword(data.getStringExtra("password"));
             currentUser.setName(data.getStringExtra("name"));
             currentUser.setEmail(data.getStringExtra("email"));
 
             invalidateOptionsMenu();
-
             System.out.println("main: current user: " + currentUser.getName());
-            ((TextView) findViewById(R.id.main_textview)).setText("current user: " + currentUser.getName());
         }
-    }
-
-    public static boolean isHostReachable(String serverAddress, int serverTCPport, int timeoutMS) {
-        boolean connected = false;
-        Socket socket;
-        try {
-            socket = new Socket();
-            SocketAddress socketAddress = new InetSocketAddress(serverAddress, serverTCPport);
-            socket.connect(socketAddress, timeoutMS);
-            if (socket.isConnected()) {
-                connected = true;
-                socket.close();
-            }
-        } catch (IOException e) {
-        } finally {
-            socket = null;
-        }
-        return connected;
     }
 
     /*@SuppressWarnings("StatementWithEmptyBody")
