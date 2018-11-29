@@ -1,5 +1,7 @@
 package de.knusprig.dhbwiewarsessen.main.fragments;
+
 import de.knusprig.dhbwiewarsessen.activities.MainActivity;
+
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,16 +24,18 @@ import de.knusprig.dhbwiewarsessen.R;
 public class MainPageFragment extends Fragment {
 
     private String username = "";
+    private View view;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        username = savedInstanceState.getString("username");
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.view = view;
         TextView welcomeMessage = view.findViewById(R.id.Welcome);
         welcomeMessage.setText("Welcome " + username);
 
@@ -65,5 +69,9 @@ public class MainPageFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            username = bundle.getString("username","default");
+        }
     }
 }

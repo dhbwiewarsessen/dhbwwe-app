@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -56,12 +57,14 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.nav_main:
-                                Bundle mainPageBundle =  new Bundle();
-                                MainPageFragment mpf = new MainPageFragment();
-                                mpf.setArguments(mainPageBundle);
-                                mainPageBundle.putString("username","TEST");//currentUser.getName()
+
+                                Fragment fragment = new MainPageFragment();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("username", currentUser.getName());
+                                fragment.setArguments(bundle);
+
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                        mpf).commit();
+                                        fragment).commit();
                                 break;
                             case R.id.nav_my_ratings:
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
