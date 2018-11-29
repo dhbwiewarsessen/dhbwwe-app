@@ -1,5 +1,7 @@
 package de.knusprig.dhbwiewarsessen.main.fragments;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.annotation.NonNull;
@@ -10,7 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import de.knusprig.dhbwiewarsessen.R;
+import de.knusprig.dhbwiewarsessen.activities.LoginActivity;
 
 public class MainPageFragment extends Fragment {
 
@@ -26,11 +34,36 @@ public class MainPageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         TextView welcomeMessage = view.findViewById(R.id.Welcome);
         welcomeMessage.setText("Welcome " + "pseudoName");
+
+        //Show the menus
+        TextView dishText1 = view.findViewById(R.id.dish1);
+        TextView dishText2 = view.findViewById(R.id.dish2);
+        TextView dishText3 = view.findViewById(R.id.dish3);
+        dishText1.setText("Default Dish 1");
+        dishText2.setText("Default Dish 2");
+        dishText3.setText("Default Dish 3");
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    if (success) {
+                        String dish1 = jsonResponse.getString("dish1");
+                        String dish2 = jsonResponse.getString("dish2");
+                        String dish3 = jsonResponse.getString("dish3");
+                    } else {
+                        System.out.println("Error");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 }
