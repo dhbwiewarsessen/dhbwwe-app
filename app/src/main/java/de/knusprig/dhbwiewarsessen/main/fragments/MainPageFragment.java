@@ -1,5 +1,5 @@
 package de.knusprig.dhbwiewarsessen.main.fragments;
-
+import de.knusprig.dhbwiewarsessen.activities.MainActivity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,22 +18,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.knusprig.dhbwiewarsessen.R;
-import de.knusprig.dhbwiewarsessen.activities.LoginActivity;
 
 public class MainPageFragment extends Fragment {
 
+    private String username = "";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        username = savedInstanceState.getString("username");
         return inflater.inflate(R.layout.fragment_main, container, false);
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         TextView welcomeMessage = view.findViewById(R.id.Welcome);
-        welcomeMessage.setText("Welcome " + "pseudoName");
+        welcomeMessage.setText("Welcome " + username);
 
         //Show the menus
         TextView dishText1 = view.findViewById(R.id.dish1);
