@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,14 +41,8 @@ public class MainPageFragment extends Fragment {
         TextView welcomeMessage = view.findViewById(R.id.Welcome);
         welcomeMessage.setText("Welcome " + username);
 
-        //Show the menus
-        TextView dishText1 = view.findViewById(R.id.dish1);
-        TextView dishText2 = view.findViewById(R.id.dish2);
-        TextView dishText3 = view.findViewById(R.id.dish3);
-        dishText1.setText("Default Dish 1");
-        dishText2.setText("Default Dish 2");
-        dishText3.setText("Default Dish 3");
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
+        //get the menus from the Server
+        final Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -64,8 +60,21 @@ public class MainPageFragment extends Fragment {
                 }
             }
         };
+        String date = "20181128";  //Variabel
+        //RetrieveMenuRequest menuRequest = new RetrieveMenuRequest(date,responseListener);
+        //RequestQueue queue = Volley.newRequestQueue(TestActivity.this);
+        //queue.add(menuRequest);
+
+        //Show the menus
+        TextView dishText1 = view.findViewById(R.id.dish1);
+        TextView dishText2 = view.findViewById(R.id.dish2);
+        TextView dishText3 = view.findViewById(R.id.dish3);
+        dishText1.setText("Default Dish 1");
+        dishText2.setText("Default Dish 2");
+        dishText3.setText("Default Dish 3");
     }
 
+    //Set the Name for a signedIn User
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
