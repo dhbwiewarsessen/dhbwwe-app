@@ -83,7 +83,10 @@ public class MainActivity extends AppCompatActivity {
                                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                                 startActivityForResult(intent,123);
                                 break;
-
+                            case R.id.nav_retrieve_menu:
+                                Intent intent2 = new Intent(MainActivity.this, TestActivity.class);
+                                startActivityForResult(intent2, 125);
+                                break;
                         }
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
