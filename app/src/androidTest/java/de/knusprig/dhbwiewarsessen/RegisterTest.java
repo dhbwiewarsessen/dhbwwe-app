@@ -13,8 +13,7 @@ import org.junit.runners.Parameterized;
 
 import java.io.IOException;
 
-import de.knusprig.dhbwiewarsessen.activities.MainActivity;
-import de.knusprig.dhbwiewarsessen.activities.RegisterActivity;
+import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
 
 @RunWith(Parameterized.class)
 public class RegisterTest extends GreenCoffeeTest

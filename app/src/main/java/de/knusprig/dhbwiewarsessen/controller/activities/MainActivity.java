@@ -1,4 +1,4 @@
-package de.knusprig.dhbwiewarsessen.activities;
+package de.knusprig.dhbwiewarsessen.controller.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,71 +17,61 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.gms.auth.api.credentials.Credentials;
-import com.google.android.gms.auth.api.credentials.CredentialsClient;
+import java.util.Observable;
+import java.util.Observer;
 
 import de.knusprig.dhbwiewarsessen.R;
-import de.knusprig.dhbwiewarsessen.User;
-import de.knusprig.dhbwiewarsessen.main.fragments.CreateRatingFragment;
-import de.knusprig.dhbwiewarsessen.main.fragments.MainPageFragment;
-import de.knusprig.dhbwiewarsessen.main.fragments.RatingsFragment;
+import de.knusprig.dhbwiewarsessen.model.User;
+import de.knusprig.dhbwiewarsessen.controller.fragments.CreateRatingFragment;
+import de.knusprig.dhbwiewarsessen.controller.fragments.MainPageFragment;
+import de.knusprig.dhbwiewarsessen.controller.fragments.RatingsFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Observer {
 
     private DrawerLayout mDrawerLayout;
     private SharedPreferences prefs;
     private User currentUser;
-
-    public String getCurrentUserName(){
-        return currentUser.getName();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String username = prefs.getString("username","default-username");
-        String password = prefs.getString("password", "default-password");
-        String name = prefs.getString("name","default-name");
-        String email = prefs.getString("email","default-email");
-        currentUser = new User(username,email,name,password);
+        createUser();
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
         final NavigationView navigationView = findViewById(R.id.nav_view);
+        setupNavigationDrawer(navigationView);
+
+
+        if(savedInstanceState == null) {
+            switchToMainPageFragment();
+            navigationView.setCheckedItem(R.id.nav_main);
+        }
+    }
+
+    private void setupNavigationDrawer(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.nav_main:
-
-                                Fragment fragment = new MainPageFragment();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("username", currentUser.getName());
-                                fragment.setArguments(bundle);
-
-                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                        fragment).commit();
+                                switchToMainPageFragment();
                                 break;
                             case R.id.nav_my_ratings:
-                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                        new RatingsFragment()).commit();
+                                switchToRatingsFragment();
                                 break;
                             case R.id.nav_all_ratings:
-                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                        new RatingsFragment()).commit();
+                                switchToRatingsFragment();
                                 break;
                             case R.id.nav_create_rating:
-                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                        new CreateRatingFragment()).commit();
+                                switchToCreateRatingsFragment();
                                 break;
 
                             case R.id.nav_login:
-                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                                startActivityForResult(intent,123);
+                                forwardToLoginActivity();
                                 break;
                             case R.id.nav_retrieve_menu:
                                 Intent intent2 = new Intent(MainActivity.this, TestActivity.class);
@@ -123,22 +113,54 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+    }
 
-        if(savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new MainPageFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_main);
-        }
-        //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        //navigationView.setNavigationItemSelectedListener(this);
+    private void forwardToLoginActivity() {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivityForResult(intent,123);
+    }
+
+    private void switchToCreateRatingsFragment() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new CreateRatingFragment()).commit();
+    }
+
+    private void switchToRatingsFragment() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new RatingsFragment()).commit();
+    }
+
+    private void switchToMainPageFragment() {
+        Fragment fragment = new MainPageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("username", currentUser.getName());
+        fragment.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                fragment).commit();
+    }
+
+    private void createUser() {
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String username = prefs.getString("username","default-username");
+        String password = prefs.getString("password", "default-password");
+        String name = prefs.getString("name","default-name");
+        String email = prefs.getString("email","default-email");
+        currentUser = new User(username,email,name,password);
+        currentUser.addObserver(this);
+    }
+
+    public String getCurrentUserName(){
+        return currentUser.getName();
     }
 
     @Override
@@ -201,22 +223,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*@SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_main) {
-            startActivity(new Intent(this, MainActivity.class));
-        } else if (id == R.id.nav_my_ratings) {
-            startActivity(new Intent(this, RegisterActivity.class));
-        } else if (id == R.id.nav_all_ratings) {
-
+    public void update(Observable o, Object arg) {
+        if (o.getClass().equals(User.class)){
+            //update User on View
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }*/
+    }
 }
