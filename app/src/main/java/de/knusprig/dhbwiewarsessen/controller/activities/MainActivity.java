@@ -31,11 +31,18 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private DrawerLayout mDrawerLayout;
     private SharedPreferences prefs;
     private User currentUser;
+    private MainPageFragment mainPageFragment;
+    private CreateRatingFragment createRatingFragment;
+    private RatingsFragment ratingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mainPageFragment = new MainPageFragment();
+        createRatingFragment = new CreateRatingFragment();
+        ratingsFragment = new RatingsFragment();
 
         createUser();
 
@@ -129,24 +136,20 @@ public class MainActivity extends AppCompatActivity implements Observer {
         startActivityForResult(intent,123);
     }
 
-    private void switchToCreateRatingsFragment() {
+    private void switchToMainPageFragment() {
+        mainPageFragment.setName(currentUser.getName());
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new CreateRatingFragment()).commit();
+                mainPageFragment).commit();
     }
 
     private void switchToRatingsFragment() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new RatingsFragment()).commit();
+                ratingsFragment).commit();
     }
 
-    private void switchToMainPageFragment() {
-        Fragment fragment = new MainPageFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("username", currentUser.getName());
-        fragment.setArguments(bundle);
-
+    private void switchToCreateRatingsFragment() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                fragment).commit();
+                createRatingFragment).commit();
     }
 
     private void createUser() {
@@ -157,10 +160,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         String email = prefs.getString("email","default-email");
         currentUser = new User(username,email,name,password);
         currentUser.addObserver(this);
-    }
-
-    public String getCurrentUserName(){
-        return currentUser.getName();
     }
 
     @Override
@@ -211,15 +210,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("onActivityResult");
         if (resultCode==RESULT_OK){
             currentUser.setUsername(data.getStringExtra("username"));
             currentUser.setPassword(data.getStringExtra("password"));
             currentUser.setName(data.getStringExtra("name"));
             currentUser.setEmail(data.getStringExtra("email"));
-
-            invalidateOptionsMenu();
-            System.out.println("main: current user: " + currentUser.getName());
         }
     }
 
@@ -227,6 +222,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void update(Observable o, Object arg) {
         if (o.getClass().equals(User.class)){
             //update User on View
+            invalidateOptionsMenu();
+            mainPageFragment.setName(currentUser.getName());
+            mainPageFragment.update();
         }
     }
 }
