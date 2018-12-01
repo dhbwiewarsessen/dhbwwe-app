@@ -1,4 +1,4 @@
-package de.knusprig.dhbwiewarsessen.main.fragments;
+package de.knusprig.dhbwiewarsessen.controller.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

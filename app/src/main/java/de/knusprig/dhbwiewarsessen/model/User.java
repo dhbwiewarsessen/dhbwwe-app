@@ -1,6 +1,8 @@
-package de.knusprig.dhbwiewarsessen;
+package de.knusprig.dhbwiewarsessen.model;
 
-public class User {
+import java.util.Observable;
+
+public class User extends Observable {
     String username;
     String email;
     String name;
@@ -19,6 +21,8 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+        setChanged();
+        notifyObservers();
     }
 
     public String getEmail() {
@@ -27,6 +31,8 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+        setChanged();
+        notifyObservers();
     }
 
     public String getName() {
@@ -35,6 +41,8 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+        setChanged();
+        notifyObservers();
     }
 
     public String getPassword() {
@@ -43,5 +51,7 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+        setChanged();
+        notifyObservers();
     }
 }

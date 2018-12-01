@@ -1,9 +1,8 @@
-package de.knusprig.dhbwiewarsessen.activities;
+package de.knusprig.dhbwiewarsessen.controller.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -24,76 +23,117 @@ import org.json.JSONObject;
 
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.Validation;
-import de.knusprig.dhbwiewarsessen.httprequest.LoginRequest;
+import de.knusprig.dhbwiewarsessen.httprequest.RegisterRequest;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity{
+public class RegisterActivity extends AppCompatActivity {
 
     // UI references.
+
     private AutoCompleteTextView mUsernameView;
+    private AutoCompleteTextView mNameView;
+    private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private EditText mPasswordConfirmView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
         // Set up the login form.
         mUsernameView = findViewById(R.id.username);
+        mNameView = findViewById(R.id.name);
+        mEmailView = findViewById(R.id.email);
 
         mPasswordView = findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mPasswordConfirmView = findViewById(R.id.password_confirm);
+
+        mPasswordConfirmView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    attemptRegister();
                     return true;
                 }
                 return false;
             }
         });
 
-        Button mLoginButton = (Button) findViewById(R.id.login_button);
-        mLoginButton.setOnClickListener(new OnClickListener() {
+        Button mRegisterButton = (Button) findViewById(R.id.register_button);
+        mRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                attemptRegister();
             }
         });
+
     }
+
 
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
-        // Store values at the time of the login attempt.
+    private void attemptRegister() {
+        final String name = mNameView.getText().toString();
         final String username = mUsernameView.getText().toString();
+        final String email = mEmailView.getText().toString();
         final String password = mPasswordView.getText().toString();
+        final String passwordConf = mPasswordConfirmView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
+        //Sets all fields on required
+        if (TextUtils.isEmpty(name)) {
+            mNameView.setError(getString(R.string.error_field_required));
+            focusView = mNameView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(username)) {
+            mUsernameView.setError(getString(R.string.error_field_required));
+            focusView = mUsernameView;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(passwordConf)) {
+            mPasswordConfirmView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordConfirmView;
+            cancel = true;
+        }
+
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password)) {
-            if(!Validation.isPasswordTooShort(password)){
+            if (!Validation.isPasswordTooShort(password)) {
                 mPasswordView.setError(getString(R.string.error_short_password));
                 focusView = mPasswordView;
                 cancel = true;
             }
-            if(Validation.isPasswordValid(password)){
+            if (!Validation.isPasswordValid(password)) {
                 mPasswordView.setError(getString(R.string.error_invalid_password));
                 focusView = mPasswordView;
                 cancel = true;
             }
+            if (!password.equals(passwordConf)) {
+                mPasswordView.setError(getString(R.string.error_not_matching_password));
+                mPasswordConfirmView.setError(getString(R.string.error_not_matching_password));
+                focusView = mPasswordConfirmView;
+                cancel = true;
+            }
+        } else {
+            mPasswordView.setError(getString(R.string.error_field_required));
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(username)) {
-            mUsernameView.setError(getString(R.string.error_field_required));
-            focusView = mUsernameView;
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError(getString(R.string.error_field_required));
+            focusView = mEmailView;
+            cancel = true;
+        } else if (!Validation.isEmailValid(email)) {
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
             cancel = true;
         }
 
@@ -110,60 +150,48 @@ public class LoginActivity extends AppCompatActivity{
                         boolean success = jsonResponse.getBoolean("success");
 
                         if (success) {
-                            String name = jsonResponse.getString("name");
-                            String email = jsonResponse.getString("email");
-
                             Intent data = new Intent();
                             data.putExtra("username", username);
                             data.putExtra("password", password);
-                            data.putExtra("name",name);
+                            data.putExtra("name", name);
                             data.putExtra("email", email);
+
 
                             setResult(RESULT_OK, data);
                             finish();
                         } else {
                             try {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("Login Failed")
+                                System.out.println("no success");
+                                String error = jsonResponse.getString("error");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                                builder.setMessage("Register Failed:\n"+error)
                                         .setNegativeButton("Retry", null)
                                         .create()
                                         .show();
-                            }catch(Exception e){
-                                System.out.println("Couldn't create Error Message 'Login failed'");
+                            } catch (Exception e) {
+                                System.out.println("Couldn't create Error Message 'Register failed'");
                                 e.printStackTrace();
                             }
                         }
-
                     } catch (JSONException e) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                        builder.setMessage("JSON Exception")
+                        e.printStackTrace();
+                        String error = "There is a problem with the DB Server";
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                        builder.setMessage("Register Failed:\n"+error)
                                 .setNegativeButton("Retry", null)
                                 .create()
                                 .show();
-                        e.printStackTrace();
                     }
                 }
             };
 
-            LoginRequest loginRequest = new LoginRequest(username, password, responseListener);
-            RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-            queue.add(loginRequest);
+            RegisterRequest registerRequest = new RegisterRequest(name, username, email, password, responseListener);
+            RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+            queue.add(registerRequest);
         }
     }
 
-    public void register(View view) {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivityForResult(intent, 124);
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==124&&resultCode==RESULT_OK) {
-            setResult(RESULT_OK, data);
-            finish();
-        }
-    }
 
 }
 

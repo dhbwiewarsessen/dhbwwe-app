@@ -1,9 +1,5 @@
-package de.knusprig.dhbwiewarsessen.main.fragments;
+package de.knusprig.dhbwiewarsessen.controller.fragments;
 
-import de.knusprig.dhbwiewarsessen.activities.MainActivity;
-
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.annotation.NonNull;
@@ -14,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;

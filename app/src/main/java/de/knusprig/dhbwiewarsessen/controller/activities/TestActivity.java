@@ -1,7 +1,6 @@
-package de.knusprig.dhbwiewarsessen.activities;
+package de.knusprig.dhbwiewarsessen.controller.activities;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -13,7 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.knusprig.dhbwiewarsessen.R;
-import de.knusprig.dhbwiewarsessen.httprequest.LoginRequest;
 import de.knusprig.dhbwiewarsessen.httprequest.RetrieveMenuRequest;
 
 public class TestActivity extends AppCompatActivity {
