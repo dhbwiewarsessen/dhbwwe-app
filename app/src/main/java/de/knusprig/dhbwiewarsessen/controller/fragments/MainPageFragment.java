@@ -19,7 +19,7 @@ import de.knusprig.dhbwiewarsessen.R;
 
 public class MainPageFragment extends Fragment {
 
-    private String username = "";
+    private String name = "";
     private View view;
 
     @Nullable
@@ -32,8 +32,8 @@ public class MainPageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-        TextView welcomeMessage = view.findViewById(R.id.Welcome);
-        welcomeMessage.setText("Welcome " + username);
+
+        updateWelcomeMessage();
 
         //get the menus from the Server
         final Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -60,21 +60,29 @@ public class MainPageFragment extends Fragment {
         //queue.add(menuRequest);
 
         //Show the menus
+        updateMenu();
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void update() {
+        updateWelcomeMessage();
+        updateMenu();
+    }
+
+    private void updateWelcomeMessage() {
+        TextView welcomeMessage = view.findViewById(R.id.Welcome);
+        welcomeMessage.setText("Welcome " + name);
+    }
+
+    private void updateMenu() {
         TextView dishText1 = view.findViewById(R.id.dish1);
         TextView dishText2 = view.findViewById(R.id.dish2);
         TextView dishText3 = view.findViewById(R.id.dish3);
         dishText1.setText("Default Dish 1");
         dishText2.setText("Default Dish 2");
         dishText3.setText("Default Dish 3");
-    }
-
-    //Set the Name for a signedIn User
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            username = bundle.getString("username","default");
-        }
     }
 }
