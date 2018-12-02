@@ -15,12 +15,19 @@ import com.android.volley.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import de.knusprig.dhbwiewarsessen.R;
+import de.knusprig.dhbwiewarsessen.model.Dish;
+import de.knusprig.dhbwiewarsessen.model.Menu;
 
 public class MainPageFragment extends Fragment {
 
-    private String name = "";
     private View view;
+
+    private String name = "";
+
+    private Menu menu;
 
     @Nullable
     @Override
@@ -32,35 +39,7 @@ public class MainPageFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-
-        updateWelcomeMessage();
-
-        //get the menus from the Server
-        final Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonResponse = new JSONObject(response);
-                    boolean success = jsonResponse.getBoolean("success");
-                    if (success) {
-                        String dish1 = jsonResponse.getString("dish1");
-                        String dish2 = jsonResponse.getString("dish2");
-                        String dish3 = jsonResponse.getString("dish3");
-                    } else {
-                        System.out.println("Error");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        String date = "20181128";  //Variabel
-        //RetrieveMenuRequest menuRequest = new RetrieveMenuRequest(date,responseListener);
-        //RequestQueue queue = Volley.newRequestQueue(TestActivity.this);
-        //queue.add(menuRequest);
-
-        //Show the menus
-        updateMenu();
+        update();
     }
 
     public void setName(String name) {
@@ -81,8 +60,12 @@ public class MainPageFragment extends Fragment {
         TextView dishText1 = view.findViewById(R.id.dish1);
         TextView dishText2 = view.findViewById(R.id.dish2);
         TextView dishText3 = view.findViewById(R.id.dish3);
-        dishText1.setText("Default Dish 1");
-        dishText2.setText("Default Dish 2");
-        dishText3.setText("Default Dish 3");
+        dishText1.setText(menu.getDishes().get(0).getTitle());
+        dishText2.setText(menu.getDishes().get(1).getTitle());
+        dishText3.setText(menu.getDishes().get(2).getTitle());
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 }
