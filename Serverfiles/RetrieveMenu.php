@@ -3,9 +3,10 @@
     $con->set_charset("utf8");
 
     $date = $_GET["date"];
+    $date_int = (int) preg_replace('/[^0-9]/', '', $date);//parse date to int for the query
 
     $statement = mysqli_prepare($con, "SELECT * FROM menus WHERE date = ?");
-    mysqli_stmt_bind_param($statement, "i", $date);
+    mysqli_stmt_bind_param($statement, "i", $date_int);
     mysqli_stmt_execute($statement);
 
     mysqli_stmt_store_result($statement);
