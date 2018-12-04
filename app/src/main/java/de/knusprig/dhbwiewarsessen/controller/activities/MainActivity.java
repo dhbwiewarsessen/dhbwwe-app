@@ -57,14 +57,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         createRatingFragment = new CreateRatingFragment();
         ratingsFragment = new RatingsFragment();
 
-        String[] d = {"dish1", "dish2", "dish3"};
-        List<Dish> dishes = new ArrayList<>();
-        for (String entry : d) {
-            Dish dish = new Dish("default-" + entry, (float) 13.37);
-            dishes.add(dish);
-        }
-        menu = new Menu(dishes);
-        menu.addObserver(MainActivity.this);
         restoreSavedData();
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -218,12 +210,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
         currentUser = new User(username, email, name, password);
         currentUser.addObserver(this);
 
-        String[] dish = new String[menu.getDishes().size()];
-        float[] price = new float[menu.getDishes().size()];
-        for (int i = 0; i < menu.getDishes().size(); i++) {
+        List<Dish> dishes = new ArrayList<>();
+        String[] dish = new String[3];
+        float[] price = new float[3];
+        for (int i = 0; i < 3; i++) {
             dish[i] = prefs.getString("dish" + i, "default-dish" + (i + 1));
             price[i] = prefs.getFloat("price"+i,(float)13.37);
+            Dish d = new Dish(dish[i], price[i]);
+            dishes.add(d);
         }
+        menu = new Menu(dishes);
+        menu.addObserver(MainActivity.this);
     }
 
     @Override
