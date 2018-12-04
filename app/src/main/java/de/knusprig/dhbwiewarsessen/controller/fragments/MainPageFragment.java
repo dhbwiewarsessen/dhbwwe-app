@@ -58,7 +58,6 @@ public class MainPageFragment extends Fragment {
     }
 
     private void updateMenu() {
-        System.out.println("menu updated");
         TextView dishText1 = view.findViewById(R.id.dish1);
         TextView dishText2 = view.findViewById(R.id.dish2);
         TextView dishText3 = view.findViewById(R.id.dish3);

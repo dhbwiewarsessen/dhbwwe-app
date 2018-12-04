@@ -286,9 +286,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("Observer.update()");
         if (o.getClass().equals(User.class)) {
-            System.out.println("Observer: user changed");
             //update User on NavigationHeader
             invalidateOptionsMenu();
 
@@ -296,7 +294,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
             mainPageFragment.setName(currentUser.getName());
             mainPageFragment.update();
         } else if (o.getClass().equals(Menu.class)) {
-            System.out.println("Observer: menu changed");
             //update Menu on MainPageFragment
             mainPageFragment.setMenu(menu);
             mainPageFragment.update();
