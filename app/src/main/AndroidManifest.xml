@@ -31,7 +31,6 @@
         <activity
             android:name=".controller.activities.LoginActivity"
             android:label="@string/title_activity_login"></activity>
-        <activity android:name=".controller.activities.TestActivity"></activity>
     </application>
 
 </manifest>

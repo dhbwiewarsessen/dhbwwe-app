@@ -10,8 +10,10 @@ public class RetrieveMenuRequest extends StringRequest {
     private static final String RETRIEVE_MENU_REQUEST_URL = "https://dhbwwe.heliohost.org/RetrieveMenu.php";
     private Map<String, String> params;
 
+
+
     public RetrieveMenuRequest(String date, Response.Listener<String> listener) {
-        super(Method.GET, RETRIEVE_MENU_REQUEST_URL, listener, null);
+        super(Method.POST, RETRIEVE_MENU_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("date", date);
     }
