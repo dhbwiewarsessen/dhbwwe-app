@@ -161,7 +161,6 @@ public class RegisterActivity extends AppCompatActivity {
                             finish();
                         } else {
                             try {
-                                System.out.println("no success");
                                 String error = jsonResponse.getString("error");
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                                 builder.setMessage("Register Failed:\n"+error)
