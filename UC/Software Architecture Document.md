@@ -45,19 +45,23 @@ The scope of this SAS is to show the architecture of our DHBWieWarsEssen project
 
 ### 1.5 Overview
 
-This document contains the Architectural Representation, Goals and Constraints as well as the Logical, Deployment, Implementation and Data Views.
+This document contains the Architectural Representation, Goals and Constraints as well as the Logical, Deployment, Implementation and Data Views from the application "DHBWieWarsEssen".
 
 ## 2. Architectural Representation
 
-tbd
+The application consists of a database and an android app. The database is used by the android app to store data of users, for example when leaving a rating. Also we have a RSS-Feed so we can load in todays menus and make the available to leave a rating on them.
+
+<img src="../MockUp/ArchitectureDiagram.png" />
 
 ## 3. Architectural Goals and Constraints
 
-tbd
+Currently we are statisfied with our architecture. (See picture above) The architecture which we want to adapt though is the one in the app itself. We try to achieve a architecture which represents a MVC-Architecture.
+
+<img src=../MockUp/mvc-architecture.png />
 
 ## 4. Use-Case View
 
-tbd
+<img src="UC Diagram.png" />
 
 ### 4.1 Use-Case Realizations
 
