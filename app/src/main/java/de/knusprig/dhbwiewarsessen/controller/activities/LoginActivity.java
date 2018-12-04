@@ -102,14 +102,6 @@ public class LoginActivity extends AppCompatActivity{
             // form field with an error.
             focusView.requestFocus();
         } else {
-            Intent data = new Intent();
-            data.putExtra("username", username);
-            data.putExtra("password", password);
-            data.putExtra("name","Max");
-            data.putExtra("email", "max@gmail.com");
-
-            setResult(RESULT_OK, data);
-            finish();
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
