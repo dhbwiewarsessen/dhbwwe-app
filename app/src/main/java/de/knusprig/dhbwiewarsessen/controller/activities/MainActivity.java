@@ -1,6 +1,5 @@
 package de.knusprig.dhbwiewarsessen.controller.activities;
 
-import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -58,7 +57,15 @@ public class MainActivity extends AppCompatActivity implements Observer {
         createRatingFragment = new CreateRatingFragment();
         ratingsFragment = new RatingsFragment();
 
-        createUser();
+        String[] d = {"dish1", "dish2", "dish3"};
+        List<Dish> dishes = new ArrayList<>();
+        for (String entry : d) {
+            Dish dish = new Dish("default-" + entry, (float) 13.37);
+            dishes.add(dish);
+        }
+        menu = new Menu(dishes);
+        menu.addObserver(MainActivity.this);
+        restoreSavedData();
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
@@ -76,14 +83,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private void initializeMainPageFragment() {
         mainPageFragment.setName(currentUser.getName());
-        String[] d = {"dish1", "dish2", "dish3"};
-        List<Dish> dishes = new ArrayList<>();
-        for (String entry : d) {
-            Dish dish = new Dish("default-"+entry, 13.37);
-            dishes.add(dish);
-        }
-        menu = new Menu(dishes);
-        menu.addObserver(MainActivity.this);
         mainPageFragment.setMenu(menu);
         getMenuFromServer();
     }
@@ -109,10 +108,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
                             case R.id.nav_login:
                                 forwardToLoginActivity();
-                                break;
-                            case R.id.nav_retrieve_menu:
-                                Intent intent2 = new Intent(MainActivity.this, TestActivity.class);
-                                startActivityForResult(intent2, 125);
                                 break;
                         }
                         // set item as selected to persist highlight
@@ -191,11 +186,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
                         System.out.println("menus received");
-                        for (int i = 0; i<3; i++){
+                        for (int i = 0; i < 3; i++) {
                             Dish d = menu.getDishes().get(i);
-                            d.setTitle(jsonResponse.getString("dish"+(i+1)));
-                            int price = jsonResponse.getInt("price"+(i+1));
-                            d.setPrice(((double)price)/100);
+                            d.setTitle(jsonResponse.getString("dish" + (i + 1)));
+                            int price = jsonResponse.getInt("price" + (i + 1));
+                            d.setPrice(((float) price) / 100);
+                            System.out.println(i + ": " + d.getTitle() + ", " + d.getPrice() + "€");
                         }
                     } else {
                         System.out.println("couldn't get menus from Server");
@@ -207,13 +203,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 }
             }
         };
-        String date = "20181128";  //Variabel
+        String date = "20181204";  //only hardcoded for testing
         RetrieveMenuRequest menuRequest = new RetrieveMenuRequest(date, responseListener);
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         queue.add(menuRequest);
     }
 
-    private void createUser() {
+    private void restoreSavedData() {
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String username = prefs.getString("username", "default-username");
         String password = prefs.getString("password", "default-password");
@@ -221,6 +217,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
         String email = prefs.getString("email", "default-email");
         currentUser = new User(username, email, name, password);
         currentUser.addObserver(this);
+
+        String[] dish = new String[menu.getDishes().size()];
+        float[] price = new float[menu.getDishes().size()];
+        for (int i = 0; i < menu.getDishes().size(); i++) {
+            dish[i] = prefs.getString("dish" + i, "default-dish" + (i + 1));
+            price[i] = prefs.getFloat("price"+i,(float)13.37);
+        }
     }
 
     @Override
@@ -265,6 +268,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
         editPrefs.putString("password", currentUser.getPassword());
         editPrefs.putString("name", currentUser.getName());
         editPrefs.putString("email", currentUser.getEmail());
+        for (int i = 0; i < menu.getDishes().size(); i++) {
+            Dish d = menu.getDishes().get(i);
+            editPrefs.putString("dish" + i, d.getTitle());
+            editPrefs.putFloat("price" + i, d.getPrice());
+        }
         editPrefs.apply();
     }
 
@@ -281,14 +289,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        System.out.println("Observer.update()");
         if (o.getClass().equals(User.class)) {
+            System.out.println("Observer: user changed");
             //update User on NavigationHeader
             invalidateOptionsMenu();
 
             //update User on MainPageFragment
             mainPageFragment.setName(currentUser.getName());
             mainPageFragment.update();
-        }else if (o.getClass().equals(Menu.class)){
+        } else if (o.getClass().equals(Menu.class)) {
+            System.out.println("Observer: menu changed");
             //update Menu on MainPageFragment
             mainPageFragment.setMenu(menu);
             mainPageFragment.update();

@@ -1,10 +1,12 @@
 package de.knusprig.dhbwiewarsessen.model;
 
-public class Dish {
-    private String title;
-    private double price;
+import java.util.Observable;
 
-    public Dish(String title, double price) {
+public class Dish extends Observable {
+    private String title;
+    private float price;
+
+    public Dish(String title, float price) {
         this.title = title;
         this.price = price;
     }
@@ -13,15 +15,19 @@ public class Dish {
         return title;
     }
 
-    public double getPrice() {
+    public float getPrice() {
         return price;
     }
 
     public void setTitle(String title) {
         this.title = title;
+        setChanged();
+        notifyObservers();
     }
 
-    public void setPrice(double price) {
+    public void setPrice(float price) {
         this.price = price;
+        setChanged();
+        notifyObservers();
     }
 }

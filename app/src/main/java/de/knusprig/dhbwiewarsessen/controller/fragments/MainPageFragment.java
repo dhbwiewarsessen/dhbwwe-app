@@ -15,6 +15,7 @@ import com.android.volley.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.knusprig.dhbwiewarsessen.R;
@@ -57,12 +58,22 @@ public class MainPageFragment extends Fragment {
     }
 
     private void updateMenu() {
+        System.out.println("menu updated");
         TextView dishText1 = view.findViewById(R.id.dish1);
         TextView dishText2 = view.findViewById(R.id.dish2);
         TextView dishText3 = view.findViewById(R.id.dish3);
-        dishText1.setText(menu.getDishes().get(0).getTitle());
-        dishText2.setText(menu.getDishes().get(1).getTitle());
-        dishText3.setText(menu.getDishes().get(2).getTitle());
+
+        String[] title = new String[3];
+        int i = 0;
+        for (Dish dish : menu.getDishes()) {
+            title[i] = dish.getTitle().split("\\[")[0];
+            title[i] = title[i] + "\n" +dish.getPrice()+"€";
+            i++;
+        }
+
+        dishText1.setText(title[0]);
+        dishText2.setText(title[1]);
+        dishText3.setText(title[2]);
     }
 
     public void setMenu(Menu menu) {
