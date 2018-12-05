@@ -34,11 +34,12 @@ n/a
 
 # 4. Preconditions
 
-No user is logged in.
+n/a
 
 # 5. Postconditions
 
 The new registered user is created on server and logged in in the application.
+The Register Activity should close and the previous page should be shown.
 
 # 6. Function Points
 
