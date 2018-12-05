@@ -14,37 +14,26 @@
 # 1. Analyze Acceleration Behavior
 ## 1.1 Brief Description
 
-The process of logging in an registered user.
+The process on the server of responding to a request from the app to retrieve the menu of a specific date.
 
 ## 1.2 Screenshots
-
-![](LogInScreen.png)
 
 
 # 2. Flow of Events
 ## 2.1 Basic Flow
 
-You type in both the username and the password correctly. After clicking the login button you get successfully logged in and are now able to use the features of a registered user.
-
-![picture2](LoginDiagram.png)
 
 ## 2.2 Alternative Flows
-
-If you made a mistake in your username or password you get a message that says, that one of those is wrong.
-
 # 3. Special Requirements
 
-n/a
 
 # 4. Preconditions
 
-n/a
+There has to be a menu in the database on the Server for the given date.
+The request has to contain a parameter "date" in the format "yyyymmdd" via the POST method. 
 
 # 5. Postconditions
 
-The user should be logged in.
-The Login Activity should close and the previous page should be shown.
+The Server should send a response with the correct menu for the given date.
 
 # 6. Function Points
-
-tbd
