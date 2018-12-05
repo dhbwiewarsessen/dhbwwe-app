@@ -24,7 +24,7 @@ tbd
 # 2. Flow of Events
 ## 2.1 Basic Flow
 
-![](Register Diagram.png)
+![](RegisterDiagram.png)
 
 
 ## 2.2 Alternative Flows

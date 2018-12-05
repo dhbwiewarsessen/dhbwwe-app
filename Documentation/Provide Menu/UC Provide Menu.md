@@ -22,7 +22,7 @@ The process on the server of responding to a request from the app to retrieve th
 # 2. Flow of Events
 ## 2.1 Basic Flow
 
-![Provide Menus Diagram](Provide Menus Diagram.png)
+![Provide Menus Diagram](ProvideMenusDiagram.png)
 
 ## 2.2 Alternative Flows
 # 3. Special Requirements
