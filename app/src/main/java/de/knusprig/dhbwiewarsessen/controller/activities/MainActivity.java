@@ -22,7 +22,10 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -195,7 +198,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 }
             }
         };
-        String date = "20181204";  //only hardcoded for testing
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String date = dateFormat.format(new Date());
+        System.out.println(date);
+        System.out.println(new Date());
         RetrieveMenuRequest menuRequest = new RetrieveMenuRequest(date, responseListener);
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         queue.add(menuRequest);
