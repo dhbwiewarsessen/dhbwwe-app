@@ -201,6 +201,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
         queue.add(menuRequest);
     }
 
+    private void getAllRatings(int untilDay){
+
+    }
+
     private void restoreSavedData() {
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String username = prefs.getString("username", "default-username");
