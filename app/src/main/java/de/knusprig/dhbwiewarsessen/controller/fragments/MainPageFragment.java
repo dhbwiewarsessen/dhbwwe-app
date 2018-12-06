@@ -65,8 +65,9 @@ public class MainPageFragment extends Fragment {
         String[] title = new String[3];
         int i = 0;
         for (Dish dish : menu.getDishes()) {
+            String price = String.format("%.02f", dish.getPrice());
             title[i] = dish.getTitle().split("\\[")[0];
-            title[i] = title[i] + "\n" +dish.getPrice()+"€";
+            title[i] = title[i] + "\n" +price+"€";
             i++;
         }
 
