@@ -1,25 +1,28 @@
 package de.knusprig.dhbwiewarsessen.model;
 
+import java.util.Calendar;
+
 public class Rating {
 
-    private Dish dish;
-    private Double rating;
+    private Integer rating;
     private String comment;
-    private int userId;
+    private User user;
+    private Calendar date;
+    private Dish dish;
 
-    public Dish getDish() {
-        return dish;
-    }
-
-    public void setDish(Dish dish) {
+    public Rating(Integer rating, String comment, User user, Calendar date, Dish dish) {
+        this.rating = rating;
+        this.comment = comment;
+        this.user = user;
+        this.date = date;
         this.dish = dish;
     }
 
-    public Double getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(Double rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 
@@ -31,11 +34,27 @@ public class Rating {
         this.comment = comment;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Calendar getDate() {
+        return date;
+    }
+
+    public void setDate(Calendar date) {
+        this.date = date;
+    }
+
+    public Dish getDish() {
+        return dish;
+    }
+
+    public void setDish(Dish dish) {
+        this.dish = dish;
     }
 }
