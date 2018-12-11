@@ -50,15 +50,15 @@ public class CreateRatingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (items == null)
+            items = new String[]{
+                    "Menu 1", "Menu 2", "Menu 3"
+            };
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         this.view = view;
-        String[] items = new String[]{
-                "Menu 1", "Menu 2", "Menu 3"
-        };
 
         menuSpinner = view.findViewById(R.id.menuSpinner);
         comment = view.findViewById(R.id.tfAdditionalComment);
