@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void switchToMainPageFragment() {
-        mainPageFragment.setName(currentUser.getName());
+        mainPageFragment.setMain(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 mainPageFragment).commit();
     }

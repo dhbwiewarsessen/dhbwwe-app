@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -19,14 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.knusprig.dhbwiewarsessen.R;
+import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
 import de.knusprig.dhbwiewarsessen.model.Dish;
 import de.knusprig.dhbwiewarsessen.model.Menu;
 
 public class MainPageFragment extends Fragment {
 
     private View view;
-
-    private String name = "";
+    private MainActivity main;
 
     private Menu menu;
 
@@ -43,10 +44,6 @@ public class MainPageFragment extends Fragment {
         update();
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void update() {
         updateWelcomeMessage();
         updateMenu();
@@ -54,7 +51,8 @@ public class MainPageFragment extends Fragment {
 
     private void updateWelcomeMessage() {
         TextView welcomeMessage = view.findViewById(R.id.Welcome);
-        if(name.startsWith("default-")){
+        String name = main.getCurrentUser().getName();
+        if (name.startsWith("default-")) {
             name = "";
         }
         welcomeMessage.setText("Welcome " + name);
@@ -70,7 +68,7 @@ public class MainPageFragment extends Fragment {
         for (Dish dish : menu.getDishes()) {
             String price = String.format("%.02f", dish.getPrice());
             title[i] = dish.getTitle().split("\\[")[0];
-            title[i] = title[i] + "\n" +price+"€";
+            title[i] = title[i] + "\n" + price + "€";
             i++;
         }
 
@@ -100,5 +98,9 @@ public class MainPageFragment extends Fragment {
 
     public void setMenu(Menu menu) {
         this.menu = menu;
+    }
+
+    public void setMain(MainActivity main) {
+        this.main = main;
     }
 }
