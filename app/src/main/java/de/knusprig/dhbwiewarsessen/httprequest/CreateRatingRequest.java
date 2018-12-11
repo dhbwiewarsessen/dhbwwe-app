@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class CreateRatingRequest extends StringRequest {
 
-    private static final String CREATE_RATING_REQUEST_URL = "https://dhbwwe.heliohost.org/CreateRating.php";
+    private static final String CREATE_RATING_REQUEST_URL = "https://dhbwwe.heliohost.org/AddRating.php";
     private Map<String, String> params;
 
     public CreateRatingRequest(String userId, String dish, String date, String rating, String comment, Response.Listener<String> listener) {

@@ -21,6 +21,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
 import de.knusprig.dhbwiewarsessen.httprequest.CreateRatingRequest;
@@ -30,6 +33,7 @@ public class CreateRatingFragment extends Fragment {
 
     private MainActivity main;
     private Menu menu;
+    private View view;
 
     private EditText comment;
     private Spinner menuSpinner;
@@ -42,6 +46,7 @@ public class CreateRatingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_create_rating, container, false);
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +54,8 @@ public class CreateRatingFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        this.view = view;
         String[] items = new String[]{
                 "Menu 1", "Menu 2", "Menu 3"
         };
@@ -68,6 +74,16 @@ public class CreateRatingFragment extends Fragment {
         menuSpinner.setAdapter(adapter);
     }
 
+    private void initializeMenuSpinner() {
+        try {
+            ArrayAdapter adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, items);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);//simple_spin‌​ner_dropdown_item);
+            menuSpinner.setAdapter(adapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setMenu(Menu menu) {
         this.menu = menu;
         items = new String[]{
@@ -75,6 +91,8 @@ public class CreateRatingFragment extends Fragment {
                 menu.getDishes().get(1).getTitle(),
                 menu.getDishes().get(2).getTitle()
         };
+        initializeMenuSpinner();
+
     }
 
     public void setMain(MainActivity main) {
@@ -85,8 +103,9 @@ public class CreateRatingFragment extends Fragment {
         final String userId = "" + main.getCurrentUser().getUserId();
         final String comment = this.comment.getText().toString(); //if comment is just whitespaces put "null" into database
         final String selectedDish = menuSpinner.getSelectedItem().toString();
-        final String rating = ((int) (ratingBar.getRating()*10))+"";
-        final String date="";//todo set date
+        final String rating = ((int) (ratingBar.getRating() * 10)) + "";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        final String date = dateFormat.format(new Date());
         System.out.println("Rating: " + rating);
         System.out.println("Selected menu: " + selectedDish);
         System.out.println("Additional comment: " + comment);
