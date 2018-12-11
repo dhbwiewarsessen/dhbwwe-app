@@ -133,7 +133,7 @@ public class CreateRatingFragment extends Fragment {
                     }
 
                 } catch (JSONException e) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(main.getApplicationContext());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setMessage("JSON Exception")
                             .setNegativeButton("Retry", null)
                             .create()
