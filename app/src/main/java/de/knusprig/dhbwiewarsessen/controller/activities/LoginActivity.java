@@ -110,10 +110,12 @@ public class LoginActivity extends AppCompatActivity{
                         boolean success = jsonResponse.getBoolean("success");
 
                         if (success) {
+                            String userId = jsonResponse.getString("userId");
                             String name = jsonResponse.getString("name");
                             String email = jsonResponse.getString("email");
 
                             Intent data = new Intent();
+                            data.putExtra("userId", userId);
                             data.putExtra("username", username);
                             data.putExtra("password", password);
                             data.putExtra("name",name);
