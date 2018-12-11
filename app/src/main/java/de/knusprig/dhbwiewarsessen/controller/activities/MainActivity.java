@@ -169,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private void switchToCreateRatingsFragment() {
         createRatingFragment.setMain(this);
+        createRatingFragment.setMenu(menu);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 createRatingFragment).commit();
     }
