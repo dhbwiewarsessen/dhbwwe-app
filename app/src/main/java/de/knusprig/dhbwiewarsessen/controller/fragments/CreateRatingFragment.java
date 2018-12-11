@@ -38,6 +38,7 @@ public class CreateRatingFragment extends Fragment {
     private EditText comment;
     private Spinner menuSpinner;
     private RatingBar ratingBar;
+    private int selectedMenu;
 
     private String[] items;
 
@@ -72,6 +73,14 @@ public class CreateRatingFragment extends Fragment {
         ArrayAdapter adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);//simple_spin‌​ner_dropdown_item);
         menuSpinner.setAdapter(adapter);
+
+        menuSpinner.setSelection(selectedMenu);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        menuSpinner.setSelection(selectedMenu);
     }
 
     private void initializeMenuSpinner() {
@@ -140,7 +149,7 @@ public class CreateRatingFragment extends Fragment {
     }
 
     public void setSelectedMenu(int id) {
-        //todo set selected menu
+        selectedMenu = id;
     }
 }
 
