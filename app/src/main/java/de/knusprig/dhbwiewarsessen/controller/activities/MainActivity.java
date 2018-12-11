@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void initializeMainPageFragment() {
-        mainPageFragment.setName(currentUser.getName());
         mainPageFragment.setMenu(menu);
         getMenuFromServer();
     }
@@ -172,6 +171,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
         createRatingFragment.setMenu(menu);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 createRatingFragment).commit();
+    }
+
+    public void switchToCreateRatingsFragment(int id) {
+        switchToCreateRatingsFragment();
+        createRatingFragment.setSelectedMenu(id);
     }
 
     private void getMenuFromServer() {
@@ -306,7 +310,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
             invalidateOptionsMenu();
 
             //update User on MainPageFragment
-            mainPageFragment.setName(currentUser.getName());
             mainPageFragment.update();
         } else if (o.getClass().equals(Menu.class)) {
             //update Menu on MainPageFragment

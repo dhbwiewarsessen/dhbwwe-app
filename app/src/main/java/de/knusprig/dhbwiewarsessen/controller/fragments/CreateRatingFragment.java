@@ -138,5 +138,9 @@ public class CreateRatingFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(main.getApplicationContext());
         queue.add(createRatingRequest);
     }
+
+    public void setSelectedMenu(int id) {
+        //todo set selected menu
+    }
 }
 
