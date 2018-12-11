@@ -54,11 +54,14 @@ public class MainPageFragment extends Fragment {
 
     private void updateWelcomeMessage() {
         TextView welcomeMessage = view.findViewById(R.id.Welcome);
+        if(name.startsWith("default-")){
+            name = "";
+        }
         welcomeMessage.setText("Welcome " + name);
     }
 
     private void updateMenu() {
-        TextView dishText1 = view.findViewById(R.id.dish1);
+        final TextView dishText1 = view.findViewById(R.id.dish1);
         TextView dishText2 = view.findViewById(R.id.dish2);
         TextView dishText3 = view.findViewById(R.id.dish3);
 
@@ -73,6 +76,25 @@ public class MainPageFragment extends Fragment {
         dishText1.setText(title[0]);
         dishText2.setText(title[1]);
         dishText3.setText(title[2]);
+        dishText1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dishText1.setText("changed");
+                //goto Ratings
+            }
+        });
+        dishText2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //goto Ratings
+            }
+        });
+        dishText3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //goto Ratings
+            }
+        });
     }
 
     public void setMenu(Menu menu) {
