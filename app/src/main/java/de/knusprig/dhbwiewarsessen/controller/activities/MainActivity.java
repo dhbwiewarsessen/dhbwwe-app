@@ -31,6 +31,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import de.knusprig.dhbwiewarsessen.R;
+import de.knusprig.dhbwiewarsessen.controller.fragments.UserRatingFragment;
 import de.knusprig.dhbwiewarsessen.httprequest.RetrieveMenuRequest;
 import de.knusprig.dhbwiewarsessen.model.Dish;
 import de.knusprig.dhbwiewarsessen.model.User;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private MainPageFragment mainPageFragment;
     private CreateRatingFragment createRatingFragment;
     private RatingsFragment ratingsFragment;
+    private UserRatingFragment userRatingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         mainPageFragment = new MainPageFragment();
         createRatingFragment = new CreateRatingFragment();
         ratingsFragment = new RatingsFragment();
+        userRatingFragment = new UserRatingFragment();
 
         restoreSavedData();
 
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                                 switchToMainPageFragment();
                                 break;
                             case R.id.nav_my_ratings:
-                                switchToRatingsFragment();
+                                switchToUserRatingsFragment();
                                 break;
                             case R.id.nav_all_ratings:
                                 switchToRatingsFragment();
@@ -165,6 +168,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private void switchToRatingsFragment() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 ratingsFragment).commit();
+    }
+
+    private void switchToUserRatingsFragment() {
+        userRatingFragment.setMainActivity(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                userRatingFragment).commit();
     }
 
     private void switchToCreateRatingsFragment() {
@@ -304,5 +313,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
             mainPageFragment.setMenu(menu);
             mainPageFragment.update();
         }
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
     }
 }
