@@ -174,8 +174,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void switchToCreateRatingsFragment(int id) {
-        switchToCreateRatingsFragment();
         createRatingFragment.setSelectedMenu(id);
+        switchToCreateRatingsFragment();
     }
 
     private void getMenuFromServer() {
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         queue.add(menuRequest);
     }
 
-    private void getAllRatings(int untilDay){
+    private void getAllRatings(int untilDay) {
 
     }
 
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         float[] price = new float[3];
         for (int i = 0; i < 3; i++) {
             dish[i] = prefs.getString("dish" + i, "default-dish" + (i + 1));
-            price[i] = prefs.getFloat("price"+i,(float)13.37);
+            price[i] = prefs.getFloat("price" + i, (float) 13.37);
             Dish d = new Dish(dish[i], price[i]);
             dishes.add(d);
         }
@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         createRatingFragment.attemptAddRating(view);
     }
 
-    public User getCurrentUser(){
+    public User getCurrentUser() {
         return currentUser;
     }
 }

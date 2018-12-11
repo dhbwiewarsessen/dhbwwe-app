@@ -78,20 +78,19 @@ public class MainPageFragment extends Fragment {
         dishText1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dishText1.setText("changed");
-                //goto Ratings
+                main.switchToCreateRatingsFragment(0);
             }
         });
         dishText2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //goto Ratings
+                main.switchToCreateRatingsFragment(1);
             }
         });
         dishText3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //goto Ratings
+                main.switchToCreateRatingsFragment(2);
             }
         });
     }
