@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void switchToCreateRatingsFragment() {
+        createRatingFragment.setMain(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 createRatingFragment).commit();
     }
@@ -208,16 +209,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void getAllRatings(int untilDay){
-        
+
     }
 
     private void restoreSavedData() {
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        int userId = prefs.getInt("userId", 1337);
         String username = prefs.getString("username", "default-username");
         String password = prefs.getString("password", "default-password");
         String name = prefs.getString("name", "default-name");
         String email = prefs.getString("email", "default-email");
-        currentUser = new User(username, email, name, password);
+        currentUser = new User(userId, username, email, name, password);
         currentUser.addObserver(this);
 
         List<Dish> dishes = new ArrayList<>();
@@ -271,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     protected void onPause() {
         super.onPause();
         SharedPreferences.Editor editPrefs = prefs.edit();
+        editPrefs.putInt("userId", currentUser.getUserId());
         editPrefs.putString("username", currentUser.getUsername());
         editPrefs.putString("password", currentUser.getPassword());
         editPrefs.putString("name", currentUser.getName());
@@ -287,6 +290,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+            currentUser.setUserId(data.getIntExtra("userId", 1337));
             currentUser.setUsername(data.getStringExtra("username"));
             currentUser.setPassword(data.getStringExtra("password"));
             currentUser.setName(data.getStringExtra("name"));
@@ -308,5 +312,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
             mainPageFragment.setMenu(menu);
             mainPageFragment.update();
         }
+    }
+
+    public void btnSendClicked(View view) {
+        createRatingFragment.attemptAddRating(view);
+    }
+
+    public User getCurrentUser(){
+        return currentUser;
     }
 }

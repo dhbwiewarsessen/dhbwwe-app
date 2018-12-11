@@ -150,7 +150,10 @@ public class RegisterActivity extends AppCompatActivity {
                         boolean success = jsonResponse.getBoolean("success");
 
                         if (success) {
+                            int userId = Integer.parseInt(jsonResponse.getString("userId"));
+
                             Intent data = new Intent();
+                            data.putExtra("userId", userId);
                             data.putExtra("username", username);
                             data.putExtra("password", password);
                             data.putExtra("name", name);
