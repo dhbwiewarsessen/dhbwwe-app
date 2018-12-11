@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String username = prefs.getString("username", "default-username");
         String password = prefs.getString("password", "default-password");
-        String name = prefs.getString("name", "default-name");
+        String name = prefs.getString("name", ""); //changed to empty string for better displaying on the mainPage
         String email = prefs.getString("email", "default-email");
         currentUser = new User(username, email, name, password);
         currentUser.addObserver(this);
