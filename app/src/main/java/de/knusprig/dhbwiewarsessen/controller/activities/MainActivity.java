@@ -9,6 +9,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -34,6 +36,7 @@ import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.fragments.UserRatingFragment;
 import de.knusprig.dhbwiewarsessen.httprequest.RetrieveMenuRequest;
 import de.knusprig.dhbwiewarsessen.model.Dish;
+import de.knusprig.dhbwiewarsessen.model.Rating;
 import de.knusprig.dhbwiewarsessen.model.User;
 import de.knusprig.dhbwiewarsessen.model.Menu;
 import de.knusprig.dhbwiewarsessen.controller.fragments.CreateRatingFragment;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private User currentUser;
     private Menu menu;
+    private List<Rating> listRating = new ArrayList<>();
 
     private MainPageFragment mainPageFragment;
     private CreateRatingFragment createRatingFragment;
@@ -81,6 +85,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private void initializeMainPageFragment() {
         mainPageFragment.setMenu(menu);
+        if (listRating.isEmpty()){
+            listRating.add(new Rating(45,"sehr gutes Essen",currentUser,new GregorianCalendar(), "Currywurst mit Pommes"));
+            listRating.add(new Rating(35,"yam yam lecker lecker",currentUser,new GregorianCalendar(), "Camembert"));
+        }
         getMenuFromServer();
     }
 
@@ -171,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private void switchToUserRatingsFragment() {
         userRatingFragment.setMainActivity(this);
+        userRatingFragment.setListRating(listRating);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 userRatingFragment).commit();
     }
@@ -329,9 +338,22 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     public void btnSendClicked(View view) {
         createRatingFragment.attemptAddRating(view);
+        switchToUserRatingsFragment();
     }
 
     public User getCurrentUser() {
         return currentUser;
+    }
+    public void addRating(int rating, String comment, User user, Calendar date, String dish ){
+        listRating.add(new Rating(rating, comment, user, date, dish));
+    }
+
+    public void btnDeleteRatingClicked(View view){
+        //todo delete the selected rating
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage("Do you really want to delete this rating?")
+                .setPositiveButton("yes", null)
+                .create()
+                .show();
     }
 }

@@ -8,9 +8,9 @@ public class Rating {
     private String comment;
     private User user;
     private Calendar date;
-    private Dish dish;
+    private String dish;
 
-    public Rating(Integer rating, String comment, User user, Calendar date, Dish dish) {
+    public Rating(Integer rating, String comment, User user, Calendar date, String dish) {
         this.rating = rating;
         this.comment = comment;
         this.user = user;
@@ -50,11 +50,11 @@ public class Rating {
         this.date = date;
     }
 
-    public Dish getDish() {
+    public String getDish() {
         return dish;
     }
 
-    public void setDish(Dish dish) {
+    public void setDish(String dish) {
         this.dish = dish;
     }
 }

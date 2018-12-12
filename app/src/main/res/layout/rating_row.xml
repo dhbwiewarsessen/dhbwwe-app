@@ -5,30 +5,44 @@
     android:padding="10dp">
 
 
-
     <TextView
+        android:id="@+id/loUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/loUsername"
         android:ellipsize="end"
-        android:text="Username"
-        />
+        android:text="Username" />
 
     <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:numStars="5"
         android:id="@+id/loRating"
         style="?android:attr/ratingBarStyleSmall"
-        android:layout_alignParentRight="true"
-        />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dish"
-        android:layout_below="@+id/loUsername"
+        android:layout_alignParentRight="true"
+        android:numStars="5" />
+
+    <ImageButton
+        android:id="@+id/loDelete"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_below="@+id/loRating"
+        android:layout_alignParentRight="true"
+        android:onClick="btnDeleteRatingClicked"
+        android:background="@android:color/transparent"
+        android:src="@android:drawable/ic_menu_delete" />
+
+    <TextView
         android:id="@+id/loDish"
-        />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loUsername"
+        android:text="Dish"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/loComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loDish"
+        android:text="Comment" />
 
 </RelativeLayout>

@@ -25,7 +25,7 @@ import de.knusprig.dhbwiewarsessen.model.User;
 
 public class UserRatingFragment extends Fragment{
     private MainActivity mainActivity;
-    private ArrayList<Rating> listRating = new ArrayList<>();
+    private List<Rating> listRating;
 //    private List<String> listRating = new ArrayList<>();
     private User currentUser;
     private RatingAdapter ratingAdapter;
@@ -46,9 +46,6 @@ public class UserRatingFragment extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         listView = (ListView) view.findViewById(R.id.rating_list);
 
-        listRating.add(new Rating(2,"dsd",currentUser,new GregorianCalendar(), new Dish("Camembert", (float) 5.31231)));
-        listRating.add(new Rating(2,"dsd",currentUser,new GregorianCalendar(), new Dish("Camembert", (float) 5.31231)));
-
 
 //        for(Rating r : listRating){
 //            if(!r.getUser().getUserName().equals(currentUser.getName())){
@@ -63,6 +60,10 @@ public class UserRatingFragment extends Fragment{
 
     public void setMainActivity(MainActivity mainActivity){
         this.mainActivity = mainActivity;
+    }
+
+    public void setListRating(List<Rating> listRating){
+        this.listRating = listRating;
     }
 
 
