@@ -11,6 +11,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.knusprig.dhbwiewarsessen.R;
 
@@ -18,7 +19,7 @@ public class RatingAdapter extends ArrayAdapter<Rating> {
 
 
 
-    public RatingAdapter(Context context, ArrayList<Rating> ratings){
+    public RatingAdapter(Context context, List<Rating> ratings){
         super(context, 0,ratings);
     }
 
@@ -31,13 +32,15 @@ public class RatingAdapter extends ArrayAdapter<Rating> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.rating_row,parent, false);
         }
 
-        TextView userName = (TextView) convertView.findViewById(R.id.loUsername);
-        TextView dish = (TextView) convertView.findViewById(R.id.loDish);
-        RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.loRating);
+        TextView userName = convertView.findViewById(R.id.loUsername);
+        TextView dish = convertView.findViewById(R.id.loDish);
+        RatingBar ratingBar =convertView.findViewById(R.id.loRating);
+        TextView comment = convertView.findViewById(R.id.loComment);
 
         userName.setText(rating.getUser().getUsername());
-        dish.setText(rating.getDish().getTitle());
-        ratingBar.setRating(rating.getRating());
+        dish.setText(rating.getDish());
+        ratingBar.setRating((float)rating.getRating()/10);
+        comment.setText(rating.getComment());
         //return view after modifying it
         return convertView;
     }

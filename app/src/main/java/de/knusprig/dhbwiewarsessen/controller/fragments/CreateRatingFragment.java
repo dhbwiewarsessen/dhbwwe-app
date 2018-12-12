@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
@@ -96,9 +97,9 @@ public class CreateRatingFragment extends Fragment {
     public void setMenu(Menu menu) {
         this.menu = menu;
         items = new String[]{
-                menu.getDishes().get(0).getTitle(),
-                menu.getDishes().get(1).getTitle(),
-                menu.getDishes().get(2).getTitle()
+                menu.getDishes().get(0).getTitle().split("\\[")[0],
+                menu.getDishes().get(1).getTitle().split("\\[")[0],
+                menu.getDishes().get(2).getTitle().split("\\[")[0]
         };
         initializeMenuSpinner();
 
@@ -109,15 +110,19 @@ public class CreateRatingFragment extends Fragment {
     }
 
     public void attemptAddRating(View view) {
+
+        int rating = (int)(ratingBar.getRating()*10);
+
         final String userId = "" + main.getCurrentUser().getUserId();
         final String comment = this.comment.getText().toString(); //if comment is just whitespaces put "null" into database
         final String selectedDish = menuSpinner.getSelectedItem().toString();
-        final String rating = ((int) (ratingBar.getRating() * 10)) + "";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         final String date = dateFormat.format(new Date());
         System.out.println("Rating: " + rating);
         System.out.println("Selected menu: " + selectedDish);
         System.out.println("Additional comment: " + comment);
+
+        main.addRating(rating, comment, main.getCurrentUser(), new GregorianCalendar(), selectedDish);
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -127,25 +132,21 @@ public class CreateRatingFragment extends Fragment {
                     boolean success = jsonResponse.getBoolean("success");
 
                     if (success) {
-                        //todo do something
+                        System.out.println("rating successfully send to server");
                     } else {
-                        //todo do something else
+                        System.out.println("couldn't send rating to server");
                     }
 
                 } catch (JSONException e) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("JSON Exception")
-                            .setNegativeButton("Retry", null)
-                            .create()
-                            .show();
                     e.printStackTrace();
                 }
             }
         };
 
-        CreateRatingRequest createRatingRequest = new CreateRatingRequest(userId, selectedDish, date, rating, comment, responseListener);
+        CreateRatingRequest createRatingRequest = new CreateRatingRequest(userId, selectedDish, date, ""+rating, comment, responseListener);
         RequestQueue queue = Volley.newRequestQueue(main.getApplicationContext());
         queue.add(createRatingRequest);
+
     }
 
     public void setSelectedMenu(int id) {
