@@ -69,7 +69,7 @@ N/A
 
 ## 5. Logical View
 
-tbd
+<img src="mvc-Model.png" width="1000" />
 
 ## 6. Process View
 
@@ -77,7 +77,7 @@ N/A
 
 ## 7. Deployment View
 
-tbd
+N/A
 
 ## 8. Implementation View
 
@@ -93,12 +93,11 @@ N/A
 
 ## 9. Data View
 
-tbd
+Our data is stored in an online MySQL-Database which you can reach anywhere as long as you have internet access.
 
 ## 10. Size and Performance
 
-N/A
+The goal is to keep the app to the essentials and have a fast database so people don't get annoyed by the wait times. Also we don't to display unnecessary information to avoid confusion of the user.
 
 ## 11. Quality/Metrics
 
-tbd
