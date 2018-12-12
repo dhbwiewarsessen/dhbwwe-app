@@ -20,16 +20,6 @@
         android:layout_alignParentRight="true"
         android:numStars="5" />
 
-    <ImageButton
-        android:id="@+id/loDelete"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_below="@+id/loRating"
-        android:layout_alignParentRight="true"
-        android:onClick="btnDeleteRatingClicked"
-        android:background="@android:color/transparent"
-        android:src="@android:drawable/ic_menu_delete" />
-
     <TextView
         android:id="@+id/loDish"
         android:layout_width="wrap_content"
