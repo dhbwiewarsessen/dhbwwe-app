@@ -114,6 +114,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
                             case R.id.nav_login:
                                 forwardToLoginActivity();
                                 break;
+                            case R.id.nav_logout:
+                                logout();
+                                break;
                         }
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
@@ -159,6 +162,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+    }
+
+    private void logout() {
+        currentUser = null;
     }
 
     private void forwardToLoginActivity() {
@@ -238,10 +245,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private void restoreSavedData() {
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         int userId = prefs.getInt("userId", 1337);
-        String username = prefs.getString("username", "default-username");
-        String password = prefs.getString("password", "default-password");
+        String username = prefs.getString("username", "");
+        String password = prefs.getString("password", "");
         String name = prefs.getString("name", ""); //changed to empty string for better displaying on the mainPage
-        String email = prefs.getString("email", "default-email");
+        String email = prefs.getString("email", "");
         currentUser = new User(userId, username, email, name, password);
         currentUser.addObserver(this);
 
