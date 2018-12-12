@@ -77,7 +77,7 @@ N/A
 
 ## 7. Deployment View
 
-tbd
+N/A
 
 ## 8. Implementation View
 
