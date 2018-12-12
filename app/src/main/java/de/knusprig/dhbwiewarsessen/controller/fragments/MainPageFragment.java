@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -19,14 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.knusprig.dhbwiewarsessen.R;
+import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
 import de.knusprig.dhbwiewarsessen.model.Dish;
 import de.knusprig.dhbwiewarsessen.model.Menu;
 
 public class MainPageFragment extends Fragment {
 
     private View view;
-
-    private String name = "";
+    private MainActivity main;
 
     private Menu menu;
 
@@ -43,10 +44,6 @@ public class MainPageFragment extends Fragment {
         update();
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void update() {
         updateWelcomeMessage();
         updateMenu();
@@ -54,29 +51,55 @@ public class MainPageFragment extends Fragment {
 
     private void updateWelcomeMessage() {
         TextView welcomeMessage = view.findViewById(R.id.Welcome);
+        String name = main.getCurrentUser().getName();
+        if (name.startsWith("default-")) {
+            name = "";
+        }
         welcomeMessage.setText("Welcome " + name);
     }
 
     private void updateMenu() {
-        System.out.println("menu updated");
-        TextView dishText1 = view.findViewById(R.id.dish1);
+        final TextView dishText1 = view.findViewById(R.id.dish1);
         TextView dishText2 = view.findViewById(R.id.dish2);
         TextView dishText3 = view.findViewById(R.id.dish3);
 
         String[] title = new String[3];
         int i = 0;
         for (Dish dish : menu.getDishes()) {
+            String price = String.format("%.02f", dish.getPrice());
             title[i] = dish.getTitle().split("\\[")[0];
-            title[i] = title[i] + "\n" +dish.getPrice()+"€";
+            title[i] = title[i] + "\n" + price + "€";
             i++;
         }
 
         dishText1.setText(title[0]);
         dishText2.setText(title[1]);
         dishText3.setText(title[2]);
+        dishText1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                main.switchToCreateRatingsFragment(0);
+            }
+        });
+        dishText2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                main.switchToCreateRatingsFragment(1);
+            }
+        });
+        dishText3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                main.switchToCreateRatingsFragment(2);
+            }
+        });
     }
 
     public void setMenu(Menu menu) {
         this.menu = menu;
+    }
+
+    public void setMain(MainActivity main) {
+        this.main = main;
     }
 }
