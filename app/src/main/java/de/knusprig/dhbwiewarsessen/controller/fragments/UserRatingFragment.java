@@ -80,11 +80,11 @@ public class UserRatingFragment extends Fragment {
     }
 
     public void setListRating(List<Rating> listRating) {
-        if (mainActivity.getCurrentUser().getUserId() == 0) {
-            this.listRating = new ArrayList<>();
-        } else {
+//        if (mainActivity.getCurrentUser().getUserId() == 0) {
+//            this.listRating = new ArrayList<>();
+//        } else {
             this.listRating = listRating;
-        }
+//        }
     }
 
     public void refreshList(){
