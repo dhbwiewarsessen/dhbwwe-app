@@ -83,11 +83,6 @@ public class LoginActivity extends AppCompatActivity{
                 focusView = mPasswordView;
                 cancel = true;
             }
-            if(Validation.isPasswordValid(password)){
-                mPasswordView.setError(getString(R.string.error_invalid_password));
-                focusView = mPasswordView;
-                cancel = true;
-            }
         }
 
         // Check for a valid email address.
