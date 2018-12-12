@@ -165,7 +165,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void logout() {
-        currentUser = null;
+        currentUser = new User(0, "","","","");
+        currentUser.addObserver(this);
+        invalidateOptionsMenu();
     }
 
     private void forwardToLoginActivity() {
@@ -180,6 +182,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void switchToRatingsFragment() {
+        ratingsFragment.setMainActivity(this);
+        ratingsFragment.setListRating(listRating);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 ratingsFragment).commit();
     }
@@ -244,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private void restoreSavedData() {
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        int userId = prefs.getInt("userId", 1337);
+        int userId = prefs.getInt("userId", 0);
         String username = prefs.getString("username", "");
         String password = prefs.getString("password", "");
         String name = prefs.getString("name", ""); //changed to empty string for better displaying on the mainPage
@@ -320,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            currentUser.setUserId(data.getIntExtra("userId", 1337));
+            currentUser.setUserId(data.getIntExtra("userId", 0));
             currentUser.setUsername(data.getStringExtra("username"));
             currentUser.setPassword(data.getStringExtra("password"));
             currentUser.setName(data.getStringExtra("name"));
@@ -333,9 +337,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
         if (o.getClass().equals(User.class)) {
             //update User on NavigationHeader
             invalidateOptionsMenu();
-
             //update User on MainPageFragment
             mainPageFragment.update();
+            userRatingFragment.refreshList();
         } else if (o.getClass().equals(Menu.class)) {
             //update Menu on MainPageFragment
             mainPageFragment.setMenu(menu);
@@ -355,12 +359,4 @@ public class MainActivity extends AppCompatActivity implements Observer {
         listRating.add(new Rating(rating, comment, user, date, dish));
     }
 
-    public void btnDeleteRatingClicked(View view){
-        //todo delete the selected rating
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage("Do you really want to delete this rating?")
-                .setPositiveButton("yes", null)
-                .create()
-                .show();
-    }
 }
