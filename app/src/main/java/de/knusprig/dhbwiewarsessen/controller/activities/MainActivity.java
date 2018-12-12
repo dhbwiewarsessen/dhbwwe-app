@@ -9,6 +9,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -22,14 +23,20 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import de.knusprig.dhbwiewarsessen.R;
+import de.knusprig.dhbwiewarsessen.controller.fragments.UserRatingFragment;
 import de.knusprig.dhbwiewarsessen.httprequest.RetrieveMenuRequest;
 import de.knusprig.dhbwiewarsessen.model.Dish;
+import de.knusprig.dhbwiewarsessen.model.Rating;
 import de.knusprig.dhbwiewarsessen.model.User;
 import de.knusprig.dhbwiewarsessen.model.Menu;
 import de.knusprig.dhbwiewarsessen.controller.fragments.CreateRatingFragment;
@@ -43,10 +50,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private User currentUser;
     private Menu menu;
+    private List<Rating> listRating = new ArrayList<>();
 
     private MainPageFragment mainPageFragment;
     private CreateRatingFragment createRatingFragment;
     private RatingsFragment ratingsFragment;
+    private UserRatingFragment userRatingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         mainPageFragment = new MainPageFragment();
         createRatingFragment = new CreateRatingFragment();
         ratingsFragment = new RatingsFragment();
+        userRatingFragment = new UserRatingFragment();
 
         restoreSavedData();
 
@@ -74,8 +84,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void initializeMainPageFragment() {
-        mainPageFragment.setName(currentUser.getName());
         mainPageFragment.setMenu(menu);
+        if (listRating.isEmpty()){
+            listRating.add(new Rating(45,"sehr gutes Essen",currentUser,new GregorianCalendar(), "Currywurst mit Pommes"));
+            listRating.add(new Rating(35,"yam yam lecker lecker",currentUser,new GregorianCalendar(), "Camembert"));
+        }
         getMenuFromServer();
     }
 
@@ -89,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                                 switchToMainPageFragment();
                                 break;
                             case R.id.nav_my_ratings:
-                                switchToRatingsFragment();
+                                switchToUserRatingsFragment();
                                 break;
                             case R.id.nav_all_ratings:
                                 switchToRatingsFragment();
@@ -100,6 +113,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
                             case R.id.nav_login:
                                 forwardToLoginActivity();
+                                break;
+                            case R.id.nav_logout:
+                                logout();
                                 break;
                         }
                         // set item as selected to persist highlight
@@ -148,25 +164,47 @@ public class MainActivity extends AppCompatActivity implements Observer {
         toggle.syncState();
     }
 
+    private void logout() {
+        currentUser = new User(0, "","","","");
+        currentUser.addObserver(this);
+        invalidateOptionsMenu();
+    }
+
     private void forwardToLoginActivity() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivityForResult(intent, 123);
     }
 
     private void switchToMainPageFragment() {
-        mainPageFragment.setName(currentUser.getName());
+        mainPageFragment.setMain(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 mainPageFragment).commit();
     }
 
     private void switchToRatingsFragment() {
+        ratingsFragment.setMainActivity(this);
+        ratingsFragment.setListRating(listRating);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 ratingsFragment).commit();
     }
 
+    private void switchToUserRatingsFragment() {
+        userRatingFragment.setMainActivity(this);
+        userRatingFragment.setListRating(listRating);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                userRatingFragment).commit();
+    }
+
     private void switchToCreateRatingsFragment() {
+        createRatingFragment.setMain(this);
+        createRatingFragment.setMenu(menu);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 createRatingFragment).commit();
+    }
+
+    public void switchToCreateRatingsFragment(int id) {
+        createRatingFragment.setSelectedMenu(id);
+        switchToCreateRatingsFragment();
     }
 
     private void getMenuFromServer() {
@@ -195,19 +233,27 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 }
             }
         };
-        String date = "20181204";  //only hardcoded for testing
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String date = dateFormat.format(new Date());
+        System.out.println(date);
+        System.out.println(new Date());
         RetrieveMenuRequest menuRequest = new RetrieveMenuRequest(date, responseListener);
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         queue.add(menuRequest);
     }
 
+    private void getAllRatings(int untilDay) {
+
+    }
+
     private void restoreSavedData() {
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String username = prefs.getString("username", "default-username");
-        String password = prefs.getString("password", "default-password");
-        String name = prefs.getString("name", "default-name");
-        String email = prefs.getString("email", "default-email");
-        currentUser = new User(username, email, name, password);
+        int userId = prefs.getInt("userId", 0);
+        String username = prefs.getString("username", "");
+        String password = prefs.getString("password", "");
+        String name = prefs.getString("name", ""); //changed to empty string for better displaying on the mainPage
+        String email = prefs.getString("email", "");
+        currentUser = new User(userId, username, email, name, password);
         currentUser.addObserver(this);
 
         List<Dish> dishes = new ArrayList<>();
@@ -215,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         float[] price = new float[3];
         for (int i = 0; i < 3; i++) {
             dish[i] = prefs.getString("dish" + i, "default-dish" + (i + 1));
-            price[i] = prefs.getFloat("price"+i,(float)13.37);
+            price[i] = prefs.getFloat("price" + i, (float) 13.37);
             Dish d = new Dish(dish[i], price[i]);
             dishes.add(d);
         }
@@ -261,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     protected void onPause() {
         super.onPause();
         SharedPreferences.Editor editPrefs = prefs.edit();
+        editPrefs.putInt("userId", currentUser.getUserId());
         editPrefs.putString("username", currentUser.getUsername());
         editPrefs.putString("password", currentUser.getPassword());
         editPrefs.putString("name", currentUser.getName());
@@ -277,6 +324,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+            currentUser.setUserId(data.getIntExtra("userId", 0));
             currentUser.setUsername(data.getStringExtra("username"));
             currentUser.setPassword(data.getStringExtra("password"));
             currentUser.setName(data.getStringExtra("name"));
@@ -286,20 +334,29 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("Observer.update()");
         if (o.getClass().equals(User.class)) {
-            System.out.println("Observer: user changed");
             //update User on NavigationHeader
             invalidateOptionsMenu();
-
             //update User on MainPageFragment
-            mainPageFragment.setName(currentUser.getName());
             mainPageFragment.update();
+            userRatingFragment.refreshList();
         } else if (o.getClass().equals(Menu.class)) {
-            System.out.println("Observer: menu changed");
             //update Menu on MainPageFragment
             mainPageFragment.setMenu(menu);
             mainPageFragment.update();
         }
     }
+
+    public void btnSendClicked(View view) {
+        createRatingFragment.attemptAddRating(view);
+        switchToUserRatingsFragment();
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+    public void addRating(int rating, String comment, User user, Calendar date, String dish ){
+        listRating.add(new Rating(rating, comment, user, date, dish));
+    }
+
 }

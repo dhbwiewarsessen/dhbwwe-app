@@ -3,16 +3,25 @@ package de.knusprig.dhbwiewarsessen.model;
 import java.util.Observable;
 
 public class User extends Observable {
-    String username;
-    String email;
-    String name;
-    String password;
+    private int userId;
+    private String username;
+    private String email;
+    private String name;
+    private String password;
 
-    public User(String username, String email, String name, String password) {
+    public User(int userId, String username, String email, String name, String password) {
         this.username = username;
         this.email = email;
         this.name = name;
         this.password = password;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
