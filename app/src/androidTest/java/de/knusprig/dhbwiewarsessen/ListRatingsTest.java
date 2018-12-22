@@ -16,12 +16,12 @@ import java.io.IOException;
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
 
 @RunWith(Parameterized.class)
-public class RegisterTest extends GreenCoffeeTest
+public class ListRatingsTest extends GreenCoffeeTest
 {
     @Rule
     public ActivityTestRule activity = new ActivityTestRule<>(MainActivity.class);
 
-    public RegisterTest(ScenarioConfig scenarioConfig)
+    public ListRatingsTest(ScenarioConfig scenarioConfig)
     {
         super(scenarioConfig);
     }
@@ -30,7 +30,7 @@ public class RegisterTest extends GreenCoffeeTest
     public static Iterable scenarios() throws IOException
     {
         return new GreenCoffeeConfig()
-                .withFeatureFromAssets("assets/register.feature")
+                .withFeatureFromAssets("assets/ListRatingsOfUsers.feature")
                 .scenarios(
                         //new Locale("en", "GB")
                 ); // the locales used to run the scenarios (optional)
@@ -39,6 +39,6 @@ public class RegisterTest extends GreenCoffeeTest
     @Test
     public void test()
     {
-        start(new BasicSteps(), new RegisterSteps());
+        start(new BasicSteps(), new ListRatingsSteps());
     }
 }
