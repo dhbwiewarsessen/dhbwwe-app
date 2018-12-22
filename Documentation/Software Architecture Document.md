@@ -95,6 +95,8 @@ N/A
 
 Our data is stored in an online MySQL-Database which you can reach anywhere as long as you have internet access.
 
+<img src=../ClassDiagrams/DatabaseUML.png />
+
 ## 10. Size and Performance
 
 The goal is to keep the app to the essentials and have a fast database so people don't get annoyed by the wait times. Also we don't to display unnecessary information to avoid confusion of the user.
