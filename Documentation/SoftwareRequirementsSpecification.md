@@ -34,9 +34,15 @@ This document is designed for internal use only and will outline the development
 |Term||
 |-|-|
 |**SRS**|Software Requirements Specification|
+|**UC**|Use Case|
+|**IDE**|Integrated development environment|
 
 ## 1.4 References
-tbd
+|Name|Link|
+|-|-|
+|Blog|https://dhbwiewarsessen.wordpress.com/ |
+|Repository|https://github.com/TvRXVII/DHBWieWarsEssen |
+|YouTrack|https://dhbwiewarsessen.myjetbrains.com/youtrack/issues |
 
 ## 1.5 Overview
 The next chapter gives an overall description about the project an requirements such as functionality, usability and performance.
