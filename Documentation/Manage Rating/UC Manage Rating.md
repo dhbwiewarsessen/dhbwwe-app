@@ -23,10 +23,15 @@ Create, edit & delete ratings of the logged in user.
 
 # 2. Flow of Events
 ## 2.1 Basic Flow
+Create:
+<img src="ManageRating_create.png" />
+
+Edit & Delete:
+<img src="ManageRating_edit_delete.png" />
 
 ## 2.2 Alternative Flows
 
-
+n/a
 
 # 3. Special Requirements
 
@@ -35,11 +40,11 @@ You have to be to logged in to be able to use the features
 # 4. Preconditions
 
 * Create:
-* * User has to be logged in.
+	* User has to be logged in.
 * Edit:
-* * The logged in user needs to have a rating which they created ealier.
+	* The logged in user needs to have a rating which they created ealier.
 * Delete:
-* * The logged in user needs to have a rating which they created earlier.
+	* The logged in user needs to have a rating which they created earlier.
 
 
 # 5. Postconditions
