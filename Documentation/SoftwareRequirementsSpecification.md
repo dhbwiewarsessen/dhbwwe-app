@@ -57,50 +57,82 @@ Our target group is obviously the people eating in the Casino of the DHBW-Karlsr
 
 # 3. Specific Requirements
 ## 3.1 Functionality
-tbd
+This section lists our use cases and elaborates their functionality in the App. 
+### 3.1.1 Register
+A new user is able to create a new User-Account. To register the user is asked to provide his or her full name, a username, an email and a password.
+### 3.1.2 Login
+Already registered users are able to Login by using their username and password. Logged in users can create ratings and view all the rating they have already submitted.
+### 3.1.3 Logout
+A logged in user can log out in order to go back and use the app as a user with fewer privileges. Unregistered or not logged in users can not submit ratings.
+### 3.1.4 List Ratings of other Users
+A functionality all users can use. It shows all ratings given to a certain meal.
+### 3.1.5 Manage Ratings
+Logged-in users can edit and delete their own ratings.
+### 3.1.6 Submit Rating to Server
+Logged-in users can submit ratings to meals.
+### 3.1.8 Sort Ratings
+A feature all users can use. Sorting ratings by the amount of stars a meal received.
 
 ## 3.2 Usability
-tbd
+### 3.2.1 Easy to use
+The app should be easy to use and easy to understand. That way people won't have to spend a lot of time to learn how to use the app. An easy to use app will allow users to take a quick look at the ratings of the current day and decide wether to go to the canteen. 
 
 ## 3.3 Reliability
-tbd
+### 3.3.1 Stable Application
+The application should be mostly bugfree to allow a reliable usage. There should be no crashes or freezes. 
+### 3.3.2 Reliably Reachable Server
+The main features of the app base mostly on communication with the server. Therefore the server must be reachable at all times to correctly provide menus and ratings when a user needs them. 
 
 ## 3.4 Performance
-tbd
+### 3.4.1 Smooth interface
+A smooth interface is essential for an enjoyable and efficient experience. There should little to no waiting time between switching fragments. 
+### 3.4.2 Short server response time
+A smooth interface requires a server with short response times. A login is most of the time bottle-necked by the server rather than the client application. Showing ratings, meals and features like login and  logout rely on quick server responses.   
 
 ## 3.5 Supportability
-tbd
+### 3.5.1 Android
+The app operates only on android to provide optimal application of programmer-experience during development.
+A smartphone app is also a practical way to realize the idea of "DHBWieWarsEssen" because almost every person own a mobile device.
 
 ## 3.6 Design Constraints
-tbd
+We use Git for version control and YouTrack is our project management tool. 
+### 3.6.1 MVC Architecture
+Because we create an android app we use the Model-View-Controller Architecture. 
+In the Model we have classes which extend the Observable class. Those classes contain data we get from the server and notify the Activitys in the Controller when something changed.
+### 3.6.2 Programming Languages
+The app is developed in Java and we use Android Studio as out IDE.
+The database system is based on SQL , and PHP scripts are used by the application for reading and writing actions.
 
 ## 3.7 Online User Documentation and Help System Requirements
-tbd
+N/A
 
 ## 3.8 Purchased Components
-tbd
+N/A
 
 ## 3.9 Interfaces
 ### 3.9.1 User Interfaces
-tbd
+- "Main screen" shows menu of the current day.
+- List of all ratings to a meal.
+- List of all ratings created by the user that is logged in.
+- "Create Ratings" view.
 
 ### 3.9.2 Hardware Interfaces
-tbd.
+N/A
 
 ### 3.9.3 Software Interfaces
-tbd
+N/A
 
 ### 3.9.4 Communications Interfaces
-tbd
+A connection to the server must be available in order to read and write information to the database.   
 
 ## 3.10 Licensing Requirements
-tbd
+N/A
 
 ## 3.11 Legal, Copyright and other Notices
-tbd
+N/A
 
 ## 3.12 Applicable Standards
-tbd
+N/A
 
 # 4. Supporting Information
-tbd
+N/A
