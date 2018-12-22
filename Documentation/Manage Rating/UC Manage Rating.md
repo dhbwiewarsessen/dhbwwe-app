@@ -12,7 +12,10 @@
 - [Postconditions](#5-postconditions)
 
 # 1. Analyze Acceleration Behavior
+
 ## 1.1 Brief Description
+
+Create, edit & delete ratings of the logged in user.
 
 
 ## 1.2 Screenshots
@@ -21,15 +24,26 @@
 # 2. Flow of Events
 ## 2.1 Basic Flow
 
-
 ## 2.2 Alternative Flows
+
+
+
 # 3. Special Requirements
 
+You have to be to logged in to be able to use the features
 
 # 4. Preconditions
 
+* Create:
+* * User has to be logged in.
+* Edit:
+* * The logged in user needs to have a rating which they created ealier.
+* Delete:
+* * The logged in user needs to have a rating which they created earlier.
+
 
 # 5. Postconditions
-
+n/a
 
 # 6. Function Points
+n/a
