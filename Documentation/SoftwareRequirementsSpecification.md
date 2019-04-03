@@ -45,6 +45,7 @@ This document is designed for internal use only and will outline the development
 |YouTrack|https://dhbwiewarsessen.myjetbrains.com/youtrack/issues |
 
 ## 1.5 Overview
+
 The next chapter gives an overall description about the project an requirements such as functionality, usability and performance.
 
 # 2. Overall Description
@@ -65,19 +66,20 @@ Our target group is obviously the people eating in the Casino of the DHBW-Karlsr
 ## 3.1 Functionality
 This section lists our use cases and elaborates their functionality in the App. 
 ### 3.1.1 Register
-A new user is able to create a new User-Account. To register the user is asked to provide his or her full name, a username, an email and a password.
+A new user is able to create a new User-Account. To register the user is asked to provide his or her full name, a username, an email and a password. The use case can be found [here](<https://github.com/TvRXVII/DHBWieWarsEssen/blob/master/Documentation/Register/UC%20Register.md>).
+
 ### 3.1.2 Login
-Already registered users are able to Login by using their username and password. Logged in users can create ratings and view all the rating they have already submitted.
+Already registered users are able to Login by using their username and password. Logged in users can create ratings and view all the rating they have already submitted. The use case can be found [here](<https://github.com/TvRXVII/DHBWieWarsEssen/blob/master/Documentation/Login/UC%20Login.md>).
 ### 3.1.3 Logout
-A logged in user can log out in order to go back and use the app as a user with fewer privileges. Unregistered or not logged in users can not submit ratings.
+A logged in user can log out in order to go back and use the app as a user with fewer privileges. Unregistered or not logged in users can not submit ratings. The use case can be found [here](<https://github.com/TvRXVII/DHBWieWarsEssen/blob/master/Documentation/Logout/UC%20Logout.md>)
 ### 3.1.4 List Ratings of other Users
-A functionality all users can use. It shows all ratings given to a certain meal.
+A functionality all users can use. It shows all ratings given to a certain meal. The use case can be found [here](<https://github.com/TvRXVII/DHBWieWarsEssen/blob/master/Documentation/List%20ratings%20of%20other%20users/UC%20List%20ratings%20of%20other%20users.md>) 
 ### 3.1.5 Manage Ratings
-Logged-in users can edit and delete their own ratings.
+Logged-in users can edit and delete their own ratings. The use case can be found [here](<https://github.com/TvRXVII/DHBWieWarsEssen/blob/master/Documentation/Manage%20Rating/UC%20Manage%20Rating.md>)
 ### 3.1.6 Submit Rating to Server
-Logged-in users can submit ratings to meals.
+Logged-in users can submit ratings to meals. The use case can be found [here](<>)
 ### 3.1.8 Sort Ratings
-A feature all users can use. Sorting ratings by the amount of stars a meal received.
+A feature all users can use. Sorting ratings by the amount of stars a meal received. The use case can be found [here](<>)
 
 ## 3.2 Usability
 ### 3.2.1 Easy to use
