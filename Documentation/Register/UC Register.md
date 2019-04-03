@@ -18,7 +18,7 @@ The process of registration of a new user.
 
 ## 1.2 Screenshots
 
-tbd
+<img src="Screenshot_Register.png" width=500>
 
 
 # 2. Flow of Events
