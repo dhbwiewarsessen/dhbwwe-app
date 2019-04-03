@@ -47,11 +47,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private DrawerLayout mDrawerLayout;
     private SharedPreferences prefs;
-
     private User currentUser;
     private Menu menu;
     private List<Rating> listRating = new ArrayList<>();
-
     private MainPageFragment mainPageFragment;
     private CreateRatingFragment createRatingFragment;
     private RatingsFragment ratingsFragment;
