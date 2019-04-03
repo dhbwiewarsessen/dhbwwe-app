@@ -28,7 +28,6 @@ public class MainPageFragment extends Fragment {
 
     private View view;
     private MainActivity main;
-
     private Menu menu;
 
     @Nullable

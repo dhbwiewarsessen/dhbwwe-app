@@ -35,12 +35,10 @@ public class CreateRatingFragment extends Fragment {
     private MainActivity main;
     private Menu menu;
     private View view;
-
     private EditText comment;
     private Spinner menuSpinner;
     private RatingBar ratingBar;
     private int selectedMenu;
-
     private String[] items;
 
     @Nullable
