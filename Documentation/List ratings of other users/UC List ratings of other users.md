@@ -16,9 +16,13 @@
 
 This action is executed whenever ratings are fetched from the database. Depending on which data is needed the list is getting filtered and then displayed on the screen. Maybe it will also be needed when a review is added, deleted or edited.
 
-## 1.2 Screenshots
+## 1.2 Mockup
 
 <img src="List ratings of other users.png" width="400" />
+
+## 1.3 Screenshot
+
+<img src="Screenshot_ListRatingsOfOtherUsers.png" width="400" />
 
 # 2. Flow of Events
 
