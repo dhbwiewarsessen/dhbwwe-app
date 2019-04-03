@@ -18,7 +18,7 @@ The process of logging in an registered user.
 
 ## 1.2 Screenshots
 
-![](LogInScreen.png)
+<img src="Screenshot_Login.png" width=500>
 
 
 # 2. Flow of Events
