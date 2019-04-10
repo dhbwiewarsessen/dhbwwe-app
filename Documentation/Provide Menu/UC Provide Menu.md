@@ -18,6 +18,7 @@ The process on the server of responding to a request from the app to retrieve th
 
 ## 1.2 Screenshots
 
+n/a
 
 # 2. Flow of Events
 ## 2.1 Basic Flow
