@@ -24,6 +24,7 @@
 - [Supporting Information](#4-supporting-information)
 
 # 1. Introduction
+
 ## 1.1 Purpose
 The purpose of this document is to provide a general overview and a detailed description of the DHBWieWarsEssen project. In order of achieving this, it explains the general vision or rather the purpose and all the features of the product. This document offers insights into the system, its interfaces and the constraints of the product.
 
@@ -48,6 +49,8 @@ This document is designed for internal use only and will outline the development
 
 The next chapter gives an overall description about the project an requirements such as functionality, usability and performance.
 
+
+
 # 2. Overall Description
 ## 2.1. Idea
 
@@ -63,50 +66,59 @@ Our target group is obviously the people eating in the Casino of the DHBW-Karlsr
 
 
 # 3. Specific Requirements
+
 ## 3.1 Functionality
 This section lists our use cases and elaborates their functionality in the App. 
 
-### 3.1.1 Register
+### 3.1.1 UCs for Semester 3
+These use cases are done in the third semester.
+
+#### 3.1.1.1 Register
 A new user is able to create a new User-Account. To register the user is asked to provide his or her full name, a username, an email and a password. The use case specification can be found [here](<https://github.com/TvRXVII/DHBWieWarsEssen/blob/master/Documentation/Register/UC%20Register.md>).
 
-### 3.1.2 Login
+#### 3.1.1.2 Login
 Already registered users are able to Login by using their username and password. Logged in users can create ratings and view all the rating they have already submitted. The use case specification can be found [here](<https://github.com/TvRXVII/DHBWieWarsEssen/blob/master/Documentation/Login/UC%20Login.md>).
 
-### 3.1.3 Logout
+#### 3.1.1.3 Logout
 A logged in user can log out in order to go back and use the app as a user with fewer privileges. Unregistered or not logged in users can not submit ratings. The use case specification can be found [here](<https://github.com/TvRXVII/DHBWieWarsEssen/blob/master/Documentation/Logout/UC%20Logout.md>)
 
-### 3.1.4 List Ratings of other Users
+#### 3.1.1.4 List Ratings of other Users
 A functionality all users can use. It shows all ratings given to a certain meal. The use case specification can be found [here](<https://github.com/TvRXVII/DHBWieWarsEssen/blob/master/Documentation/List%20ratings%20of%20other%20users/UC%20List%20ratings%20of%20other%20users.md>) 
 
-### 3.1.5 Manage Ratings
+#### 3.1.1.5 Manage Ratings
 Logged-in users can edit and delete their own ratings. The use case specification can be found [here](<https://github.com/TvRXVII/DHBWieWarsEssen/blob/master/Documentation/Manage%20Rating/UC%20Manage%20Rating.md>)
 
-### 3.1.6 Provide Menu
+#### 3.1.1.6 Provide Menu
 The menus are provided for the app of the user. The use case specification can be found [here](https://github.com/TvRXVII/DHBWieWarsEssen/tree/master/Documentation/Provide%20Menu).
 
-### 3.1.7 Receive Menu
+#### 3.1.1.7 Receive Menu
 The menus get saved into the database. The use case specification can be found [here](https://github.com/TvRXVII/DHBWieWarsEssen/tree/master/Documentation/Receive%20Menu).
 
-### 3.1.8 Submit Rating to Server
+
+### 3.1.2 UCs for Semester 4
+These use cases are done in the fourth semester.
+
+#### 3.1.2.1 Submit Rating to Server
 Logged-in users can submit ratings to meals. The use case specification can be found [here](<>)
 
-### 3.1.9 Sort Ratings
+#### 3.1.2.2 Sort Ratings
 A feature all users can use. Sorting ratings by the amount of stars a meal received. The use case specification can be found [here](<>)
 
-### 3.1.10 Get Ratings from Server
+#### 3.1.2.3 Get Ratings from Server
 A feature that should run in the background of the app to always be able to show all available ratings to the user. The use case specification does not exist yet.
 
-### 3.1.11 Receive Raitng (Server)
-The server should be able to receive ratings from Clients and save them into the database ([Manage Ratings (Server)](#3113-manage-rating)). The use case specification does not exist yet.
+#### 3.1.2.4Receive Rating (Server)
+The server should be able to receive ratings from Clients and save them into the database ([Manage Ratings (Server)](#3125-manage-rating)). The use case specification does not exist yet.
 
-### 3.1.12 Provide Ratings of all users
+#### 3.1.2.5 Provide Ratings of all users
 The server should send a list of (all/requested) ratings on a request by a client. The use case specification does not exist yet.
 
-### 3.1.13 Manage Rating (Server)
+#### 3.1.2.5 Manage Rating (Server)
 The server should store new ratings in the database and also update existing ratings, that have been changed by the user. The use case specification does not exist yet.
 
-### 3.1.14 List Ratings (Server)
+#### 3.1.2.6 List Ratings (Server)
 The server has to send a request to the database to list (all/requested) ratings. The use case specification does not exist yet.
+
 
 ## 3.2 Usability
 ### 3.2.1 Easy to use
