@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RetrieveMenuRequest extends StringRequest {
-    private static final String RETRIEVE_MENU_REQUEST_URL = "https://dhbwwe.heliohost.org/RetrieveMenu.php";
+    private static final String RETRIEVE_MENU_REQUEST_URL = "https://dhbwwe.cu.ma/RetrieveMenu.php";
     private Map<String, String> params;
 
 
