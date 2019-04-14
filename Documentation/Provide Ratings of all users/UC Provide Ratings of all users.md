@@ -14,32 +14,31 @@
 # 1. Analyze Acceleration Behavior
 ## 1.1 Brief Description
 
-Receive a rating that was sent to the server by the application and add the rating to the database.
+The server provides the ratings of all users. The application can send a request to a page on the server and receives the ratings. 
 
 ## 1.2 Screenshots
+
+n/a
 
 
 # 2. Flow of Events
 ## 2.1 Basic Flow
-![](UC Receive Rating Diagram.png)
+
+<img src="Provide Ratings of all users.png">
 
 ## 2.2 Alternative Flows
 
 n/a
 
-
 # 3. Special Requirements
-
-The user has to be logged in in order to submit a rating that can be received by the server.
 
 # 4. Preconditions
 
-* Rating has to have the correct format.
-* Rating cannot be empty.
+- There have to be ratings stored on the server.
 
 # 5. Postconditions
 
-The received rating will be saved to the databank accordingly.
+- The app received a list with all the ratings.
 
 # 6. Function Points
 
