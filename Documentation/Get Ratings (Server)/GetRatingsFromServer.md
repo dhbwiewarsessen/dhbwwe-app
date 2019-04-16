@@ -24,7 +24,7 @@ n/a
 # 2. Flow of Events
 ## 2.1 Basic Flow
 
-![](C:\Studium\Softwareengneering\dev\DHBWieWarsEssen\Documentation\Get Ratings (Server)\GetRatingsFromServer.png)
+![](GetRatingsFromServer.png)
 
 ## 2.2 Alternative Flows
 
