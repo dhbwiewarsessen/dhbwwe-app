@@ -136,7 +136,7 @@ public class CreateRatingFragment extends Fragment {
                         Toast.makeText(main.getApplicationContext(), "Error while adding rating", Toast.LENGTH_LONG).show();
                         System.out.println("couldn't send rating to server");
                     }
-
+                    main.refreshRatingLists();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

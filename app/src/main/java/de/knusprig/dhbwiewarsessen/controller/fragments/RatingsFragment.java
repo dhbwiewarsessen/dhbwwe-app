@@ -81,4 +81,12 @@ public class RatingsFragment extends Fragment {
     public void setListRating(List<Rating> listRating){
         this.listRating = listRating;
     }
+
+    public void refreshList(){
+        try {
+            listView.invalidateViews();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
