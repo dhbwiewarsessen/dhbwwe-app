@@ -345,6 +345,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
     }
 
+    public void refreshRatingLists()
+    {
+        ratingsFragment.refreshList();
+        userRatingFragment.refreshList();
+    }
+
     public void btnSendClicked(View view) {
         createRatingFragment.attemptAddRating(view);
         switchToUserRatingsFragment();
