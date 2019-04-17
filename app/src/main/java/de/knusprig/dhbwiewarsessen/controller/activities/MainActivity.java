@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
 
         initializeMainPageFragment();
+        initializeRatingsFragment();
     }
 
     private void initializeMainPageFragment() {
@@ -90,6 +91,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
             listRating.add(new Rating(35,"yam yam lecker lecker",currentUser,new GregorianCalendar(), "Camembert"));
         }
         getMenuFromServer();
+    }
+
+    private void initializeRatingsFragment(){
+        ratingsFragment.setListRating(listRating);
+        getAllRatings();
     }
 
     private void setupNavigationDrawer(NavigationView navigationView) {
@@ -242,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         queue.add(menuRequest);
     }
 
-    private void getAllRatings(int untilDay) {
+    private void getAllRatings() {
         final Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -251,7 +257,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
                         System.out.println("ratings received");
-                        //todo: do something with the received json
+                        for (int i = 0; i<response.length(); i++){
+
+                        }
                     } else {
                         System.out.println("couldn't get menus from Server");
                         System.out.println(jsonResponse);
