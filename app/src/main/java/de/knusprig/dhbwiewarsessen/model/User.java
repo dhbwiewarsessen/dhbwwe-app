@@ -10,6 +10,7 @@ public class User extends Observable {
     private String password;
 
     public User(int userId, String username, String email, String name, String password) {
+        this.userId = userId;
         this.username = username;
         this.email = email;
         this.name = name;
