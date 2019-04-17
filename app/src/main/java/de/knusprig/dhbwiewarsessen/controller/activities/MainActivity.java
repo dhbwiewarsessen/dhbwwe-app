@@ -87,8 +87,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private void initializeMainPageFragment() {
         mainPageFragment.setMenu(menu);
         if (listRating.isEmpty()){
-            listRating.add(new Rating(45,"sehr gutes Essen",currentUser,new GregorianCalendar(), "Currywurst mit Pommes"));
-            listRating.add(new Rating(35,"yam yam lecker lecker",currentUser,new GregorianCalendar(), "Camembert"));
+            listRating.add(new Rating(new GregorianCalendar(),"Currywurst mit Pommes", 45, "lecker", 0));
         }
         getMenuFromServer();
     }
@@ -257,9 +256,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
                         System.out.println("ratings received");
-                        for (int i = 0; i<response.length(); i++){
+                        //{"success":true,"rating_id":17,"dish":"Paniertes Seelachsfilet Zitronendip","rating":50,"comment":"delicious, finally some good fucking food","user_id":60}
+                        int rating_id = jsonResponse.getInt("rating_id");
+                        String dish = jsonResponse.getString("dish");
+                        int rating = jsonResponse.getInt("rating");
+                        String comment  = jsonResponse.getString("comment");
+                        int user_id = jsonResponse.getInt("user_id");
 
-                        }
+                        listRating.add(new Rating(rating_id, new GregorianCalendar(), dish, rating, comment, user_id));
                     } else {
                         System.out.println("couldn't get menus from Server");
                         System.out.println(jsonResponse);
@@ -396,11 +400,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void addRating(int rating, String comment, User user, Calendar date, String dish ){
-        listRating.add(new Rating(rating, comment, user, date, dish));
+        listRating.add(new Rating(date, dish, rating, comment, user.getUserId()));
     }
 
     public void addRating(int id, int rating, String comment, User user, Calendar date, String dish ){
-        listRating.add(new Rating(id, rating, comment, user, date, dish));
+        listRating.add(new Rating(id, date, dish, rating, comment, user.getUserId()));
     }
 
 }
