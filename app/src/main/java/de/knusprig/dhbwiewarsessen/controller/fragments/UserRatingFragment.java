@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ public class UserRatingFragment extends Fragment {
     private RatingAdapter ratingAdapter;
     private ListView listView;
     private Spinner filterSpinner;
+    private SwipeRefreshLayout pullToRefresh;
 
 
     @Nullable
@@ -51,12 +53,26 @@ public class UserRatingFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         listView = (ListView) view.findViewById(R.id.rating_list);
         filterSpinner = (Spinner) view.findViewById(R.id.filterSpinner);
+        pullToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.pullToRefresh);
 
         for (Rating r : listRating) { //Deleting all ratings which are not from the user
             if (r.getUser_id() != mainActivity.getCurrentUser().getUserId()) {
                 listRating.remove(r);
             }
         }
+
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                System.out.println("test");
+
+                //TODO: add request for the server
+                //when new data is fetched
+                refreshList();
+                //when request is done
+                pullToRefresh.setRefreshing(false);
+            }
+        });
 
         listRating.sort(Comparator.comparing(Rating::getDate)); //Default sorting
 
@@ -135,6 +151,7 @@ public class UserRatingFragment extends Fragment {
     public void refreshList(){
         try {
             listView.invalidateViews();
+            sortBySpinner(filterSpinner.getSelectedItem().toString()); //If there is a new dish added it gets sorted automatically
         } catch (Exception e) {
             e.printStackTrace();
         }
