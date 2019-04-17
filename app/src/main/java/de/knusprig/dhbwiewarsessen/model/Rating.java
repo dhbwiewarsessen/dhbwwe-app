@@ -4,13 +4,14 @@ import java.util.Calendar;
 
 public class Rating {
 
-    private Integer rating;
+    private int id;
+    private int rating;
     private String comment;
     private User user;
     private Calendar date;
     private String dish;
 
-    public Rating(Integer rating, String comment, User user, Calendar date, String dish) {
+    public Rating(int rating, String comment, User user, Calendar date, String dish) {
         this.rating = rating;
         this.comment = comment;
         this.user = user;
@@ -18,11 +19,28 @@ public class Rating {
         this.dish = dish;
     }
 
-    public Integer getRating() {
+    public Rating(int id, int rating, String comment, User user, Calendar date, String dish) {
+        this.id = id;
+        this.rating = rating;
+        this.comment = comment;
+        this.user = user;
+        this.date = date;
+        this.dish = dish;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
