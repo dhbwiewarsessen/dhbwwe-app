@@ -86,9 +86,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private void initializeMainPageFragment() {
         mainPageFragment.setMenu(menu);
-        if (listRating.isEmpty()){
-            listRating.add(new Rating(new GregorianCalendar(),"Currywurst mit Pommes", 45, "lecker", 0));
-        }
         getMenuFromServer();
     }
 
