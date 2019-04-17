@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -33,11 +35,15 @@ public class UserRatingFragment extends Fragment {
     //    private List<String> listRating = new ArrayList<>();
     private RatingAdapter ratingAdapter;
     private ListView listView;
+    private Spinner filterSpinner;
+    private List<String> defValues = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        defValues.add("Date");
+        defValues.add("Dish");
+        defValues.add("Name");
         return inflater.inflate(R.layout.fragment_user_rating, container, false);
 
     }
@@ -45,12 +51,19 @@ public class UserRatingFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         listView = (ListView) view.findViewById(R.id.rating_list);
+        filterSpinner = (Spinner) view.findViewById(R.id.filterSpinner);
 
-        for (Rating r : listRating) {
+        for (Rating r : listRating) { //Deleting all ratings which are not from the user
             if (r.getUser_id() != mainActivity.getCurrentUser().getUserId()) {
                 listRating.remove(r);
             }
         }
+
+        listRating.sort(Comparator.comparing(Rating::getDate)); //Default sorting
+        ArrayAdapter<String> adapterS = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, defValues);
+        adapterS.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        filterSpinner.setAdapter(adapterS);
+
 
         ratingAdapter = new RatingAdapter(getActivity(), listRating);
 
