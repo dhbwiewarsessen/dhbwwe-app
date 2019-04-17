@@ -1,4 +1,4 @@
-package de.knusprig.dhbwiewarsessen;
+package de.knusprig.dhbwiewarsessen.tests;
 
 import android.support.test.rule.ActivityTestRule;
 
@@ -14,14 +14,16 @@ import org.junit.runners.Parameterized;
 import java.io.IOException;
 
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
+import de.knusprig.dhbwiewarsessen.steps.BasicSteps;
+import de.knusprig.dhbwiewarsessen.steps.ManageRatingSteps;
 
 @RunWith(Parameterized.class)
-public class RegisterTest extends GreenCoffeeTest
+public class ManageRatingTest extends GreenCoffeeTest
 {
     @Rule
     public ActivityTestRule activity = new ActivityTestRule<>(MainActivity.class);
 
-    public RegisterTest(ScenarioConfig scenarioConfig)
+    public ManageRatingTest(ScenarioConfig scenarioConfig)
     {
         super(scenarioConfig);
     }
@@ -30,7 +32,7 @@ public class RegisterTest extends GreenCoffeeTest
     public static Iterable scenarios() throws IOException
     {
         return new GreenCoffeeConfig()
-                .withFeatureFromAssets("assets/register.feature")
+                .withFeatureFromAssets("assets/ManageRating.feature")
                 .scenarios(
                         //new Locale("en", "GB")
                 ); // the locales used to run the scenarios (optional)
@@ -39,6 +41,6 @@ public class RegisterTest extends GreenCoffeeTest
     @Test
     public void test()
     {
-        start(new BasicSteps(), new RegisterSteps());
+        start(new BasicSteps(), new ManageRatingSteps());
     }
 }
