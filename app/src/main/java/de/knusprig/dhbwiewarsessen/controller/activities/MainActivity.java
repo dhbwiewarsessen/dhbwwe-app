@@ -20,6 +20,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -252,14 +253,18 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
-                        System.out.println("ratings received");
-                        int rating_id = jsonResponse.getInt("rating_id");
-                        String dish = jsonResponse.getString("dish");
-                        int rating = jsonResponse.getInt("rating");
-                        String comment  = jsonResponse.getString("comment");
-                        int user_id = jsonResponse.getInt("user_id");
+                        for (int i = 0; i<jsonResponse.length()-1; i++) {
+                            System.out.println("ratings received");
+                            JSONArray jsonRating = jsonResponse.getJSONArray(""+i);
+                            int rating_id = jsonRating.getInt(0);
+                            String date = jsonRating.getString(1);
+                            String dish = jsonRating.getString(2);
+                            int rating = jsonRating.getInt(3);
+                            String comment = jsonRating.getString(4);
+                            int user_id = jsonRating.getInt(5);
 
-                        listRating.add(new Rating(rating_id, new GregorianCalendar(), dish, rating, comment, user_id));
+                            listRating.add(new Rating(rating_id, new GregorianCalendar(), dish, rating, comment, user_id));
+                        }
                     } else {
                         System.out.println("couldn't get menus from Server");
                         System.out.println(jsonResponse);
