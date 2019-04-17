@@ -36,14 +36,12 @@ public class UserRatingFragment extends Fragment {
     private RatingAdapter ratingAdapter;
     private ListView listView;
     private Spinner filterSpinner;
-    private List<String> defValues = new ArrayList<>();
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        defValues.add("Date");
-        defValues.add("Dish");
-        defValues.add("Name");
+
         return inflater.inflate(R.layout.fragment_user_rating, container, false);
 
     }
@@ -53,19 +51,31 @@ public class UserRatingFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.rating_list);
         filterSpinner = (Spinner) view.findViewById(R.id.filterSpinner);
 
-        for (Rating r : listRating) { //Deleting all ratings which are not from the user
-            if (r.getUser_id() != mainActivity.getCurrentUser().getUserId()) {
-                listRating.remove(r);
-            }
-        }
+//        for (Rating r : listRating) { //Deleting all ratings which are not from the user
+//            if (r.getUser_id() != mainActivity.getCurrentUser().getUserId()) {
+//                listRating.remove(r);
+//            }
+//        }
 
         listRating.sort(Comparator.comparing(Rating::getDate)); //Default sorting
-        ArrayAdapter<String> adapterS = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, defValues);
-        adapterS.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> adapterS = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item, mainActivity.getDefValues());
+        adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         filterSpinner.setAdapter(adapterS);
 
+        filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println(mainActivity.getDefValues().get(position) + "  " + position); //TODO delete after testing
+                sortBySpinner(mainActivity.getDefValues().get(position));
+                refreshList();
+            }
 
-        ratingAdapter = new RatingAdapter(getActivity(), listRating);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //TODO add error
+            }
+        });
+                ratingAdapter = new RatingAdapter(getActivity(), listRating);
 
         listView.setAdapter(ratingAdapter); //Displaying the list in the listView
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -98,6 +108,22 @@ public class UserRatingFragment extends Fragment {
 //        } else {
             this.listRating = listRating;
 //        }
+    }
+
+    public void sortBySpinner(String sortBy){
+        switch (sortBy){
+            case "Name":
+                //TODO: add name sorting
+                break;
+            case "Dish":
+                listRating.sort(Comparator.comparing(Rating::getDish));
+
+                break;
+            case "Date":
+                listRating.sort(Comparator.comparing(Rating::getDate));
+                break;
+        }
+
     }
 
     public void refreshList(){

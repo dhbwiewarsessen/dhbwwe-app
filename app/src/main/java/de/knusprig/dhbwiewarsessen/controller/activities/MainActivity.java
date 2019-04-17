@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private Menu menu;
     private List<Rating> listRating = new ArrayList<>();
 
+    private List<String> defValues = new ArrayList<>();
+
     private MainPageFragment mainPageFragment;
     private CreateRatingFragment createRatingFragment;
     private RatingsFragment ratingsFragment;
@@ -68,6 +70,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
         userRatingFragment = new UserRatingFragment();
 
         restoreSavedData();
+
+        defValues.add("Date");
+        defValues.add("Dish");
+        defValues.add("Name");
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
@@ -88,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
         mainPageFragment.setMenu(menu);
         if (listRating.isEmpty()){
             listRating.add(new Rating(new GregorianCalendar(),"Currywurst mit Pommes", 45, "lecker", 0));
+            listRating.add(new Rating(new GregorianCalendar(),"Salat", 45, "lecker", 0));
+            listRating.add(new Rating(new GregorianCalendar(),"Bohnen", 10, "nicht so lecker", 0));
         }
         getMenuFromServer();
     }
@@ -407,4 +415,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         listRating.add(new Rating(id, date, dish, rating, comment, user.getUserId()));
     }
 
+    public List<String> getDefValues() {
+        return defValues;
+    }
 }
