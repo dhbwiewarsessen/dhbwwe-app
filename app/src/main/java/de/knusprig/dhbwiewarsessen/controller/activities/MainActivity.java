@@ -253,7 +253,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
                         System.out.println("ratings received");
-                        //{"success":true,"rating_id":17,"dish":"Paniertes Seelachsfilet Zitronendip","rating":50,"comment":"delicious, finally some good fucking food","user_id":60}
                         int rating_id = jsonResponse.getInt("rating_id");
                         String dish = jsonResponse.getString("dish");
                         int rating = jsonResponse.getInt("rating");
