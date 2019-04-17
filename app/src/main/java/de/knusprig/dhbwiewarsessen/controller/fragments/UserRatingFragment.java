@@ -30,7 +30,6 @@ import de.knusprig.dhbwiewarsessen.model.User;
 public class UserRatingFragment extends Fragment {
     private MainActivity mainActivity;
     private List<Rating> listRating;
-    //    private List<String> listRating = new ArrayList<>();
     private RatingAdapter ratingAdapter;
     private ListView listView;
 
@@ -45,12 +44,6 @@ public class UserRatingFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         listView = (ListView) view.findViewById(R.id.rating_list);
-
-        for (Rating r : listRating) {
-            if (r.getUser_id() != mainActivity.getCurrentUser().getUserId()) {
-                listRating.remove(r);
-            }
-        }
 
         ratingAdapter = new RatingAdapter(getActivity(), listRating);
 
@@ -80,11 +73,12 @@ public class UserRatingFragment extends Fragment {
     }
 
     public void setListRating(List<Rating> listRating) {
-//        if (mainActivity.getCurrentUser().getUserId() == 0) {
-//            this.listRating = new ArrayList<>();
-//        } else {
-            this.listRating = listRating;
-//        }
+        this.listRating = new ArrayList<>();
+        for (Rating r: listRating) {
+            if (r.getUser_id() == mainActivity.getCurrentUser().getUserId()){
+                this.listRating.add(r);
+            }
+        }
     }
 
     public void refreshList(){
