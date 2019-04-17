@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -51,13 +52,14 @@ public class UserRatingFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.rating_list);
         filterSpinner = (Spinner) view.findViewById(R.id.filterSpinner);
 
-//        for (Rating r : listRating) { //Deleting all ratings which are not from the user
-//            if (r.getUser_id() != mainActivity.getCurrentUser().getUserId()) {
-//                listRating.remove(r);
-//            }
-//        }
+        for (Rating r : listRating) { //Deleting all ratings which are not from the user
+            if (r.getUser_id() != mainActivity.getCurrentUser().getUserId()) {
+                listRating.remove(r);
+            }
+        }
 
         listRating.sort(Comparator.comparing(Rating::getDate)); //Default sorting
+
         ArrayAdapter<String> adapterS = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item, mainActivity.getDefValues());
         adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         filterSpinner.setAdapter(adapterS);
@@ -65,7 +67,6 @@ public class UserRatingFragment extends Fragment {
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(mainActivity.getDefValues().get(position) + "  " + position); //TODO delete after testing
                 sortBySpinner(mainActivity.getDefValues().get(position));
                 refreshList();
             }
@@ -120,10 +121,15 @@ public class UserRatingFragment extends Fragment {
 
                 break;
             case "Date":
-                listRating.sort(Comparator.comparing(Rating::getDate));
+                listRating.sort(Comparator.comparing(Rating::getDate).reversed());
+                Collections.sort(listRating, new Comparator<Rating>() {
+                    @Override
+                    public int compare(Rating o1, Rating o2) {
+                        return o2.getDate().compareTo(o1.getDate());
+                    }
+                });
                 break;
         }
-
     }
 
     public void refreshList(){

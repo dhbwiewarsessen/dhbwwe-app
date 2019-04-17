@@ -92,10 +92,22 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private void initializeMainPageFragment() {
         mainPageFragment.setMenu(menu);
+        Calendar date1 = new GregorianCalendar();
+        Calendar date2 = new GregorianCalendar();
+        Calendar date3 = new GregorianCalendar();
+        Calendar date4 = new GregorianCalendar();
+        date1.set(2009,4,12);
+        date2.set(2015,5,11);
+        date3.set(2015,5,11,15,15);
+        date4.set(2015,5,11,11,14);
+
+
         if (listRating.isEmpty()){
             listRating.add(new Rating(new GregorianCalendar(),"Currywurst mit Pommes", 45, "lecker", 0));
-            listRating.add(new Rating(new GregorianCalendar(),"Salat", 45, "lecker", 0));
-            listRating.add(new Rating(new GregorianCalendar(),"Bohnen", 10, "nicht so lecker", 0));
+            listRating.add(new Rating(date3,"Grütze", 45, "lecker", 0));
+            listRating.add(new Rating(date4,"Wurst", 45, "lecker", 0));
+            listRating.add(new Rating(date1,"Salat", 45, "lecker", 0));
+            listRating.add(new Rating(date2,"Bohnen", 10, "nicht so lecker", 0));
         }
         getMenuFromServer();
     }

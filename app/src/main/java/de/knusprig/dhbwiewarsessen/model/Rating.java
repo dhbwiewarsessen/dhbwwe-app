@@ -17,6 +17,7 @@ public class Rating {
         this.user_id = user_id;
         this.date = date;
         this.dish = dish;
+
     }
 
     public Rating(int id, Calendar date, String dish, int rating, String comment, int user_id) {
