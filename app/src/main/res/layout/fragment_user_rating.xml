@@ -16,10 +16,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="1" />
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/pullToRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/filterSpinner">
+
     <ListView
         android:id="@+id/rating_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/filterSpinner" />
+        />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>
