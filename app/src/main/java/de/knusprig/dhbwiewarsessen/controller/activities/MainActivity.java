@@ -35,6 +35,7 @@ import java.util.Observer;
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.fragments.UserRatingFragment;
 import de.knusprig.dhbwiewarsessen.httprequest.RetrieveMenuRequest;
+import de.knusprig.dhbwiewarsessen.httprequest.RetrieveRatingsRequest;
 import de.knusprig.dhbwiewarsessen.model.Dish;
 import de.knusprig.dhbwiewarsessen.model.Rating;
 import de.knusprig.dhbwiewarsessen.model.User;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private User currentUser;
     private Menu menu;
     private List<Rating> listRating = new ArrayList<>();
+
     private MainPageFragment mainPageFragment;
     private CreateRatingFragment createRatingFragment;
     private RatingsFragment ratingsFragment;
@@ -241,7 +243,32 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void getAllRatings(int untilDay) {
-
+        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    if (success) {
+                        System.out.println("ratings received");
+                        //todo: do something with the received json
+                    } else {
+                        System.out.println("couldn't get menus from Server");
+                        System.out.println(jsonResponse);
+                    }
+                } catch (JSONException e) {
+                    System.out.println("JSON Exception");
+                    e.printStackTrace();
+                }
+            }
+        };
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String date = dateFormat.format(new Date());
+        System.out.println(date);
+        System.out.println(new Date());
+        RetrieveRatingsRequest ratingsRequest = new RetrieveRatingsRequest(date, responseListener);
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        queue.add(ratingsRequest);
     }
 
     private void restoreSavedData() {
@@ -359,8 +386,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public User getCurrentUser() {
         return currentUser;
     }
+
     public void addRating(int rating, String comment, User user, Calendar date, String dish ){
         listRating.add(new Rating(rating, comment, user, date, dish));
+    }
+
+    public void addRating(int id, int rating, String comment, User user, Calendar date, String dish ){
+        listRating.add(new Rating(id, rating, comment, user, date, dish));
     }
 
 }
