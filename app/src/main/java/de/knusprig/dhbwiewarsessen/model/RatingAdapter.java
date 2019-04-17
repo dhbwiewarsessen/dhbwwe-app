@@ -37,12 +37,11 @@ public class RatingAdapter extends ArrayAdapter<Rating> {
         RatingBar ratingBar =convertView.findViewById(R.id.loRating);
         TextView comment = convertView.findViewById(R.id.loComment);
 
-        userName.setText(rating.getUser().getUsername());
+        userName.setText("default username"/*rating.getUser_id()*/); //todo: get username from user_id
         dish.setText(rating.getDish());
         ratingBar.setRating((float)rating.getRating()/10);
         comment.setText(rating.getComment());
         //return view after modifying it
         return convertView;
     }
-
 }

@@ -47,7 +47,7 @@ public class UserRatingFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.rating_list);
 
         for (Rating r : listRating) {
-            if (!r.getUser().getUsername().equals(mainActivity.getCurrentUser().getUsername())) {
+            if (r.getUser_id() != mainActivity.getCurrentUser().getUserId()) {
                 listRating.remove(r);
             }
         }
