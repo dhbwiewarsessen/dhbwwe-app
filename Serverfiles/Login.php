@@ -1,5 +1,7 @@
 <?php
     $con = mysqli_connect("localhost", "dhbwwe_user", "jhgcwbncskijioihe", "dhbwwe_data");
+    mysqli_set_charset($con, "utf8");
+    $con->set_charset("utf8");
     
     $username = $_POST["username"];
     $password = $_POST["password"];
@@ -16,6 +18,7 @@
     
     while(mysqli_stmt_fetch($statement)){
         $response["success"] = true;  
+        $response["userId"] = $userID;
         $response["username"] = $username;
         $response["name"] = $name;
         $response["email"] = $email;
