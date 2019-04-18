@@ -35,4 +35,12 @@
         android:layout_below="@+id/loDish"
         android:text="Comment" />
 
+    <TextView
+        android:id="@+id/loDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loDish"
+        android:layout_alignParentRight="true"
+        android:text="Date"/>
+
 </RelativeLayout>
