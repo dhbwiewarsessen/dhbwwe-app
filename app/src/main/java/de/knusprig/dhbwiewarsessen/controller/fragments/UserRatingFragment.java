@@ -99,14 +99,19 @@ public class UserRatingFragment extends Fragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 final int pos = position;
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Do you want to delete this entry?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setMessage("Choose action for this rating")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 listRating.remove(pos);
                                 listView.invalidateViews();
                             }
-                        }).setNegativeButton("No", null)
+                        }).setNegativeButton("Edit", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mainActivity.switchToEditRatingsFragment(listRating.get(pos));
+                            }
+                        })
                         .create()
                         .show();
                 return false;
