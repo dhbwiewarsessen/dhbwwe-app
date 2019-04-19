@@ -27,13 +27,16 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 
 import de.knusprig.dhbwiewarsessen.R;
+import de.knusprig.dhbwiewarsessen.controller.fragments.EditRatingFragment;
 import de.knusprig.dhbwiewarsessen.controller.fragments.UserRatingFragment;
 import de.knusprig.dhbwiewarsessen.httprequest.RetrieveMenuRequest;
 import de.knusprig.dhbwiewarsessen.httprequest.RetrieveRatingsRequest;
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private CreateRatingFragment createRatingFragment;
     private RatingsFragment ratingsFragment;
     private UserRatingFragment userRatingFragment;
+    private EditRatingFragment editRatingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         createRatingFragment = new CreateRatingFragment();
         ratingsFragment = new RatingsFragment();
         userRatingFragment = new UserRatingFragment();
+        editRatingFragment = new EditRatingFragment();
 
         restoreSavedData();
 
@@ -213,6 +218,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void switchToCreateRatingsFragment(int id) {
         createRatingFragment.setSelectedMenu(id);
         switchToCreateRatingsFragment();
+    }
+
+    public void switchToEditRatingsFragment(Rating rating)
+    {
+        editRatingFragment.setRating(rating);
+        editRatingFragment.setMain(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                editRatingFragment).commit();
     }
 
     private void getMenuFromServer() {
@@ -396,8 +409,20 @@ public class MainActivity extends AppCompatActivity implements Observer {
         userRatingFragment.refreshList();
     }
 
+    public void updateLocalRating(Rating rating)
+    {
+        Rating matchingRating  = listRating.stream().filter(r -> r.getId() == rating.getId()).findFirst().orElse(null);
+        Collections.replaceAll(listRating, matchingRating, rating);
+    }
+
     public void btnSendClicked(View view) {
         createRatingFragment.attemptAddRating(view);
+        switchToUserRatingsFragment();
+    }
+
+    public void btnEditClicked(View view)
+    {
+        editRatingFragment.attemptEditRating(view);
         switchToUserRatingsFragment();
     }
 
