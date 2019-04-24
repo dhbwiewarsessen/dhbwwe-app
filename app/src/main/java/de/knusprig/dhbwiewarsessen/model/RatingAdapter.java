@@ -43,8 +43,9 @@ public class RatingAdapter extends ArrayAdapter<Rating> {
         TextView comment = convertView.findViewById(R.id.loComment);
         TextView date = convertView.findViewById(R.id.loDate);
 
-
-        userName.setText(rating.getUsername());
+        String username = rating.getUsername();
+        username = (!username.equals("null"))?username:"a man has no name";
+        userName.setText(username);
         dish.setText(rating.getDish());
         ratingBar.setRating((float)rating.getRating()/10);
         comment.setText(rating.getComment());
