@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp">
@@ -7,41 +10,60 @@
 
     <TextView
         android:id="@+id/loUsername"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:ellipsize="end"
-        android:text="Username" />
+        android:text="Username"
+        app:layout_constraintEnd_toStartOf="@+id/loDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_wrapHeight="50"
+        tools:layout_conversion_wrapWidth="170" />
 
     <RatingBar
         android:id="@+id/loRating"
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/loUsername"
-        android:layout_alignParentRight="true"
-        android:numStars="5" />
+        android:numStars="5"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loUsername"
+        tools:layout_conversion_wrapHeight="42"
+        tools:layout_conversion_wrapWidth="210" />
 
     <TextView
         android:id="@+id/loDish"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/loUsername"
+        android:layout_marginEnd="8dp"
         android:text="Dish"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/loRating"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loUsername"
+        tools:layout_conversion_wrapHeight="50"
+        tools:layout_conversion_wrapWidth="74" />
 
     <TextView
         android:id="@+id/loComment"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/loDish"
-        android:text="Comment" />
+        android:text="Comment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loDish"
+        tools:layout_conversion_wrapHeight="50"
+        tools:layout_conversion_wrapWidth="166" />
 
     <TextView
         android:id="@+id/loDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/loDish"
-        android:layout_alignParentRight="true"
-        android:text="Date"/>
+        android:text="Date"
+        app:layout_constraintBottom_toTopOf="@+id/loDish"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_conversion_wrapHeight="50"
+        tools:layout_conversion_wrapWidth="77" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
