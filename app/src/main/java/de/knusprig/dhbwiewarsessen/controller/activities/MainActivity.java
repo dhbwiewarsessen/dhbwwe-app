@@ -252,33 +252,31 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void getAllRatings() {
-        final Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonResponse = new JSONObject(response);
-                    boolean success = jsonResponse.getBoolean("success");
-                    if (success) {
-                        for (int i = 0; i<jsonResponse.length()-1; i++) {
-                            System.out.println("ratings received");
-                            JSONArray jsonRating = jsonResponse.getJSONArray(""+i);
-                            int rating_id = jsonRating.getInt(0);
-                            String date = jsonRating.getString(1);
-                            String dish = jsonRating.getString(2);
-                            int rating = jsonRating.getInt(3);
-                            String comment = jsonRating.getString(4);
-                            String username = jsonRating.getString(5);
+        final Response.Listener<String> responseListener = response -> {
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                boolean success = jsonResponse.getBoolean("success");
+                if (success) {
+                    listRating.clear();
+                    for (int i = 0; i<jsonResponse.length()-1; i++) {
+                        System.out.println("ratings received");
+                        JSONArray jsonRating = jsonResponse.getJSONArray(""+i);
+                        int rating_id = jsonRating.getInt(0);
+                        String date = jsonRating.getString(1);
+                        String dish = jsonRating.getString(2);
+                        int rating = jsonRating.getInt(3);
+                        String comment = jsonRating.getString(4);
+                        String username = jsonRating.getString(5);
 
-                            listRating.add(new Rating(rating_id, new GregorianCalendar(), dish, rating, comment, username));
-                        }
-                    } else {
-                        System.out.println("couldn't get menus from Server");
-                        System.out.println(jsonResponse);
+                        listRating.add(new Rating(rating_id, new GregorianCalendar(), dish, rating, comment, username));
                     }
-                } catch (JSONException e) {
-                    System.out.println("JSON Exception");
-                    e.printStackTrace();
+                } else {
+                    System.out.println("couldn't get menus from Server");
+                    System.out.println(jsonResponse);
                 }
+            } catch (JSONException e) {
+                System.out.println("JSON Exception");
+                e.printStackTrace();
             }
         };
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -426,5 +424,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     public List<String> getDefValues() {
         return defValues;
+    }
+
+    public void refeshDataFromServer(){
+        getAllRatings();
     }
 }
