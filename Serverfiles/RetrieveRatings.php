@@ -10,19 +10,24 @@
     //echo $date;
     //$date_int = 20190417;
 
-    $statement = mysqli_prepare($con, "SELECT * FROM ratings WHERE date = ?");
+    $statement = mysqli_prepare($con,
+        "SELECT rating_id, date, dish, rating, comment, username
+        FROM ratings r
+        LEFT JOIN user u ON r.user_id = u.user_id
+        WHERE date = ?"
+    );
     mysqli_stmt_bind_param($statement, "i", $date_int);
 
     $response = array();
     if(mysqli_stmt_execute($statement))
     {
         mysqli_stmt_store_result($statement);
-        mysqli_stmt_bind_result($statement, $rating_id, $date, $dish, $rating, $comment, $user_id);
-        
-        $response["success"] = true;    
+        mysqli_stmt_bind_result($statement, $rating_id, $date, $dish, $rating, $comment, $username);
+
+        $response["success"] = true;
         while($statement->fetch())
         {
-            $bindResults = array($rating_id, $date, $dish, $rating, $comment, $user_id);
+            $bindResults = array($rating_id, $date, $dish, $rating, $comment, $username);
             array_push($response, $bindResults);
         }
     }
