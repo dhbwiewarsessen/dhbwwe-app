@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,6 +37,7 @@ import java.util.Observer;
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.fragments.UserRatingFragment;
 import de.knusprig.dhbwiewarsessen.httprequest.RetrieveMenuRequest;
+import de.knusprig.dhbwiewarsessen.httprequest.RetrieveRatingsRequest;
 import de.knusprig.dhbwiewarsessen.model.Dish;
 import de.knusprig.dhbwiewarsessen.model.Rating;
 import de.knusprig.dhbwiewarsessen.model.User;
@@ -47,10 +50,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private DrawerLayout mDrawerLayout;
     private SharedPreferences prefs;
-
     private User currentUser;
     private Menu menu;
     private List<Rating> listRating = new ArrayList<>();
+    private List<String> defValues = new ArrayList<>();
 
     private MainPageFragment mainPageFragment;
     private CreateRatingFragment createRatingFragment;
@@ -69,6 +72,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         restoreSavedData();
 
+        defValues.add("Date");
+        defValues.add("Dish");
+        defValues.add("Name");
+
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
         final NavigationView navigationView = findViewById(R.id.nav_view);
@@ -81,15 +88,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
 
         initializeMainPageFragment();
+        initializeRatingsFragment();
     }
 
     private void initializeMainPageFragment() {
         mainPageFragment.setMenu(menu);
-        if (listRating.isEmpty()){
-            listRating.add(new Rating(45,"sehr gutes Essen",currentUser,new GregorianCalendar(), "Currywurst mit Pommes"));
-            listRating.add(new Rating(35,"yam yam lecker lecker",currentUser,new GregorianCalendar(), "Camembert"));
-        }
         getMenuFromServer();
+    }
+
+    private void initializeRatingsFragment(){
+        ratingsFragment.setListRating(listRating);
+        getAllRatings();
     }
 
     private void setupNavigationDrawer(NavigationView navigationView) {
@@ -242,8 +251,43 @@ public class MainActivity extends AppCompatActivity implements Observer {
         queue.add(menuRequest);
     }
 
-    private void getAllRatings(int untilDay) {
+    private void getAllRatings() {
+        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    if (success) {
+                        for (int i = 0; i<jsonResponse.length()-1; i++) {
+                            System.out.println("ratings received");
+                            JSONArray jsonRating = jsonResponse.getJSONArray(""+i);
+                            int rating_id = jsonRating.getInt(0);
+                            String date = jsonRating.getString(1);
+                            String dish = jsonRating.getString(2);
+                            int rating = jsonRating.getInt(3);
+                            String comment = jsonRating.getString(4);
+                            String username = jsonRating.getString(5);
 
+                            listRating.add(new Rating(rating_id, new GregorianCalendar(), dish, rating, comment, username));
+                        }
+                    } else {
+                        System.out.println("couldn't get menus from Server");
+                        System.out.println(jsonResponse);
+                    }
+                } catch (JSONException e) {
+                    System.out.println("JSON Exception");
+                    e.printStackTrace();
+                }
+            }
+        };
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String date = dateFormat.format(new Date());
+        System.out.println(date);
+        System.out.println(new Date());
+        RetrieveRatingsRequest ratingsRequest = new RetrieveRatingsRequest(date, responseListener);
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        queue.add(ratingsRequest);
     }
 
     private void restoreSavedData() {
@@ -347,6 +391,22 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            System.out.println("BACK BUTTON PRESSED");
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void refreshRatingLists()
+    {
+        ratingsFragment.refreshList();
+        userRatingFragment.refreshList();
+    }
+
     public void btnSendClicked(View view) {
         createRatingFragment.attemptAddRating(view);
         switchToUserRatingsFragment();
@@ -355,8 +415,16 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public User getCurrentUser() {
         return currentUser;
     }
+
     public void addRating(int rating, String comment, User user, Calendar date, String dish ){
-        listRating.add(new Rating(rating, comment, user, date, dish));
+        listRating.add(new Rating(date, dish, rating, comment, user.getUsername()));
     }
 
+    public void addRating(int id, int rating, String comment, User user, Calendar date, String dish ){
+        listRating.add(new Rating(id, date, dish, rating, comment, user.getUsername()));
+    }
+
+    public List<String> getDefValues() {
+        return defValues;
+    }
 }

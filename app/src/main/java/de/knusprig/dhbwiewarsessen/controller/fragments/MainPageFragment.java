@@ -1,13 +1,16 @@
 package de.knusprig.dhbwiewarsessen.controller.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
@@ -28,7 +31,6 @@ public class MainPageFragment extends Fragment {
 
     private View view;
     private MainActivity main;
-
     private Menu menu;
 
     @Nullable
@@ -59,9 +61,9 @@ public class MainPageFragment extends Fragment {
     }
 
     private void updateMenu() {
-        final TextView dishText1 = view.findViewById(R.id.dish1);
-        TextView dishText2 = view.findViewById(R.id.dish2);
-        TextView dishText3 = view.findViewById(R.id.dish3);
+        final Button dishText1 = view.findViewById(R.id.dish1);
+        Button dishText2 = view.findViewById(R.id.dish2);
+        Button dishText3 = view.findViewById(R.id.dish3);
 
         String[] title = new String[3];
         int i = 0;
@@ -75,24 +77,53 @@ public class MainPageFragment extends Fragment {
         dishText1.setText(title[0]);
         dishText2.setText(title[1]);
         dishText3.setText(title[2]);
-        dishText1.setOnClickListener(new View.OnClickListener() {
+
+        dishText1.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                main.switchToCreateRatingsFragment(0);
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        dishText1.setTextColor(getResources().getColor(R.color.dhbwGray));
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        dishText1.setTextColor(Color.WHITE);
+                        main.switchToCreateRatingsFragment(0);
+                        return true;
+                }
+                return false;
             }
         });
-        dishText2.setOnClickListener(new View.OnClickListener() {
+        dishText2.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                main.switchToCreateRatingsFragment(1);
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        dishText2.setTextColor(getResources().getColor(R.color.dhbwGray));
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        dishText2.setTextColor(Color.WHITE);
+                        main.switchToCreateRatingsFragment(1);
+                        return true;
+                }
+                return false;
             }
         });
-        dishText3.setOnClickListener(new View.OnClickListener() {
+        dishText3.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                main.switchToCreateRatingsFragment(2);
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        dishText3.setTextColor(getResources().getColor(R.color.dhbwGray));
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        dishText3.setTextColor(Color.WHITE);
+                        main.switchToCreateRatingsFragment(2);
+                        return true;
+                }
+                return false;
             }
         });
+
     }
 
     public void setMenu(Menu menu) {

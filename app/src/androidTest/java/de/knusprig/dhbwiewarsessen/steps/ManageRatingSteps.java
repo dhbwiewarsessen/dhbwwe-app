@@ -1,4 +1,4 @@
-package de.knusprig.dhbwiewarsessen;
+package de.knusprig.dhbwiewarsessen.steps;
 
 import android.support.test.rule.ActivityTestRule;
 
@@ -11,7 +11,7 @@ import com.mauriciotogneri.greencoffee.annotations.And;
 import com.mauriciotogneri.greencoffee.annotations.Then;
 import de.knusprig.dhbwiewarsessen.controller.activities.RegisterActivity;
 
-class ManageRatingSteps extends GreenCoffeeSteps {
+public class ManageRatingSteps extends GreenCoffeeSteps {
 
     @Rule
     public final ActivityTestRule<RegisterActivity> main = new ActivityTestRule<>(RegisterActivity.class);

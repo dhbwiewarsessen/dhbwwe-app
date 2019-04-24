@@ -1,5 +1,8 @@
 <?php
+    header("Content-type: application/json; charset: utf-8");
     $con = mysqli_connect("localhost", "dhbwwe_user", "jhgcwbncskijioihe", "dhbwwe_data");
+    mysqli_set_charset($con, "utf8");
+    $con->set_charset("utf8");
     	
     $username = $_POST["username"];
     $name = $_POST["name"];
@@ -8,6 +11,7 @@
 
     function registerUser(){
        global $con, $name, $email, $username, $password;
+        
         $statement = mysqli_prepare($con, "INSERT INTO user (username, name, email, password) VALUES (?, ?, ?, ?)");
         mysqli_stmt_bind_param($statement, "ssss", $username, $name, $email, $password);
         mysqli_stmt_execute($statement);
@@ -28,9 +32,24 @@
             return false; 
         }
     }
+    
+    function getUserId(){
+         $statement = mysqli_prepare($con, "SELECT * FROM user WHERE username = ?");
+        mysqli_stmt_bind_param($statement, "s", $username);
+        mysqli_stmt_execute($statement);
+    
+        mysqli_stmt_store_result($statement);
+        mysqli_stmt_bind_result($statement, $userID, $username, $name, $email, $password);
+    
+        while(mysqli_stmt_fetch($statement)){
+            return $userID;
+        }
+    }
+    
     if(usernameAvailable()){
         registerUser();
         $response["success"] = true;
+        $response["userId"] = getUserId();
     }else{
         $response["success"] = false;
         $response["error"] = "username not available";

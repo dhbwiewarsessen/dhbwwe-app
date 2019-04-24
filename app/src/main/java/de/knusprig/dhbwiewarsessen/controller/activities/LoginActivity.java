@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity{
                         boolean success = jsonResponse.getBoolean("success");
 
                         if (success) {
-                            String userId = jsonResponse.getString("userId");
+                            int userId = jsonResponse.getInt("userId");
                             String name = jsonResponse.getString("name");
                             String email = jsonResponse.getString("email");
 

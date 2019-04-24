@@ -39,9 +39,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
-        <TextView
+        <Button
             android:id="@+id/dish1"
             android:layout_width="0dp"
+            android:background="@color/colorPrimary"
+            android:textColor="#ffffffff"
+            android:textAllCaps="false"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Essen 1"
@@ -60,9 +63,12 @@
             app:layout_constraintBottom_toTopOf="@+id/dish2"
             app:layout_constraintTop_toBottomOf="@+id/dish1" />
 
-        <TextView
+        <Button
             android:id="@+id/dish2"
             android:layout_width="0dp"
+            android:background="@color/colorPrimary"
+            android:textColor="#ffffffff"
+            android:textAllCaps="false"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Essen 2"
@@ -81,9 +87,12 @@
             app:layout_constraintBottom_toTopOf="@+id/dish3"
             app:layout_constraintTop_toBottomOf="@+id/dish2" />
 
-        <TextView
+        <Button
             android:id="@+id/dish3"
             android:layout_width="0dp"
+            android:background="@color/colorPrimary"
+            android:textColor="#ffffffff"
+            android:textAllCaps="false"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Essen 3"
@@ -95,6 +104,7 @@
             app:layout_constraintTop_toBottomOf="@+id/dish2"
             android:onClick="onClick"
             android:clickable="true"/>
+
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
