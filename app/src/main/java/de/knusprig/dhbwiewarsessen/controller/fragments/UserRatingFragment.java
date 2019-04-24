@@ -43,28 +43,22 @@ public class UserRatingFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_user_rating, container, false);
-
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        listView = (ListView) view.findViewById(R.id.rating_list);
-        filterSpinner = (Spinner) view.findViewById(R.id.filterSpinner);
-        pullToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.pullToRefresh);
+        listView = view.findViewById(R.id.rating_list);
+        filterSpinner = view.findViewById(R.id.filterSpinner);
 
-        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                System.out.println("test");
-
-                //TODO: add request for the server
-                //when new data is fetched
-                refreshList();
-                //when request is done
-                pullToRefresh.setRefreshing(false);
-            }
+        pullToRefresh = view.findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(() -> {
+            System.out.println("pull to refresh");
+            mainActivity.refeshDataFromServer();
+            //when new data is fetched
+            refreshList();
+            //when request is done
+            pullToRefresh.setRefreshing(false);
         });
 
         listRating.sort(Comparator.comparing(Rating::getDate)); //Default sorting
@@ -88,23 +82,17 @@ public class UserRatingFragment extends Fragment {
         ratingAdapter = new RatingAdapter(getActivity(), listRating);
 
         listView.setAdapter(ratingAdapter); //Displaying the list in the listView
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final int pos = position;
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Do you want to delete this entry?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                listRating.remove(pos);
-                                listView.invalidateViews();
-                            }
-                        }).setNegativeButton("No", null)
-                        .create()
-                        .show();
-                return false;
-            }
+        listView.setOnItemLongClickListener((parent, view1, position, id) -> {
+            final int pos = position;
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Do you want to delete this entry?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        listRating.remove(pos);
+                        listView.invalidateViews();
+                    }).setNegativeButton("No", null)
+                    .create()
+                    .show();
+            return false;
         });
     }
 
@@ -132,12 +120,7 @@ public class UserRatingFragment extends Fragment {
                 break;
             case "Date":
                 listRating.sort(Comparator.comparing(Rating::getDate).reversed());
-                Collections.sort(listRating, new Comparator<Rating>() {
-                    @Override
-                    public int compare(Rating o1, Rating o2) {
-                        return o2.getDate().compareTo(o1.getDate());
-                    }
-                });
+                Collections.sort(listRating, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
                 break;
         }
     }
