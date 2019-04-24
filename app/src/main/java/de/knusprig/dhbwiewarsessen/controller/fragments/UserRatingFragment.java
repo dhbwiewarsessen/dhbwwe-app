@@ -85,11 +85,13 @@ public class UserRatingFragment extends Fragment {
         listView.setOnItemLongClickListener((parent, view1, position, id) -> {
             final int pos = position;
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("Do you want to delete this entry?")
-                    .setPositiveButton("Yes", (dialog, which) -> {
+            builder.setMessage("Choose action for this rating")
+                    .setPositiveButton("Delete", (dialog, which) -> {
                         listRating.remove(pos);
                         listView.invalidateViews();
-                    }).setNegativeButton("No", null)
+                    }).setNegativeButton("Edit", ((dialog, which) -> {
+                        mainActivity.switchToEditRatingsFragment(listRating.get(pos));
+                    }))
                     .create()
                     .show();
             return false;
