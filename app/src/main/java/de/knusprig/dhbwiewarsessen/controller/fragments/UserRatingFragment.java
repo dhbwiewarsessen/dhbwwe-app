@@ -54,12 +54,6 @@ public class UserRatingFragment extends Fragment {
         filterSpinner = (Spinner) view.findViewById(R.id.filterSpinner);
         pullToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.pullToRefresh);
 
-        for (Rating r : listRating) { //Deleting all ratings which are not from the user
-            if (r.getUser_id() != mainActivity.getCurrentUser().getUserId()) {
-                listRating.remove(r);
-            }
-        }
-
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -121,7 +115,7 @@ public class UserRatingFragment extends Fragment {
     public void setListRating(List<Rating> listRating) {
         this.listRating = new ArrayList<>();
         for (Rating r: listRating) {
-            if (r.getUser_id() == mainActivity.getCurrentUser().getUserId()){
+            if (r.getUsername().equals(mainActivity.getCurrentUser().getUsername())){
                 this.listRating.add(r);
             }
         }
