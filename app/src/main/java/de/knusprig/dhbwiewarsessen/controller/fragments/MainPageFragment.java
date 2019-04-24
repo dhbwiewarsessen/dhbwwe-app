@@ -83,7 +83,7 @@ public class MainPageFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()){
                     case MotionEvent.ACTION_DOWN:
-                        dishText1.setTextColor(Color.BLACK);
+                        dishText1.setTextColor(getResources().getColor(R.color.dhbwGray));
                         return true;
                     case MotionEvent.ACTION_UP:
                         dishText1.setTextColor(Color.WHITE);
@@ -98,7 +98,7 @@ public class MainPageFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()){
                     case MotionEvent.ACTION_DOWN:
-                        dishText2.setTextColor(Color.BLACK);
+                        dishText2.setTextColor(getResources().getColor(R.color.dhbwGray));
                         return true;
                     case MotionEvent.ACTION_UP:
                         dishText2.setTextColor(Color.WHITE);
@@ -113,7 +113,7 @@ public class MainPageFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()){
                     case MotionEvent.ACTION_DOWN:
-                        dishText3.setTextColor(Color.BLACK);
+                        dishText3.setTextColor(getResources().getColor(R.color.dhbwGray));
                         return true;
                     case MotionEvent.ACTION_UP:
                         dishText3.setTextColor(Color.WHITE);
