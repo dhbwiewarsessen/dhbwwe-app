@@ -7,24 +7,23 @@ public class Rating {
     private int id;
     private int rating;
     private String comment;
-    private int user_id;
+    private String username;
     private Calendar date;
     private String dish;
 
-    public Rating(Calendar date, String dish, int rating, String comment, int user_id) {
+    public Rating(Calendar date, String dish, int rating, String comment, String username) {
         this.rating = rating;
         this.comment = comment;
-        this.user_id = user_id;
         this.date = date;
         this.dish = dish;
-
+        this.username = username;
     }
 
-    public Rating(int id, Calendar date, String dish, int rating, String comment, int user_id) {
+    public Rating(int id, Calendar date, String dish, int rating, String comment, String username) {
         this.id = id;
         this.rating = rating;
         this.comment = comment;
-        this.user_id = user_id;
+        this.username = username;
         this.date = date;
         this.dish = dish;
     }
@@ -45,12 +44,12 @@ public class Rating {
         this.rating = rating;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getComment() {

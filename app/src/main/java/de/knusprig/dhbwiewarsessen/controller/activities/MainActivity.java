@@ -267,9 +267,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
                             String dish = jsonRating.getString(2);
                             int rating = jsonRating.getInt(3);
                             String comment = jsonRating.getString(4);
-                            int user_id = jsonRating.getInt(5);
+                            String username = jsonRating.getString(5);
 
-                            listRating.add(new Rating(rating_id, new GregorianCalendar(), dish, rating, comment, user_id));
+                            listRating.add(new Rating(rating_id, new GregorianCalendar(), dish, rating, comment, username));
                         }
                     } else {
                         System.out.println("couldn't get menus from Server");
@@ -417,11 +417,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void addRating(int rating, String comment, User user, Calendar date, String dish ){
-        listRating.add(new Rating(date, dish, rating, comment, user.getUserId()));
+        listRating.add(new Rating(date, dish, rating, comment, user.getUsername()));
     }
 
     public void addRating(int id, int rating, String comment, User user, Calendar date, String dish ){
-        listRating.add(new Rating(id, date, dish, rating, comment, user.getUserId()));
+        listRating.add(new Rating(id, date, dish, rating, comment, user.getUsername()));
     }
 
     public List<String> getDefValues() {
