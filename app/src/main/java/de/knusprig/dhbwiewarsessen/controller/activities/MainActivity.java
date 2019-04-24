@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -388,6 +389,16 @@ public class MainActivity extends AppCompatActivity implements Observer {
             mainPageFragment.setMenu(menu);
             mainPageFragment.update();
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            System.out.println("BACK BUTTON PRESSED");
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     public void refreshRatingLists()
