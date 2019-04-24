@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -35,12 +36,10 @@ public class CreateRatingFragment extends Fragment {
     private MainActivity main;
     private Menu menu;
     private View view;
-
     private EditText comment;
     private Spinner menuSpinner;
     private RatingBar ratingBar;
     private int selectedMenu;
-
     private String[] items;
 
     @Nullable
@@ -111,7 +110,7 @@ public class CreateRatingFragment extends Fragment {
 
     public void attemptAddRating(View view) {
 
-        int rating = (int)(ratingBar.getRating()*10);
+        final int rating = (int)(ratingBar.getRating()*10);
 
         final String userId = "" + main.getCurrentUser().getUserId();
         final String comment = this.comment.getText().toString(); //if comment is just whitespaces put "null" into database
@@ -122,8 +121,6 @@ public class CreateRatingFragment extends Fragment {
         System.out.println("Selected menu: " + selectedDish);
         System.out.println("Additional comment: " + comment);
 
-        main.addRating(rating, comment, main.getCurrentUser(), new GregorianCalendar(), selectedDish);
-
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -132,11 +129,14 @@ public class CreateRatingFragment extends Fragment {
                     boolean success = jsonResponse.getBoolean("success");
 
                     if (success) {
+                        main.addRating(rating, comment, main.getCurrentUser(), new GregorianCalendar(), selectedDish);
+                        Toast.makeText(main.getApplicationContext(), "Rating successfully added", Toast.LENGTH_LONG).show();
                         System.out.println("rating successfully send to server");
                     } else {
+                        Toast.makeText(main.getApplicationContext(), "Error while adding rating", Toast.LENGTH_LONG).show();
                         System.out.println("couldn't send rating to server");
                     }
-
+                    main.refreshRatingLists();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

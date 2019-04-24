@@ -4,26 +4,52 @@ import java.util.Calendar;
 
 public class Rating {
 
-    private Integer rating;
+    private int id;
+    private int rating;
     private String comment;
-    private User user;
+    private String username;
     private Calendar date;
     private String dish;
 
-    public Rating(Integer rating, String comment, User user, Calendar date, String dish) {
+    public Rating(Calendar date, String dish, int rating, String comment, String username) {
         this.rating = rating;
         this.comment = comment;
-        this.user = user;
+        this.date = date;
+        this.dish = dish;
+        this.username = username;
+    }
+
+    public Rating(int id, Calendar date, String dish, int rating, String comment, String username) {
+        this.id = id;
+        this.rating = rating;
+        this.comment = comment;
+        this.username = username;
         this.date = date;
         this.dish = dish;
     }
 
-    public Integer getRating() {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getComment() {
@@ -32,14 +58,6 @@ public class Rating {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Calendar getDate() {
