@@ -99,9 +99,14 @@ public class CreateRatingFragment extends Fragment {
         this.main = main;
     }
 
-    public void attemptAddRating() {
+    public boolean attemptAddRating() {
 
         final int rating = (int)(ratingBar.getRating()*10);
+
+        if(rating == 0) {
+            Toast.makeText(main.getApplicationContext(), "Please add a rating", Toast.LENGTH_LONG).show();
+            return false;
+        }
 
         final String userId = "" + main.getCurrentUser().getUserId();
         final String comment = this.comment.getText().toString(); //if comment is just whitespaces put "null" into database
@@ -131,10 +136,10 @@ public class CreateRatingFragment extends Fragment {
             }
         };
 
-        CreateRatingRequest createRatingRequest = new CreateRatingRequest(userId, selectedDish, date, ""+rating, comment, responseListener);
+        CreateRatingRequest createRatingRequest = new CreateRatingRequest(userId, selectedDish, date, "" + rating, comment, responseListener);
         RequestQueue queue = Volley.newRequestQueue(main.getApplicationContext());
         queue.add(createRatingRequest);
-
+        return true;
     }
 
     public void setSelectedMenu(int id) {

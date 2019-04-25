@@ -419,8 +419,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void btnSendClicked(View view) {
-        createRatingFragment.attemptAddRating();
-        switchToUserRatingsFragment();
+        if(createRatingFragment.attemptAddRating()){
+            switchToUserRatingsFragment();
+        }
     }
 
     public void btnEditClicked(View view)
