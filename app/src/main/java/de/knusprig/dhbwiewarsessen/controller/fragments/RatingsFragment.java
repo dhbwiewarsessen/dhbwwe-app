@@ -2,6 +2,7 @@ package de.knusprig.dhbwiewarsessen.controller.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.net.sip.SipSession;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,11 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.android.volley.Response;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
+import de.knusprig.dhbwiewarsessen.httprequest.DeleteRatingRequest;
 import de.knusprig.dhbwiewarsessen.model.Rating;
 import de.knusprig.dhbwiewarsessen.model.RatingAdapter;
 import de.knusprig.dhbwiewarsessen.model.User;
@@ -63,8 +71,26 @@ public class RatingsFragment extends Fragment {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                listRating.remove(pos);
-                                listView.invalidateViews();
+                                DeleteRatingRequest drr = new DeleteRatingRequest(Long.toString(id), new Response.Listener<String>(){
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            JSONObject jsonResponse = new JSONObject(response);
+                                            boolean success = jsonResponse.getBoolean("success");
+                                            if (success) {
+                                                listRating.remove(pos);
+                                                listView.invalidateViews();
+                                            } else {
+                                                Toast.makeText(mainActivity.getApplicationContext(), "Error while delete rating", Toast.LENGTH_LONG).show();
+                                                System.out.println("couldn't delete rating from server");
+                                            }
+                                        }
+                                        catch(JSONException e){
+                                            e.printStackTrace();
+                                            Toast.makeText(mainActivity.getApplicationContext(), "JSON Error", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                } );
                             }
                         }).setNegativeButton("No", null)
                         .create()
