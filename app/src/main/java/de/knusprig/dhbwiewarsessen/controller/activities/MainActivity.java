@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -159,7 +160,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
                     @Override
                     public void onDrawerStateChanged(int newState) {
-                        // Respond when the drawer motion state changes
+                        if(newState == DrawerLayout.STATE_SETTLING){
+                            if(!mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+                                changeMenuBarUserState(currentUser.getUserId() != 0);
+                            }
+                        }
                     }
                 }
         );
@@ -178,11 +183,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
         currentUser = new User(0, "","","","");
         currentUser.addObserver(this);
         invalidateOptionsMenu();
+        changeMenuBarUserState(false);
     }
 
     private void forwardToLoginActivity() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivityForResult(intent, 123);
+        changeMenuBarUserState(true);
     }
 
     private void switchToMainPageFragment() {
@@ -427,6 +434,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
     {
         editRatingFragment.attemptEditRating(view);
         switchToUserRatingsFragment();
+    }
+
+    public void changeMenuBarUserState(boolean loggedIn) {
+        NavigationView navView = findViewById(R.id.nav_view);
+        navView.getMenu().findItem(R.id.nav_login).setEnabled(!loggedIn);
+        navView.getMenu().findItem(R.id.nav_logout).setEnabled(loggedIn);
+        navView.getMenu().findItem(R.id.nav_create_rating).setEnabled(loggedIn);
+        navView.getMenu().findItem(R.id.nav_my_ratings).setEnabled(loggedIn);
     }
 
     public User getCurrentUser() {
