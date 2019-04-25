@@ -11,8 +11,8 @@
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_short_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_invalid_password">The password needs at least 1 letter and 1 digit</string>
-    <string name="error_not_matching_password">Passwords don\'t match!</string>
+    <string name="error_invalid_password">The password needs at least 1 letter and 1 number</string>
+    <string name="error_not_matching_password">Passwords do not match!</string>
 
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
