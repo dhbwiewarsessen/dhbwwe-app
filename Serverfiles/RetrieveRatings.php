@@ -10,8 +10,8 @@
     //echo $date;
     //$date_int = 20190417;
 
-    $statement = mysqli_prepare($con,
-        "SELECT rating_id, date, dish, rating, comment, username
+    $statement = mysqli_prepare($con, 
+        "SELECT rating_id, date, dish, rating, comment, username 
         FROM ratings r
         LEFT JOIN user u ON r.user_id = u.user_id
         WHERE date = ?"
@@ -23,8 +23,8 @@
     {
         mysqli_stmt_store_result($statement);
         mysqli_stmt_bind_result($statement, $rating_id, $date, $dish, $rating, $comment, $username);
-
-        $response["success"] = true;
+        
+        $response["success"] = true;    
         while($statement->fetch())
         {
             $bindResults = array($rating_id, $date, $dish, $rating, $comment, $username);
