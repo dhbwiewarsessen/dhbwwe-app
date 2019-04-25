@@ -15,7 +15,7 @@ public class DeleteRatingRequest extends StringRequest {
     public DeleteRatingRequest(String id, Response.Listener<String> listener) {
         super(Method.POST, DELETE_RATINGS_REQUEST_URL, listener, null);
         params = new HashMap<>();
-        params.put("id", id);
+        params.put("ratingId", id);
     }
 
     @Override
