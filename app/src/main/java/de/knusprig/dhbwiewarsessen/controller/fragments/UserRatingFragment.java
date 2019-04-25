@@ -15,6 +15,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +33,7 @@ import java.util.List;
 
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
+import de.knusprig.dhbwiewarsessen.httprequest.DeleteRatingRequest;
 import de.knusprig.dhbwiewarsessen.model.Dish;
 import de.knusprig.dhbwiewarsessen.model.Menu;
 import de.knusprig.dhbwiewarsessen.model.Rating;
@@ -87,8 +96,25 @@ public class UserRatingFragment extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage("Choose action for this rating")
                     .setPositiveButton("Delete", (dialog, which) -> {
-                        listRating.remove(pos);
-                        listView.invalidateViews();
+                        DeleteRatingRequest drr = new DeleteRatingRequest(""+id, response -> {
+                            try {
+                                JSONObject jsonResponse = new JSONObject(response);
+                                boolean success = jsonResponse.getBoolean("success");
+                                if (success) {
+                                    listRating.remove(pos);
+                                    listView.invalidateViews();
+                                } else {
+                                    Toast.makeText(mainActivity.getApplicationContext(), "Error while delete rating", Toast.LENGTH_LONG).show();
+                                    System.out.println("couldn't delete rating from server");
+                                }
+                            }
+                            catch(JSONException e){
+                                e.printStackTrace();
+                                Toast.makeText(mainActivity.getApplicationContext(), "JSON Error", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        RequestQueue queue = Volley.newRequestQueue(getActivity());
+                        queue.add(drr);
                     }).setNegativeButton("Edit", ((dialog, which) -> {
                         mainActivity.switchToEditRatingsFragment(listRating.get(pos));
                     }))
