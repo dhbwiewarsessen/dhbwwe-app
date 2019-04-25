@@ -19,9 +19,13 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".controller.activities.RegisterActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_register" />
         <activity
             android:name=".controller.activities.MainActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -32,6 +36,8 @@
         </activity>
         <activity
             android:name=".controller.activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_login"></activity>
     </application>
 
