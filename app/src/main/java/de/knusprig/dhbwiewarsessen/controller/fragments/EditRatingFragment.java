@@ -29,7 +29,6 @@ import de.knusprig.dhbwiewarsessen.model.Rating;
 
 public class EditRatingFragment extends Fragment {
     private MainActivity main;
-    private View view;
     private TextView dishText;
     private EditText commentField;
     private RatingBar ratingBar;
@@ -44,7 +43,6 @@ public class EditRatingFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        this.view = view;
         commentField = view.findViewById(R.id.tfEditComment);
         ratingBar = view.findViewById(R.id.ratingBarEdit);
         dishText = view.findViewById(R.id.textViewDish);
@@ -72,25 +70,22 @@ public class EditRatingFragment extends Fragment {
         editedRating.setRating(rating);
         editedRating.setComment(comment);
 
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonResponse = new JSONObject(response);
-                    boolean success = jsonResponse.getBoolean("success");
+        Response.Listener<String> responseListener = response -> {
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                boolean success = jsonResponse.getBoolean("success");
 
-                    if (success) {
-                        main.updateLocalRating(editedRating);
-                        Toast.makeText(main.getApplicationContext(), "Rating successfully edited", Toast.LENGTH_LONG).show();
-                        System.out.println("rating successfully edited in server");
-                    } else {
-                        Toast.makeText(main.getApplicationContext(), "Error while editing rating", Toast.LENGTH_LONG).show();
-                        System.out.println("couldn't edit rating on server");
-                    }
-                    main.refreshRatingLists();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (success) {
+                    main.updateLocalRating(editedRating);
+                    Toast.makeText(main.getApplicationContext(), "Rating successfully edited", Toast.LENGTH_LONG).show();
+                    System.out.println("rating successfully edited in server");
+                } else {
+                    Toast.makeText(main.getApplicationContext(), "Error while editing rating", Toast.LENGTH_LONG).show();
+                    System.out.println("couldn't edit rating on server");
                 }
+                main.refreshRatingLists();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         };
         EditRatingRequest editRatingRequest = new EditRatingRequest(editedRating.getId(), ""+rating, comment, responseListener);

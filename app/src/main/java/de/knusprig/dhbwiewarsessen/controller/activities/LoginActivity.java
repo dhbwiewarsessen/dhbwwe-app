@@ -43,24 +43,16 @@ public class LoginActivity extends AppCompatActivity{
         mUsernameView = findViewById(R.id.username);
 
         mPasswordView = findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
+        mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
+            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                attemptLogin();
+                return true;
             }
+            return false;
         });
 
-        Button mLoginButton = (Button) findViewById(R.id.login_button);
-        mLoginButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+        Button mLoginButton = findViewById(R.id.login_button);
+        mLoginButton.setOnClickListener(view -> attemptLogin());
     }
 
     /**
@@ -97,48 +89,45 @@ public class LoginActivity extends AppCompatActivity{
             // form field with an error.
             focusView.requestFocus();
         } else {
-            Response.Listener<String> responseListener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject jsonResponse = new JSONObject(response);
-                        boolean success = jsonResponse.getBoolean("success");
+            Response.Listener<String> responseListener = response -> {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
 
-                        if (success) {
-                            int userId = jsonResponse.getInt("userId");
-                            String name = jsonResponse.getString("name");
-                            String email = jsonResponse.getString("email");
+                    if (success) {
+                        int userId = jsonResponse.getInt("userId");
+                        String name = jsonResponse.getString("name");
+                        String email = jsonResponse.getString("email");
 
-                            Intent data = new Intent();
-                            data.putExtra("userId", userId);
-                            data.putExtra("username", username);
-                            data.putExtra("password", password);
-                            data.putExtra("name",name);
-                            data.putExtra("email", email);
+                        Intent data = new Intent();
+                        data.putExtra("userId", userId);
+                        data.putExtra("username", username);
+                        data.putExtra("password", password);
+                        data.putExtra("name",name);
+                        data.putExtra("email", email);
 
-                            setResult(RESULT_OK, data);
-                            finish();
-                        } else {
-                            try {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("Login Failed")
-                                        .setNegativeButton("Retry", null)
-                                        .create()
-                                        .show();
-                            }catch(Exception e){
-                                System.out.println("Couldn't create Error Message 'Login failed'");
-                                e.printStackTrace();
-                            }
+                        setResult(RESULT_OK, data);
+                        finish();
+                    } else {
+                        try {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                            builder.setMessage("Login Failed")
+                                    .setNegativeButton("Retry", null)
+                                    .create()
+                                    .show();
+                        }catch(Exception e){
+                            System.out.println("Couldn't create Error Message 'Login failed'");
+                            e.printStackTrace();
                         }
-
-                    } catch (JSONException e) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                        builder.setMessage("JSON Exception")
-                                .setNegativeButton("Retry", null)
-                                .create()
-                                .show();
-                        e.printStackTrace();
                     }
+
+                } catch (JSONException e) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                    builder.setMessage("JSON Exception")
+                            .setNegativeButton("Retry", null)
+                            .create()
+                            .show();
+                    e.printStackTrace();
                 }
             };
 
