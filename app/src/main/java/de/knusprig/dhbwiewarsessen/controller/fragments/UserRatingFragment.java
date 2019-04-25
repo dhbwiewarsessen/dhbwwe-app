@@ -96,7 +96,10 @@ public class UserRatingFragment extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage("Choose action for this rating")
                     .setPositiveButton("Delete", (dialog, which) -> {
-                        DeleteRatingRequest drr = new DeleteRatingRequest(""+id, response -> {
+                        Rating ratingToDelete = (Rating) listView.getAdapter().getItem((int)id);
+                        int idToDelete = ratingToDelete.getId();
+                        System.out.println("id: " + idToDelete);
+                        DeleteRatingRequest drr = new DeleteRatingRequest(""+idToDelete, response -> {
                             try {
                                 JSONObject jsonResponse = new JSONObject(response);
                                 boolean success = jsonResponse.getBoolean("success");
