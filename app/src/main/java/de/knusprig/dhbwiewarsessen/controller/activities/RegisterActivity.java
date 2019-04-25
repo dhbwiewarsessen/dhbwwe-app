@@ -50,27 +50,18 @@ public class RegisterActivity extends AppCompatActivity {
         mPasswordView = findViewById(R.id.password);
         mPasswordConfirmView = findViewById(R.id.password_confirm);
 
-        mPasswordConfirmView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptRegister();
-                    return true;
-                }
-                return false;
+        mPasswordConfirmView.setOnEditorActionListener((textView, id, keyEvent) -> {
+            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                attemptRegister();
+                return true;
             }
+            return false;
         });
 
-        Button mRegisterButton = (Button) findViewById(R.id.register_button);
-        mRegisterButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptRegister();
-            }
-        });
+        Button mRegisterButton = findViewById(R.id.register_button);
+        mRegisterButton.setOnClickListener(view -> attemptRegister());
 
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -142,48 +133,44 @@ public class RegisterActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            Response.Listener<String> responseListener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject jsonResponse = new JSONObject(response);
-                        boolean success = jsonResponse.getBoolean("success");
+            Response.Listener<String> responseListener = response -> {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
 
-                        if (success) {
-                            int userId = Integer.parseInt(jsonResponse.getString("userId"));
+                    if (success) {
+                        int userId = Integer.parseInt(jsonResponse.getString("userId"));
 
-                            Intent data = new Intent();
-                            data.putExtra("userId", userId);
-                            data.putExtra("username", username);
-                            data.putExtra("password", password);
-                            data.putExtra("name", name);
-                            data.putExtra("email", email);
+                        Intent data = new Intent();
+                        data.putExtra("userId", userId);
+                        data.putExtra("username", username);
+                        data.putExtra("password", password);
+                        data.putExtra("name", name);
+                        data.putExtra("email", email);
 
-
-                            setResult(RESULT_OK, data);
-                            finish();
-                        } else {
-                            try {
-                                String error = jsonResponse.getString("error");
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                builder.setMessage("Register Failed:\n"+error)
-                                        .setNegativeButton("Retry", null)
-                                        .create()
-                                        .show();
-                            } catch (Exception e) {
-                                System.out.println("Couldn't create Error Message 'Register failed'");
-                                e.printStackTrace();
-                            }
+                        setResult(RESULT_OK, data);
+                        finish();
+                    } else {
+                        try {
+                            String error = jsonResponse.getString("error");
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                            builder.setMessage("Register Failed:\n"+error)
+                                    .setNegativeButton("Retry", null)
+                                    .create()
+                                    .show();
+                        } catch (Exception e) {
+                            System.out.println("Couldn't create Error Message 'Register failed'");
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        String error = "There is a problem with the DB Server";
-                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                        builder.setMessage("Register Failed:\n"+error)
-                                .setNegativeButton("Retry", null)
-                                .create()
-                                .show();
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    String error = "There is a problem with the DB Server";
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    builder.setMessage("Register Failed:\n"+error)
+                            .setNegativeButton("Retry", null)
+                            .create()
+                            .show();
                 }
             };
 
@@ -192,8 +179,5 @@ public class RegisterActivity extends AppCompatActivity {
             queue.add(registerRequest);
         }
     }
-
-
-
 }
 

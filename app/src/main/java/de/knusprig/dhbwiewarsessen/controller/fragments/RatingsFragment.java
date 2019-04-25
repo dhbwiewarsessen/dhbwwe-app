@@ -21,7 +21,6 @@ import de.knusprig.dhbwiewarsessen.model.User;
 public class RatingsFragment extends Fragment {
     private MainActivity mainActivity;
     private List<Rating> listRating;
-    private User currentUser;
     private RatingAdapter ratingAdapter;
     private ListView listView;
     private SwipeRefreshLayout pullToRefresh;
@@ -29,8 +28,6 @@ public class RatingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-        currentUser = mainActivity.getCurrentUser();
-
         return inflater.inflate(R.layout.fragment_user_rating, container, false);
     }
 
@@ -49,11 +46,7 @@ public class RatingsFragment extends Fragment {
             //when request is done
             pullToRefresh.setRefreshing(false);
         });
-
-
         listView.setAdapter(ratingAdapter); //Displaying the list in the listView
-
-
     }
 
     public void setMainActivity(MainActivity mainActivity){

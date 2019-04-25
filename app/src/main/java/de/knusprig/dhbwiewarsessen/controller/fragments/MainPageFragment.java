@@ -78,50 +78,41 @@ public class MainPageFragment extends Fragment {
         dishText2.setText(title[1]);
         dishText3.setText(title[2]);
 
-        dishText1.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-                        dishText1.setTextColor(getResources().getColor(R.color.dhbwGray));
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        dishText1.setTextColor(Color.WHITE);
-                        main.switchToCreateRatingsFragment(0);
-                        return true;
-                }
-                return false;
+        dishText1.setOnTouchListener((v, event) -> {
+            switch (event.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    dishText1.setTextColor(getResources().getColor(R.color.dhbwGray));
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    dishText1.setTextColor(Color.WHITE);
+                    main.switchToCreateRatingsFragment(0);
+                    return true;
             }
+            return false;
         });
-        dishText2.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-                        dishText2.setTextColor(getResources().getColor(R.color.dhbwGray));
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        dishText2.setTextColor(Color.WHITE);
-                        main.switchToCreateRatingsFragment(1);
-                        return true;
-                }
-                return false;
+        dishText2.setOnTouchListener((v, event) -> {
+            switch (event.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    dishText2.setTextColor(getResources().getColor(R.color.dhbwGray));
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    dishText2.setTextColor(Color.WHITE);
+                    main.switchToCreateRatingsFragment(1);
+                    return true;
             }
+            return false;
         });
-        dishText3.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-                        dishText3.setTextColor(getResources().getColor(R.color.dhbwGray));
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        dishText3.setTextColor(Color.WHITE);
-                        main.switchToCreateRatingsFragment(2);
-                        return true;
-                }
-                return false;
+        dishText3.setOnTouchListener((v, event) -> {
+            switch (event.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    dishText3.setTextColor(getResources().getColor(R.color.dhbwGray));
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    dishText3.setTextColor(Color.WHITE);
+                    main.switchToCreateRatingsFragment(2);
+                    return true;
             }
+            return false;
         });
 
     }

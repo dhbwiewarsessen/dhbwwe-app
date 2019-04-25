@@ -64,15 +64,8 @@ public class Rating {
         return date;
     }
 
-    public void setDate(Calendar date) {
-        this.date = date;
-    }
-
     public String getDish() {
         return dish;
     }
 
-    public void setDish(String dish) {
-        this.dish = dish;
-    }
 }

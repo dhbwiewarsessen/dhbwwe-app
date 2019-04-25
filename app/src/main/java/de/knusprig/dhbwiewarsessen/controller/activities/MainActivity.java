@@ -108,40 +108,37 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private void setupNavigationDrawer(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.nav_main:
-                                switchToMainPageFragment();
-                                break;
-                            case R.id.nav_my_ratings:
-                                switchToUserRatingsFragment();
-                                break;
-                            case R.id.nav_all_ratings:
-                                switchToRatingsFragment();
-                                break;
-                            case R.id.nav_create_rating:
-                                switchToCreateRatingsFragment();
-                                break;
+                menuItem -> {
+                    switch (menuItem.getItemId()) {
+                        case R.id.nav_main:
+                            switchToMainPageFragment();
+                            break;
+                        case R.id.nav_my_ratings:
+                            switchToUserRatingsFragment();
+                            break;
+                        case R.id.nav_all_ratings:
+                            switchToRatingsFragment();
+                            break;
+                        case R.id.nav_create_rating:
+                            switchToCreateRatingsFragment();
+                            break;
 
-                            case R.id.nav_login:
-                                forwardToLoginActivity();
-                                break;
-                            case R.id.nav_logout:
-                                logout();
-                                break;
-                        }
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
-                        // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-
-                        return true;
+                        case R.id.nav_login:
+                            forwardToLoginActivity();
+                            break;
+                        case R.id.nav_logout:
+                            logout();
+                            break;
                     }
+                    // set item as selected to persist highlight
+                    menuItem.setChecked(true);
+                    // close drawer when item is tapped
+                    mDrawerLayout.closeDrawers();
+
+                    // Add code here to update the UI based on the item selected
+                    // For example, swap UI fragments here
+
+                    return true;
                 });
 
         mDrawerLayout.addDrawerListener(
@@ -230,29 +227,26 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void getMenuFromServer() {
-        final Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonResponse = new JSONObject(response);
-                    boolean success = jsonResponse.getBoolean("success");
-                    if (success) {
-                        System.out.println("menus received");
-                        for (int i = 0; i < 3; i++) {
-                            Dish d = menu.getDishes().get(i);
-                            d.setTitle(jsonResponse.getString("dish" + (i + 1)));
-                            int price = jsonResponse.getInt("price" + (i + 1));
-                            d.setPrice(((float) price) / 100);
-                            System.out.println(i + ": " + d.getTitle() + ", " + d.getPrice() + "€");
-                        }
-                    } else {
-                        System.out.println("couldn't get menus from Server");
-                        System.out.println(jsonResponse);
+        final Response.Listener<String> responseListener = response -> {
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                boolean success = jsonResponse.getBoolean("success");
+                if (success) {
+                    System.out.println("menus received");
+                    for (int i = 0; i < 3; i++) {
+                        Dish d = menu.getDishes().get(i);
+                        d.setTitle(jsonResponse.getString("dish" + (i + 1)));
+                        int price = jsonResponse.getInt("price" + (i + 1));
+                        d.setPrice(((float) price) / 100);
+                        System.out.println(i + ": " + d.getTitle() + ", " + d.getPrice() + "€");
                     }
-                } catch (JSONException e) {
-                    System.out.println("JSON Exception");
-                    e.printStackTrace();
+                } else {
+                    System.out.println("couldn't get menus from Server");
+                    System.out.println(jsonResponse);
                 }
+            } catch (JSONException e) {
+                System.out.println("JSON Exception");
+                e.printStackTrace();
             }
         };
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -425,7 +419,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void btnSendClicked(View view) {
-        createRatingFragment.attemptAddRating(view);
+        createRatingFragment.attemptAddRating();
         switchToUserRatingsFragment();
     }
 
