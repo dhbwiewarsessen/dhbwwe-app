@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         currentUser = new User(0, "","","","");
         currentUser.addObserver(this);
         invalidateOptionsMenu();
+        mainPageFragment.update();
         changeMenuBarUserState(false);
     }
 
