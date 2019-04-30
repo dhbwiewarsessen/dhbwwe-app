@@ -50,8 +50,7 @@ public class RegisterSteps extends GreenCoffeeSteps {
 
 
     @Then("^User should be logged in as \"([^\"]*)\"$")
-    public void userShouldBeLoggedInAs(String arg0) throws Throwable {
-        String name = arg0;
+    public void userShouldBeLoggedInAs(String name) throws Throwable {
         try {
             Thread.sleep(3000);
         } catch (Exception e) {
