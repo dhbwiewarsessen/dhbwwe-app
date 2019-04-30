@@ -41,6 +41,10 @@ public class BasicSteps extends GreenCoffeeSteps {
                 onViewWithId(R.id.login_register_button)
                         .click();
                 break;
+            case "LogIn":
+                onViewWithId(R.id.nav_view)
+                        .perform(NavigationViewActions.navigateTo(R.id.nav_login));
+                break;
             default:
                 throw new Exception("case not specified");
         }
@@ -71,11 +75,14 @@ public class BasicSteps extends GreenCoffeeSteps {
 
 
     @And("^User clicks on Button with id \"([^\"]*)\"$")
-    public void userClicksOnButtonWithId(String arg0) throws Throwable {
-        String id = arg0;
+    public void userClicksOnButtonWithId(String id) throws Throwable {
         switch (id) {
             case "register":
                 onViewWithId(R.id.register_button)
+                        .click();
+                break;
+            case "LogIn":
+                onViewWithId(R.id.login_button)
                         .click();
                 break;
             default:
@@ -85,15 +92,13 @@ public class BasicSteps extends GreenCoffeeSteps {
 
     @Then("^User should see error$")
     //@Then("^User should see error \"([^\"]*)\"$")
-    public void userShouldSeeError(String arg0) throws Throwable {
-
-        String errorText = arg0;
+    public void userShouldSeeError(String errorMessage) throws Throwable {
         try {
             Thread.sleep(3000);
         } catch (Exception e) {
 
         }
-        onView(withText(errorText)).check(matches(isDisplayed()));
+        onView(withText(errorMessage)).check(matches(isDisplayed()));
     }
 
     @And("^User selects \"([^\"]*)\" on the popup menu$")
