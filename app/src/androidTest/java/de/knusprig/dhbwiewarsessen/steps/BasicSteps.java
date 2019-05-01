@@ -20,6 +20,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class BasicSteps extends GreenCoffeeSteps {
@@ -44,6 +45,10 @@ public class BasicSteps extends GreenCoffeeSteps {
             case "LogIn":
                 onViewWithId(R.id.nav_view)
                         .perform(NavigationViewActions.navigateTo(R.id.nav_login));
+                break;
+            case "LogOut":
+                onViewWithId(R.id.nav_logout)
+                        .click();
                 break;
             default:
                 throw new Exception("case not specified");
@@ -73,6 +78,23 @@ public class BasicSteps extends GreenCoffeeSteps {
         }
     }
 
+    @And("^Nobody is signed in")
+    public boolean nobodyIsSignedIn(){
+        onViewWithId(R.id.drawer_layout)
+                .check(matches(isClosed(Gravity.LEFT)))
+                .perform(DrawerActions.open());
+        try{
+            onViewWithId(R.id.login_button).isEnabled();
+            onViewWithId(R.id.drawer_layout)
+                    .perform(DrawerActions.close());
+            return true;
+        }
+        catch (Exception e) {
+            onViewWithId(R.id.drawer_layout)
+                    .perform(DrawerActions.close());
+            return false;
+        }
+    }
 
     @And("^User clicks on Button with id \"([^\"]*)\"$")
     public void userClicksOnButtonWithId(String id) throws Throwable {
