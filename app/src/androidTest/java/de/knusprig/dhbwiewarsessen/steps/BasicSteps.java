@@ -78,8 +78,8 @@ public class BasicSteps extends GreenCoffeeSteps {
         }
     }
 
-    @And("^Nobody is signed in")
-    public boolean nobodyIsSignedIn(){
+    @And("^Is Somebody is signed in")
+    public boolean isSomebodySignedIn(){
         onViewWithId(R.id.drawer_layout)
                 .check(matches(isClosed(Gravity.LEFT)))
                 .perform(DrawerActions.open());
