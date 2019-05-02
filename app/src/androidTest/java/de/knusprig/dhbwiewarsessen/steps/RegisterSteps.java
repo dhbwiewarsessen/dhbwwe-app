@@ -62,6 +62,8 @@ public class RegisterSteps extends GreenCoffeeSteps {
                 .perform(DrawerActions.open());
         onViewWithId(R.id.header_name)
                 .check(matches(withText(name)));
+        onViewWithId(R.id.drawer_layout)
+                .perform(DrawerActions.close());
 
     }
 
