@@ -16,11 +16,21 @@ public class LoginUnitTest {
     BasicSteps bs = new BasicSteps();
     RegisterSteps rs = new RegisterSteps();
 
+    //Method that checks if a User is loged in and logs him out,
+    //that the Test can run without Errors.
+    private void logOutIfPossible() throws Throwable{
+        if(bs.isSomebodySignedIn()) {
+            bs.userNavigatesTo("LogOut");
+        }
+    }
+
     @Test
     public void correctLogIn() throws Throwable {
         final String username = "TvRXVII";
         final String password = "Thimo123";
         final String name = "Thimo von Rauchhaupt";
+
+        logOutIfPossible();
 
         bs.userNavigatesTo("LogIn");
         bs.userEntersIntoInputFieldWithId(username, "username");
@@ -35,6 +45,8 @@ public class LoginUnitTest {
         final String password = "falsch";
         final String errorMessage = "Login Failed";
 
+        logOutIfPossible();
+
         bs.userNavigatesTo("LogIn");
         bs.userEntersIntoInputFieldWithId(username, "username");
         bs.userEntersIntoInputFieldWithId(password, "password");
@@ -47,6 +59,8 @@ public class LoginUnitTest {
         final String username = "GeorgWenzel";
         final String password = "falsch";
         final String errorMessage = "Login Failed";
+
+        logOutIfPossible();
 
         bs.userNavigatesTo("LogIn");
         bs.userEntersIntoInputFieldWithId(username, "username");
