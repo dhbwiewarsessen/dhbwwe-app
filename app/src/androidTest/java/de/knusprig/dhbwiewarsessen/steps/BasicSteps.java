@@ -1,10 +1,16 @@
 package de.knusprig.dhbwiewarsessen.steps;
 
+import android.support.design.widget.NavigationView;
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.view.Gravity;
+import android.view.MenuItem;
+import android.widget.Button;
 
+import java.lang.*;
 import com.mauriciotogneri.greencoffee.GreenCoffeeSteps;
 
 import org.junit.Rule;
@@ -12,6 +18,8 @@ import org.junit.Rule;
 import com.mauriciotogneri.greencoffee.annotations.And;
 import com.mauriciotogneri.greencoffee.annotations.Then;
 import com.mauriciotogneri.greencoffee.annotations.When;
+
+import javax.net.ssl.ExtendedSSLSession;
 
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.activities.RegisterActivity;
@@ -47,8 +55,8 @@ public class BasicSteps extends GreenCoffeeSteps {
                         .perform(NavigationViewActions.navigateTo(R.id.nav_login));
                 break;
             case "LogOut":
-                onViewWithId(R.id.nav_logout)
-                        .click();
+                onViewWithId(R.id.nav_view)
+                        .perform(NavigationViewActions.navigateTo(R.id.nav_logout));
                 break;
             default:
                 throw new Exception("case not specified");
@@ -79,20 +87,16 @@ public class BasicSteps extends GreenCoffeeSteps {
     }
 
     @And("^Is Somebody is signed in")
-    public boolean isSomebodySignedIn(){
+    public void logOut(){
         onViewWithId(R.id.drawer_layout)
                 .check(matches(isClosed(Gravity.LEFT)))
                 .perform(DrawerActions.open());
-        try{
-            onViewWithId(R.id.login_button).isEnabled();
-            onViewWithId(R.id.drawer_layout)
-                    .perform(DrawerActions.close());
-            return true;
+        try {
+            onViewWithId(R.id.nav_view)
+                    .perform(NavigationViewActions.navigateTo(R.id.nav_logout));
         }
         catch (Exception e) {
-            onViewWithId(R.id.drawer_layout)
-                    .perform(DrawerActions.close());
-            return false;
+
         }
     }
 
@@ -105,6 +109,10 @@ public class BasicSteps extends GreenCoffeeSteps {
                 break;
             case "LogIn":
                 onViewWithId(R.id.login_button)
+                        .click();
+                break;
+            case "Menu1":
+                onViewWithId(R.id.dish1)
                         .click();
                 break;
             default:
@@ -121,6 +129,10 @@ public class BasicSteps extends GreenCoffeeSteps {
 
         }
         onView(withText(errorMessage)).check(matches(isDisplayed()));
+        Espresso.pressBack();
+        Espresso.pressBack();
+        Espresso.pressBack();
+        Espresso.pressBack();
     }
 
     @And("^User selects \"([^\"]*)\" on the popup menu$")
