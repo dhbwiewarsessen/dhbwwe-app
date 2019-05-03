@@ -110,8 +110,9 @@ public class LoginActivity extends AppCompatActivity{
                         finish();
                     } else {
                         try {
+                            String error = jsonResponse.getString("error");
                             AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                            builder.setMessage("Login Failed")
+                            builder.setMessage("Login Failed:\n"+error)
                                     .setNegativeButton("Retry", null)
                                     .create()
                                     .show();
