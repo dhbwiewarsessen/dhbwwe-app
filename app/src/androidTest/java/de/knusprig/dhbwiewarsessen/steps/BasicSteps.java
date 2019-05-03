@@ -1,15 +1,17 @@
 package de.knusprig.dhbwiewarsessen.steps;
 
+import android.app.Activity;
 import android.support.design.widget.NavigationView;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.ActivityTestRule;
+import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.Button;
-
+import android.widget.Toast;
 import java.lang.*;
 import com.mauriciotogneri.greencoffee.GreenCoffeeSteps;
 
@@ -22,9 +24,19 @@ import com.mauriciotogneri.greencoffee.annotations.When;
 import javax.net.ssl.ExtendedSSLSession;
 
 import de.knusprig.dhbwiewarsessen.R;
+import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
 import de.knusprig.dhbwiewarsessen.controller.activities.RegisterActivity;
+import de.knusprig.dhbwiewarsessen.controller.fragments.CreateRatingFragment;
+import de.knusprig.dhbwiewarsessen.controller.fragments.UserRatingFragment;
 
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -57,6 +69,14 @@ public class BasicSteps extends GreenCoffeeSteps {
             case "LogOut":
                 onViewWithId(R.id.nav_view)
                         .perform(NavigationViewActions.navigateTo(R.id.nav_logout));
+                break;
+            case "MyRatings":
+                onViewWithId(R.id.nav_view)
+                        .perform(NavigationViewActions.navigateTo(R.id.nav_my_ratings));
+                break;
+            case "MainPage":
+                onViewWithId(R.id.nav_view)
+                        .perform(NavigationViewActions.navigateTo((R.id.nav_main)));
                 break;
             default:
                 throw new Exception("case not specified");
@@ -124,26 +144,43 @@ public class BasicSteps extends GreenCoffeeSteps {
     //@Then("^User should see error \"([^\"]*)\"$")
     public void userShouldSeeError(String errorMessage) throws Throwable {
         try {
-            Thread.sleep(3000);
+            Thread.sleep(1000);
         } catch (Exception e) {
 
         }
         onView(withText(errorMessage)).check(matches(isDisplayed()));
-        Espresso.pressBack();
-        Espresso.pressBack();
-        Espresso.pressBack();
-        Espresso.pressBack();
     }
 
-    @And("^User selects \"([^\"]*)\" on the popup menu$")
-    public void userSelectsOnThePopupMenu(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new Exception();
+    @And("^User selects \"([^\"]*)\" on the \"([^\"]*)\" popup menu$")
+    public void userSelectsOnThePopupMenu(String choice, String popUpWindowName) throws Throwable {
+            switch (popUpWindowName) {
+                case "RatingLongClick":
+                    if(choice == "delete"){
+                        onView(withText("DELETE"))
+                                .perform(click());
+                        onViewWithId(R.id.fragment_container)
+                                .swipeDown();
+                        break;
+                    }
+                    if (choice == "edit")
+                    {
+                        break;
+                    }
+                default:
+                    throw new Exception();
+            }
     }
 
     @And("^User confirms on the Confirm Popup$")
     public void userConfirmsOnTheConfirmPopup() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         throw new Exception();
+    }
+
+    @Then("^User should see ToastMessage \"([^\"]*)\"$")
+    //@Then("^User should see error \"([^\"]*)\"$")
+    public void userShouldSeeToast(String toastMessage) throws Throwable {
+        CreateRatingFragment crf = new CreateRatingFragment();
+        onView(withText(toastMessage)).inRoot(withDecorView(not(is(crf.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 }

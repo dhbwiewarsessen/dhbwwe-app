@@ -42,6 +42,16 @@ public class ManageRatingSteps extends GreenCoffeeSteps {
         throw new Exception();
     }
 
+    @And("^User sends Rating")
+    public void userSendRating() throws Throwable {
+        try {
+            Espresso.pressBack();
+            onViewWithId(R.id.btnSend).click();
+        } catch (Exception e) {
+            throw new Exception();
+        }
+    }
+
     @And("^User writes \"([^\"]*)\" into the comment")
     public void userWritesComment(String comment) throws Throwable {
         try {
@@ -70,9 +80,14 @@ public class ManageRatingSteps extends GreenCoffeeSteps {
     }
 
     @And("^User longclicks entry with comment \"([^\"]*)\"$")
-    public void userLongclicksEntryWithComment(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+    public void userLongclicksEntryWithComment(String comment) throws Throwable {
+        try {
+            onViewWithId(R.id.loComment)
+                    .check(matches(withText(comment)))
+                    .longClick();
+        }catch(Exception e){
         throw new Exception();
+        }
     }
 
     @Then("^the rating with comment \"([^\"]*)\" should be deleted$")
