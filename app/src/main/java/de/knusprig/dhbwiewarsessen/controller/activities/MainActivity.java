@@ -52,6 +52,7 @@ import de.knusprig.dhbwiewarsessen.controller.fragments.RatingsFragment;
 public class MainActivity extends AppCompatActivity implements Observer {
 
     private DrawerLayout mDrawerLayout;
+    private NavigationView navView;
     private SharedPreferences prefs;
     private User currentUser;
     private Menu menu;
@@ -83,13 +84,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        final NavigationView navigationView = findViewById(R.id.nav_view);
-        setupNavigationDrawer(navigationView);
+        navView = findViewById(R.id.nav_view);
+        setupNavigationDrawer(navView);
 
 
         if (savedInstanceState == null) {
             switchToMainPageFragment();
-            navigationView.setCheckedItem(R.id.nav_main);
+            navView.setCheckedItem(R.id.nav_main);
         }
 
         initializeMainPageFragment();
@@ -185,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         invalidateOptionsMenu();
         mainPageFragment.update();
         changeMenuBarUserState(false);
+        switchToMainPageFragment();
     }
 
     private void forwardToLoginActivity() {
@@ -197,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         mainPageFragment.setMain(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 mainPageFragment).commit();
+        navView.getMenu().findItem(R.id.nav_main).setChecked(true);
     }
 
     private void switchToRatingsFragment() {
@@ -204,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         ratingsFragment.setListRating(listRating);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 ratingsFragment).commit();
+        navView.getMenu().findItem(R.id.nav_all_ratings).setChecked(true);
     }
 
     private void switchToUserRatingsFragment() {
@@ -211,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         userRatingFragment.setListRating(listRating);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 userRatingFragment).commit();
+        navView.getMenu().findItem(R.id.nav_my_ratings).setChecked(true);
     }
 
     private void switchToCreateRatingsFragment() {
@@ -218,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         createRatingFragment.setMenu(menu);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 createRatingFragment).commit();
+        navView.getMenu().findItem(R.id.nav_create_rating).setChecked(true);
     }
 
     public void switchToCreateRatingsFragment(int id) {
@@ -438,7 +444,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void changeMenuBarUserState(boolean loggedIn) {
-        NavigationView navView = findViewById(R.id.nav_view);
         navView.getMenu().findItem(R.id.nav_login).setEnabled(!loggedIn);
         navView.getMenu().findItem(R.id.nav_logout).setEnabled(loggedIn);
         navView.getMenu().findItem(R.id.nav_create_rating).setEnabled(loggedIn);
