@@ -10,14 +10,22 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import de.knusprig.dhbwiewarsessen.R;
@@ -31,19 +39,20 @@ public class RatingsFragment extends Fragment {
     private List<Rating> listRating;
     private RatingAdapter ratingAdapter;
     private ListView listView;
+    private Spinner filterSpinner;
     private SwipeRefreshLayout pullToRefresh;
+
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_user_rating, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         listView = view.findViewById(R.id.rating_list);
-
-        ratingAdapter = new RatingAdapter(getActivity(),listRating);
+        filterSpinner = view.findViewById(R.id.filterSpinner);
 
         pullToRefresh = view.findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(() -> {
@@ -54,22 +63,95 @@ public class RatingsFragment extends Fragment {
             //when request is done
             pullToRefresh.setRefreshing(false);
         });
+
+        listRating.sort(Comparator.comparing(Rating::getDate)); //Default sorting
+
+        ArrayAdapter<String> adapterS = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item, mainActivity.getDefValues());
+        adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterSpinner.setAdapter(adapterS);
+
+        filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sortBySpinner(mainActivity.getDefValues().get(position));
+                refreshList();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //TODO add error
+            }
+        });
+        ratingAdapter = new RatingAdapter(getActivity(), listRating);
+
         listView.setAdapter(ratingAdapter); //Displaying the list in the listView
+        listView.setOnItemLongClickListener((parent, view1, position, id) -> {
+            final int pos = position;
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Choose action for this rating")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        Rating ratingToDelete = (Rating) listView.getAdapter().getItem((int)id);
+                        int idToDelete = ratingToDelete.getId();
+                        System.out.println("id: " + idToDelete);
+                        DeleteRatingRequest drr = new DeleteRatingRequest(""+idToDelete, response -> {
+                            try {
+                                JSONObject jsonResponse = new JSONObject(response);
+                                boolean success = jsonResponse.getBoolean("success");
+                                if (success) {
+                                    listRating.remove(pos);
+                                    listView.invalidateViews();
+                                } else {
+                                    Toast.makeText(mainActivity.getApplicationContext(), "Error while delete rating", Toast.LENGTH_LONG).show();
+                                    System.out.println("couldn't delete rating from server");
+                                }
+                            }
+                            catch(JSONException e){
+                                e.printStackTrace();
+                                Toast.makeText(mainActivity.getApplicationContext(), "JSON Error", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        RequestQueue queue = Volley.newRequestQueue(getActivity());
+                        queue.add(drr);
+                    }).setNegativeButton("Edit", ((dialog, which) -> {
+                mainActivity.switchToEditRatingsFragment(listRating.get(pos));
+            }))
+                    .create()
+                    .show();
+            return false;
+        });
     }
 
-    public void setMainActivity(MainActivity mainActivity){
+    public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
-    public void setListRating(List<Rating> listRating){
+    public void setListRating(List<Rating> listRating) {
         this.listRating = listRating;
+    }
+
+    public void sortBySpinner(String sortBy){
+        switch (sortBy){
+            case "Name":
+                //TODO: add name sorting
+                break;
+            case "Dish":
+                listRating.sort(Comparator.comparing(Rating::getDish));
+
+                break;
+            case "Date":
+                listRating.sort(Comparator.comparing(Rating::getDate).reversed());
+                Collections.sort(listRating, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
+                break;
+        }
     }
 
     public void refreshList(){
         try {
             listView.invalidateViews();
+            sortBySpinner(filterSpinner.getSelectedItem().toString()); //If there is a new dish added it gets sorted automatically
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
+

@@ -163,5 +163,5 @@ public class UserRatingFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+}
 }
