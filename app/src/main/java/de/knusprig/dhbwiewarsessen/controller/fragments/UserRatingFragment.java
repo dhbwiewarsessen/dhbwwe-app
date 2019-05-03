@@ -106,9 +106,10 @@ public class UserRatingFragment extends Fragment {
                                 if (success) {
                                     listRating.remove(pos);
                                     listView.invalidateViews();
+                                    Toast.makeText(mainActivity.getApplicationContext(), "Rating successfully deleted", Toast.LENGTH_LONG).show();
                                 } else {
-                                    Toast.makeText(mainActivity.getApplicationContext(), "Error while delete rating", Toast.LENGTH_LONG).show();
-                                    System.out.println("couldn't delete rating from server");
+                                    Toast.makeText(mainActivity.getApplicationContext(), "Error while deleting rating", Toast.LENGTH_LONG).show();
+                                    System.out.println("Couldn't delete rating from server");
                                 }
                             }
                             catch(JSONException e){

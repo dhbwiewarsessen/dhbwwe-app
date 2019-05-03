@@ -86,37 +86,7 @@ public class RatingsFragment extends Fragment {
 
         listView.setAdapter(ratingAdapter); //Displaying the list in the listView
         listView.setOnItemLongClickListener((parent, view1, position, id) -> {
-            final int pos = position;
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage("Choose action for this rating")
-                    .setPositiveButton("Delete", (dialog, which) -> {
-                        Rating ratingToDelete = (Rating) listView.getAdapter().getItem((int)id);
-                        int idToDelete = ratingToDelete.getId();
-                        System.out.println("id: " + idToDelete);
-                        DeleteRatingRequest drr = new DeleteRatingRequest(""+idToDelete, response -> {
-                            try {
-                                JSONObject jsonResponse = new JSONObject(response);
-                                boolean success = jsonResponse.getBoolean("success");
-                                if (success) {
-                                    listRating.remove(pos);
-                                    listView.invalidateViews();
-                                } else {
-                                    Toast.makeText(mainActivity.getApplicationContext(), "Error while delete rating", Toast.LENGTH_LONG).show();
-                                    System.out.println("couldn't delete rating from server");
-                                }
-                            }
-                            catch(JSONException e){
-                                e.printStackTrace();
-                                Toast.makeText(mainActivity.getApplicationContext(), "JSON Error", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                        RequestQueue queue = Volley.newRequestQueue(getActivity());
-                        queue.add(drr);
-                    }).setNegativeButton("Edit", ((dialog, which) -> {
-                mainActivity.switchToEditRatingsFragment(listRating.get(pos));
-            }))
-                    .create()
-                    .show();
+            Toast.makeText(mainActivity.getApplicationContext(), "Edit/Delete ratings in the \"My ratings\" category.", Toast.LENGTH_LONG).show();
             return false;
         });
     }
