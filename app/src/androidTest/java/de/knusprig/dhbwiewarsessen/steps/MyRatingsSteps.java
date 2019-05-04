@@ -36,13 +36,9 @@ public class MyRatingsSteps extends GreenCoffeeSteps{
 
     @And("^User should Rating with \"([^\"]*)\" as username and \"([^\"]*)\" as comment")
     public void userShouldSeeRating(String username, String comment) throws Throwable {
-        try {
             onViewWithId(R.id.loUsername)
                     .check(matches(withText(username)));
             onViewWithId(R.id.loComment)
                     .check(matches(withText(comment)));
-        }catch(Exception e) {
-            throw new Exception();
-        }
     }
 }
