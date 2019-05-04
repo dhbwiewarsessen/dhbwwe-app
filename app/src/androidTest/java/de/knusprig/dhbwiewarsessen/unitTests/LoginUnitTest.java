@@ -1,5 +1,6 @@
 package de.knusprig.dhbwiewarsessen.unitTests;
 
+import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.After;
@@ -34,26 +35,28 @@ public class LoginUnitTest {
     public void incorrectPassword() throws Throwable {
         final String username = "max";
         final String password = "54321";
-        final String errorMessage = "Wrong combination of username and password";
+        final String errorMessage = "Login Failed:\nWrong combination of username and password";
 
         bs.userNavigatesTo("LogIn");
         bs.userEntersIntoInputFieldWithId(username, "username");
         bs.userEntersIntoInputFieldWithId(password, "password");
         bs.userClicksOnButtonWithId("LogIn");
-        bs.userShouldSeeError(errorMessage);
+        bs.userShouldSeeToast(errorMessage);
+        Espresso.pressBack();
     }
 
     @Test
     public void incorrectLogIn() throws Throwable {
         final String username = "GeorgWenzel";
         final String password = "12345";
-        final String errorMessage = "Username does not exit";
+        final String errorMessage = "Login Failed:\nUsername does not exist";
 
         bs.userNavigatesTo("LogIn");
         bs.userEntersIntoInputFieldWithId(username, "username");
         bs.userEntersIntoInputFieldWithId(password, "password");
         bs.userClicksOnButtonWithId("LogIn");
-        bs.userShouldSeeError(errorMessage);
+        bs.userShouldSeeToast(errorMessage);
+        Espresso.pressBack();
     }
 
     @After

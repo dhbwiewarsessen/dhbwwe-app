@@ -37,8 +37,7 @@ public class RegisterSteps extends GreenCoffeeSteps {
 
 
     @And("^User enters an unique username into input field with id \"([^\"]*)\"$")
-    public void userEntersIntoInputFieldWithId(String arg0) throws Throwable {
-        String id = arg0;
+    public void userEntersIntoInputFieldWithId(String id) throws Throwable {
         switch (id) {
             case "username":
                 onViewWithId(R.id.username).type("unique_user" + (int) (9999 * Math.random()));
@@ -52,11 +51,10 @@ public class RegisterSteps extends GreenCoffeeSteps {
     @Then("^User should be logged in as \"([^\"]*)\"$")
     public void userShouldBeLoggedInAs(String name) throws Throwable {
         try {
-            Thread.sleep(3000);
+            Thread.sleep(500);
         } catch (Exception e) {
 
         }
-
         onViewWithId(R.id.drawer_layout)
                 .check(matches(isClosed(Gravity.LEFT)))
                 .perform(DrawerActions.open());
@@ -64,16 +62,11 @@ public class RegisterSteps extends GreenCoffeeSteps {
                 .check(matches(withText(name)));
         onViewWithId(R.id.drawer_layout)
                 .perform(DrawerActions.close());
-
     }
 
 
     @Then("^User should see error \"([^\"]*)\" on input field with id \"([^\"]*)\"$")
-    public void userShouldSeeErrorOnInpufield(String arg0, String arg1) throws Throwable {
-
-        String errorText = arg0;
-        String id = arg1;
-
+    public void userShouldSeeErrorOnInpufield(String errorText, String id) throws Throwable {
         switch (id) {
             case "password":
                 onViewWithId(R.id.password).check(matches(hasErrorText(errorText)));

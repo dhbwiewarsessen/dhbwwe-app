@@ -1,11 +1,18 @@
 package de.knusprig.dhbwiewarsessen.steps;
 
+import android.bluetooth.BluetoothClass;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.uiautomator.UiDevice;
+import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiObjectNotFoundException;
+import android.support.test.uiautomator.UiSelector;
 import android.view.Gravity;
 
 import java.lang.*;
+
 import com.mauriciotogneri.greencoffee.GreenCoffeeSteps;
 
 import org.junit.Rule;
@@ -18,15 +25,17 @@ import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.activities.RegisterActivity;
 import de.knusprig.dhbwiewarsessen.MobileViewMatchers;
 
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
 
 public class BasicSteps extends GreenCoffeeSteps {
 
@@ -92,15 +101,14 @@ public class BasicSteps extends GreenCoffeeSteps {
     }
 
     @And("^Is Somebody is signed in")
-    public void logOut(){
-        onViewWithId(R.id.drawer_layout)
-                .check(matches(isClosed(Gravity.LEFT)))
-                .perform(DrawerActions.open());
+    public void logOut() {
         try {
+            onViewWithId(R.id.drawer_layout)
+                    .check(matches(isClosed(Gravity.LEFT)))
+                    .perform(DrawerActions.open());
             onViewWithId(R.id.nav_view)
                     .perform(NavigationViewActions.navigateTo(R.id.nav_logout));
-        }
-        catch (Exception e) {
+        } catch (Throwable t) {
 
         }
     }
@@ -125,35 +133,29 @@ public class BasicSteps extends GreenCoffeeSteps {
         }
     }
 
-    @Then("^User should see error$")
-    //@Then("^User should see error \"([^\"]*)\"$")
+    @Then("^User should see error \"([^\"]*)\"$")
     public void userShouldSeeError(String errorMessage) throws Throwable {
-        try {
-            Thread.sleep(1000);
-        } catch (Exception e) {
-
-        }
+        Thread.sleep(1000);
         onView(withText(errorMessage)).check(matches(isDisplayed()));
     }
 
     @And("^User selects \"([^\"]*)\" on the \"([^\"]*)\" popup menu$")
     public void userSelectsOnThePopupMenu(String choice, String popUpWindowName) throws Throwable {
-            switch (popUpWindowName) {
-                case "RatingLongClick":
-                    if(choice == "delete"){
-                        onView(withText("DELETE"))
-                                .perform(click());
-                        onViewWithId(R.id.fragment_container)
-                                .swipeDown();
-                        break;
-                    }
-                    if (choice == "edit")
-                    {
-                        break;
-                    }
-                default:
-                    throw new Exception();
-            }
+        switch (popUpWindowName) {
+            case "RatingLongClick":
+                if (choice == "delete") {
+                    onView(withText("DELETE"))
+                            .perform(click());
+                    onViewWithId(R.id.fragment_container)
+                            .swipeDown();
+                    break;
+                }
+                if (choice == "edit") {
+                    break;
+                }
+            default:
+                throw new Exception();
+        }
     }
 
     @And("^User confirms on the Confirm Popup$")
@@ -164,9 +166,9 @@ public class BasicSteps extends GreenCoffeeSteps {
 
     @Then("^User should see ToastMessage \"([^\"]*)\"$")
     public void userShouldSeeToast(String toastMessage) throws Throwable {
-        Thread.sleep(1000);
-
+        Thread.sleep(200);
         onView(withText(toastMessage)).inRoot(MobileViewMatchers.isToast()).check(matches(isDisplayed()));
         //onView(withText(toastMessage)).inRoot(withDecorView(not(main.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 }
+
