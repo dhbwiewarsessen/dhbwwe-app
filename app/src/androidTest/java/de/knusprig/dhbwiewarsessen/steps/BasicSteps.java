@@ -1,17 +1,10 @@
 package de.knusprig.dhbwiewarsessen.steps;
 
-import android.app.Activity;
-import android.support.design.widget.NavigationView;
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.ActivityTestRule;
-import android.support.v4.app.Fragment;
 import android.view.Gravity;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.Toast;
+
 import java.lang.*;
 import com.mauriciotogneri.greencoffee.GreenCoffeeSteps;
 
@@ -21,26 +14,18 @@ import com.mauriciotogneri.greencoffee.annotations.And;
 import com.mauriciotogneri.greencoffee.annotations.Then;
 import com.mauriciotogneri.greencoffee.annotations.When;
 
-import javax.net.ssl.ExtendedSSLSession;
-
 import de.knusprig.dhbwiewarsessen.R;
-import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
 import de.knusprig.dhbwiewarsessen.controller.activities.RegisterActivity;
-import de.knusprig.dhbwiewarsessen.controller.fragments.CreateRatingFragment;
-import de.knusprig.dhbwiewarsessen.controller.fragments.UserRatingFragment;
+import de.knusprig.dhbwiewarsessen.MobileViewMatchers;
 
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class BasicSteps extends GreenCoffeeSteps {
@@ -178,9 +163,10 @@ public class BasicSteps extends GreenCoffeeSteps {
     }
 
     @Then("^User should see ToastMessage \"([^\"]*)\"$")
-    //@Then("^User should see error \"([^\"]*)\"$")
     public void userShouldSeeToast(String toastMessage) throws Throwable {
-        CreateRatingFragment crf = new CreateRatingFragment();
-        onView(withText(toastMessage)).inRoot(withDecorView(not(is(crf.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        Thread.sleep(1000);
+
+        onView(withText(toastMessage)).inRoot(MobileViewMatchers.isToast()).check(matches(isDisplayed()));
+        //onView(withText(toastMessage)).inRoot(withDecorView(not(main.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 }
