@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-sdk tools:overrideLibrary="android.support.test.uiautomator.v18" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,14 +21,14 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".controller.activities.RegisterActivity"
-            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/title_activity_register" />
+            android:label="@string/title_activity_register"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".controller.activities.MainActivity"
-            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_main"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,9 +38,9 @@
         </activity>
         <activity
             android:name=".controller.activities.LoginActivity"
-            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
