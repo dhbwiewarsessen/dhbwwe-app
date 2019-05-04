@@ -39,7 +39,9 @@ public class CreateRatingUnitTest {
 
     private void deleteComment(String comment) throws Throwable {
         manage_rs.userLongclicksEntryWithComment(comment);
+        Thread.sleep(200);
         bs.userSelectsOnThePopupMenu("delete", "RatingLongClick");
+        Thread.sleep(200);
     }
 
     @Test
@@ -50,8 +52,10 @@ public class CreateRatingUnitTest {
         manage_rs.userSelectsStarsForTheRating(6);
         manage_rs.userWritesComment(uniqueComment);
         manage_rs.userSendRating();
-        bs.userNavigatesTo("MainPage");
-        Thread.sleep(1000);
+        bs.userNavigatesTo("Ratings");
+        Thread.sleep(500);
+        bs.userRefreshes();
+        Thread.sleep(500);
         bs.userNavigatesTo("MyRatings");
         my_rs.userShouldSeeRating(username, uniqueComment);
 
@@ -64,8 +68,11 @@ public class CreateRatingUnitTest {
         bs.userClicksOnButtonWithId("Menu1");
         manage_rs.userSelectsStarsForTheRating(6);
         manage_rs.userSendRating();
-        bs.userNavigatesTo("MainPage");
-        Thread.sleep(1000);
+        bs.userNavigatesTo("Ratings");
+        bs.userRefreshes();
+        Thread.sleep(500);
+        bs.userRefreshes();
+        Thread.sleep(500);
         bs.userNavigatesTo("MyRatings");
         my_rs.userShouldSeeRating(username, "");
 

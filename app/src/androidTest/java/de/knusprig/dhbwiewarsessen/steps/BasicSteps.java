@@ -64,6 +64,10 @@ public class BasicSteps extends GreenCoffeeSteps {
                 onViewWithId(R.id.nav_view)
                         .perform(NavigationViewActions.navigateTo(R.id.nav_logout));
                 break;
+            case "Ratings":
+                onViewWithId(R.id.nav_view)
+                        .perform(NavigationViewActions.navigateTo(R.id.nav_all_ratings));
+                break;
             case "MyRatings":
                 onViewWithId(R.id.nav_view)
                         .perform(NavigationViewActions.navigateTo(R.id.nav_my_ratings));
@@ -146,8 +150,7 @@ public class BasicSteps extends GreenCoffeeSteps {
                 if (choice == "delete") {
                     onView(withText("DELETE"))
                             .perform(click());
-                    onViewWithId(R.id.fragment_container)
-                            .swipeDown();
+                    userRefreshes();
                     break;
                 }
                 if (choice == "edit") {
@@ -169,6 +172,11 @@ public class BasicSteps extends GreenCoffeeSteps {
         Thread.sleep(200);
         onView(withText(toastMessage)).inRoot(MobileViewMatchers.isToast()).check(matches(isDisplayed()));
         //onView(withText(toastMessage)).inRoot(withDecorView(not(main.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+    }
+
+    public void userRefreshes() {
+        onViewWithId(R.id.fragment_container)
+                .swipeDown();
     }
 }
 
