@@ -15,7 +15,6 @@ import java.io.IOException;
 
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
 import de.knusprig.dhbwiewarsessen.steps.Stepdefinitions;
-import de.knusprig.dhbwiewarsessen.steps.ManageRatingSteps;
 
 @RunWith(Parameterized.class)
 public class ManageRatingTest extends GreenCoffeeTest
@@ -41,6 +40,6 @@ public class ManageRatingTest extends GreenCoffeeTest
     @Test
     public void test()
     {
-        start(new Stepdefinitions(), new ManageRatingSteps());
+        start(new Stepdefinitions());
     }
 }
