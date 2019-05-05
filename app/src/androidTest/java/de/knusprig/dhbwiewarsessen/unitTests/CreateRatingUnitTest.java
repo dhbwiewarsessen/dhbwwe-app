@@ -10,19 +10,13 @@ import org.junit.Test;
 import java.text.DecimalFormat;
 
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
-import de.knusprig.dhbwiewarsessen.steps.BasicSteps;
-import de.knusprig.dhbwiewarsessen.steps.ManageRatingSteps;
-import de.knusprig.dhbwiewarsessen.steps.MyRatingsSteps;
-
-import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
+import de.knusprig.dhbwiewarsessen.steps.Stepdefinitions;
 
 public class CreateRatingUnitTest {
     @Rule
     public ActivityTestRule activity = new ActivityTestRule<>(MainActivity.class);
 
-    BasicSteps bs = new BasicSteps();
-    ManageRatingSteps manage_rs = new ManageRatingSteps();
-    MyRatingsSteps my_rs = new MyRatingsSteps();
+    Stepdefinitions steps = new Stepdefinitions();
 
     private static DecimalFormat df2 = new DecimalFormat("#.##");
 
@@ -31,16 +25,16 @@ public class CreateRatingUnitTest {
 
     @Before
     public void logIn() throws Throwable {
-        bs.userNavigatesTo("LogIn");
-        bs.userEntersIntoInputFieldWithId(username, "username");
-        bs.userEntersIntoInputFieldWithId(password, "password");
-        bs.userClicksOnButtonWithId("LogIn");
+        steps.userNavigatesTo("LogIn");
+        steps.userEntersIntoInputFieldWithId(username, "username");
+        steps.userEntersIntoInputFieldWithId(password, "password");
+        steps.userClicksOnButtonWithId("LogIn");
     }
 
     private void deleteComment(String comment) throws Throwable {
-        manage_rs.userLongclicksEntryWithComment(comment);
+        steps.userLongclicksEntryWithComment(comment);
         Thread.sleep(200);
-        bs.userSelectsOnThePopupMenu("delete", "RatingLongClick");
+        steps.userSelectsOnThePopupMenu("delete", "RatingLongClick");
         Thread.sleep(200);
     }
 
@@ -48,16 +42,16 @@ public class CreateRatingUnitTest {
     public void successfullyCreateRating() throws Throwable {
         String uniqueComment = "" + df2.format(99999 * Math.random() * Math.random());
 
-        bs.userClicksOnButtonWithId("Menu1");
-        manage_rs.userSelectsStarsForTheRating(6);
-        manage_rs.userWritesComment(uniqueComment);
-        manage_rs.userSendRating();
-        bs.userNavigatesTo("Ratings");
+        steps.userClicksOnButtonWithId("Menu1");
+        steps.userSelectsStarsForTheRating(6);
+        steps.userWritesComment(uniqueComment);
+        steps.userSendRating();
+        steps.userNavigatesTo("Ratings");
         Thread.sleep(500);
-        bs.userRefreshes();
+        steps.userRefreshes();
         Thread.sleep(500);
-        bs.userNavigatesTo("MyRatings");
-        my_rs.userShouldSeeRating(username, uniqueComment);
+        steps.userNavigatesTo("MyRatings");
+        steps.userShouldSeeRating(username, uniqueComment);
 
         //return to origin
         deleteComment(uniqueComment);
@@ -65,16 +59,16 @@ public class CreateRatingUnitTest {
 
     @Test
     public void successfullyCreateEmptyRating() throws Throwable {
-        bs.userClicksOnButtonWithId("Menu1");
-        manage_rs.userSelectsStarsForTheRating(6);
-        manage_rs.userSendRating();
-        bs.userNavigatesTo("Ratings");
-        bs.userRefreshes();
+        steps.userClicksOnButtonWithId("Menu1");
+        steps.userSelectsStarsForTheRating(6);
+        steps.userSendRating();
+        steps.userNavigatesTo("Ratings");
+        steps.userRefreshes();
         Thread.sleep(500);
-        bs.userRefreshes();
+        steps.userRefreshes();
         Thread.sleep(500);
-        bs.userNavigatesTo("MyRatings");
-        my_rs.userShouldSeeRating(username, "");
+        steps.userNavigatesTo("MyRatings");
+        steps.userShouldSeeRating(username, "");
 
         //return to origin
         deleteComment("");
@@ -82,14 +76,14 @@ public class CreateRatingUnitTest {
 
     @Test
     public void tryToSendWithoutRating() throws Throwable {
-        bs.userClicksOnButtonWithId("Menu1");
-        manage_rs.userSendRating();
-        bs.userShouldSeeToast("Please add a rating");
+        steps.userClicksOnButtonWithId("Menu1");
+        steps.userSendRating();
+        steps.userShouldSeeToast("Please add a rating");
     }
 
     @After
     public void logoutAfterTest() {
-        bs.logOut();
+        steps.logOut();
     }
 }
 
