@@ -8,15 +8,13 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
-import de.knusprig.dhbwiewarsessen.steps.BasicSteps;
-import de.knusprig.dhbwiewarsessen.steps.RegisterSteps;
+import de.knusprig.dhbwiewarsessen.steps.Stepdefinitions;
 
 public class LoginUnitTest {
     @Rule
     public ActivityTestRule activity = new ActivityTestRule<>(MainActivity.class);
 
-    BasicSteps bs = new BasicSteps();
-    RegisterSteps rs = new RegisterSteps();
+    Stepdefinitions steps = new Stepdefinitions();
 
     @Test
     public void correctLogIn() throws Throwable {
@@ -24,11 +22,11 @@ public class LoginUnitTest {
         final String password = "12345";
         final String name = "Max Muster";
 
-        bs.userNavigatesTo("LogIn");
-        bs.userEntersIntoInputFieldWithId(username, "username");
-        bs.userEntersIntoInputFieldWithId(password, "password");
-        bs.userClicksOnButtonWithId("LogIn");
-        rs.userShouldBeLoggedInAs(name);
+        steps.userNavigatesTo("LogIn");
+        steps.userEntersIntoInputFieldWithId(username, "username");
+        steps.userEntersIntoInputFieldWithId(password, "password");
+        steps.userClicksOnButtonWithId("LogIn");
+        steps.userShouldBeLoggedInAs(name);
     }
 
     @Test
@@ -37,11 +35,11 @@ public class LoginUnitTest {
         final String password = "54321";
         final String errorMessage = "Login Failed:\nWrong combination of username and password";
 
-        bs.userNavigatesTo("LogIn");
-        bs.userEntersIntoInputFieldWithId(username, "username");
-        bs.userEntersIntoInputFieldWithId(password, "password");
-        bs.userClicksOnButtonWithId("LogIn");
-        bs.userShouldSeeToast(errorMessage);
+        steps.userNavigatesTo("LogIn");
+        steps.userEntersIntoInputFieldWithId(username, "username");
+        steps.userEntersIntoInputFieldWithId(password, "password");
+        steps.userClicksOnButtonWithId("LogIn");
+        steps.userShouldSeeToast(errorMessage);
         Espresso.pressBack();
     }
 
@@ -51,16 +49,16 @@ public class LoginUnitTest {
         final String password = "12345";
         final String errorMessage = "Login Failed:\nUsername does not exist";
 
-        bs.userNavigatesTo("LogIn");
-        bs.userEntersIntoInputFieldWithId(username, "username");
-        bs.userEntersIntoInputFieldWithId(password, "password");
-        bs.userClicksOnButtonWithId("LogIn");
-        bs.userShouldSeeToast(errorMessage);
+        steps.userNavigatesTo("LogIn");
+        steps.userEntersIntoInputFieldWithId(username, "username");
+        steps.userEntersIntoInputFieldWithId(password, "password");
+        steps.userClicksOnButtonWithId("LogIn");
+        steps.userShouldSeeToast(errorMessage);
         Espresso.pressBack();
     }
 
     @After
     public void logoutAfterTest(){
-        bs.logOut();
+        steps.logOut();
     }
 }
