@@ -454,10 +454,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         return currentUser;
     }
 
-    public void addRating(int rating, String comment, User user, Calendar date, String dish ){
-        listRating.add(new Rating(date, dish, rating, comment, user.getUsername()));
-    }
-
     public void addRating(int id, int rating, String comment, User user, Calendar date, String dish ){
         listRating.add(new Rating(id, date, dish, rating, comment, user.getUsername()));
     }

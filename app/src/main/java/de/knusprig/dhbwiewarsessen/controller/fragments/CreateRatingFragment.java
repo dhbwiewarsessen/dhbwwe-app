@@ -123,7 +123,8 @@ public class CreateRatingFragment extends Fragment {
                 boolean success = jsonResponse.getBoolean("success");
 
                 if (success) {
-                    main.addRating(rating, comment, main.getCurrentUser(), new GregorianCalendar(), selectedDish);
+                    int id = jsonResponse.getInt("ratingId");
+                    main.addRating(id, rating, comment, main.getCurrentUser(), new GregorianCalendar(), selectedDish);
                     Toast.makeText(main.getApplicationContext(), "Rating successfully added", Toast.LENGTH_LONG).show();
                     System.out.println("rating successfully send to server");
                 } else {
