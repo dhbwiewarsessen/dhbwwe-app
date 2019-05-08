@@ -83,7 +83,6 @@ public class EditRatingFragment extends Fragment {
                     Toast.makeText(main.getApplicationContext(), "Error while editing rating", Toast.LENGTH_LONG).show();
                     System.out.println("couldn't edit rating on server");
                 }
-                main.refreshRatingLists();
             } catch (JSONException e) {
                 e.printStackTrace();
             }

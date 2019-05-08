@@ -100,7 +100,6 @@ public class CreateRatingFragment extends Fragment {
     }
 
     public boolean attemptAddRating() {
-
         final int rating = (int)(ratingBar.getRating()*10);
 
         if(rating == 0) {
@@ -116,11 +115,6 @@ public class CreateRatingFragment extends Fragment {
         final String date = dateFormat.format(new Date());
         final String time = timeFormat.format(new Date());
 
-        System.out.println("Rating: " + rating);
-        System.out.println("Selected menu: " + selectedDish);
-        System.out.println("Additional comment: " + comment);
-
-
         Response.Listener<String> responseListener = response -> {
             try {
                 JSONObject jsonResponse = new JSONObject(response);
@@ -131,16 +125,15 @@ public class CreateRatingFragment extends Fragment {
                     main.addRating(id, rating, comment, main.getCurrentUser(), new GregorianCalendar(), selectedDish);
                     Toast.makeText(main.getApplicationContext(), "Rating successfully added", Toast.LENGTH_LONG).show();
                     System.out.println("rating successfully send to server");
+                    main.switchToUserRatingsFragment();
                 } else {
                     Toast.makeText(main.getApplicationContext(), "Error while adding rating", Toast.LENGTH_LONG).show();
                     System.out.println("couldn't send rating to server");
                 }
-                main.refreshRatingLists();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         };
-
         CreateRatingRequest createRatingRequest = new CreateRatingRequest(userId, selectedDish, date,time, "" + rating, comment, responseListener);
         RequestQueue queue = Volley.newRequestQueue(main.getApplicationContext());
         queue.add(createRatingRequest);
