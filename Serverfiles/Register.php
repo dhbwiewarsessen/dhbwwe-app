@@ -63,11 +63,22 @@
         }
     }
     
+    function sendConfirmationEmail(){
+        global $email, $name;
+        
+        $to_email = $email;
+        $subject = 'Welcome to DHBWieWarsEssen';
+        $message = "What's poppin' ".$name."!\n\nOur humble team welcomes you to a new chapter of your life.\nForget what you know and prepare to be amazed.\nA new paradise awaits in the corporeal form of this android application.\nBear witness to its divinty and stay true to the will of your new god: DHBWieWarsEssen.\n\nRejoice, for this is the solution!\n\nGodspeed to you,\n\nthe DHBWieWarsEssen-Team";
+        $headers = 'From: noreply@dhbwwe.cu.ma';
+        mail($to_email,$subject,$message,$headers);
+    }
+    
     if(usernameAvailable()){
         if(emailAvailable()){
             registerUser();
             $response["success"] = true;
-            $response["userId"] = getUserId();    
+            $response["userId"] = getUserId();
+            sendConfirmationEmail();
         }else{
             $response["success"] = false;
             $response["error"] = "Email not available";
