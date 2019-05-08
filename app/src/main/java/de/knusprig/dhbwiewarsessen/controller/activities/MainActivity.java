@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,9 +26,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -35,6 +38,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import de.knusprig.dhbwiewarsessen.R;
+import de.knusprig.dhbwiewarsessen.controller.fragments.EditRatingFragment;
 import de.knusprig.dhbwiewarsessen.controller.fragments.UserRatingFragment;
 import de.knusprig.dhbwiewarsessen.httprequest.RetrieveMenuRequest;
 import de.knusprig.dhbwiewarsessen.httprequest.RetrieveRatingsRequest;
@@ -49,6 +53,7 @@ import de.knusprig.dhbwiewarsessen.controller.fragments.RatingsFragment;
 public class MainActivity extends AppCompatActivity implements Observer {
 
     private DrawerLayout mDrawerLayout;
+    private NavigationView navView;
     private SharedPreferences prefs;
     private User currentUser;
     private Menu menu;
@@ -59,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private CreateRatingFragment createRatingFragment;
     private RatingsFragment ratingsFragment;
     private UserRatingFragment userRatingFragment;
+    private EditRatingFragment editRatingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         createRatingFragment = new CreateRatingFragment();
         ratingsFragment = new RatingsFragment();
         userRatingFragment = new UserRatingFragment();
+        editRatingFragment = new EditRatingFragment();
 
         restoreSavedData();
 
@@ -78,13 +85,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        final NavigationView navigationView = findViewById(R.id.nav_view);
-        setupNavigationDrawer(navigationView);
+        navView = findViewById(R.id.nav_view);
+        setupNavigationDrawer(navView);
 
 
         if (savedInstanceState == null) {
             switchToMainPageFragment();
-            navigationView.setCheckedItem(R.id.nav_main);
+            navView.setCheckedItem(R.id.nav_main);
         }
 
         initializeMainPageFragment();
@@ -103,40 +110,37 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private void setupNavigationDrawer(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.nav_main:
-                                switchToMainPageFragment();
-                                break;
-                            case R.id.nav_my_ratings:
-                                switchToUserRatingsFragment();
-                                break;
-                            case R.id.nav_all_ratings:
-                                switchToRatingsFragment();
-                                break;
-                            case R.id.nav_create_rating:
-                                switchToCreateRatingsFragment();
-                                break;
+                menuItem -> {
+                    switch (menuItem.getItemId()) {
+                        case R.id.nav_main:
+                            switchToMainPageFragment();
+                            break;
+                        case R.id.nav_my_ratings:
+                            switchToUserRatingsFragment();
+                            break;
+                        case R.id.nav_all_ratings:
+                            switchToRatingsFragment();
+                            break;
+                        case R.id.nav_create_rating:
+                            switchToCreateRatingsFragment();
+                            break;
 
-                            case R.id.nav_login:
-                                forwardToLoginActivity();
-                                break;
-                            case R.id.nav_logout:
-                                logout();
-                                break;
-                        }
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
-                        // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-
-                        return true;
+                        case R.id.nav_login:
+                            forwardToLoginActivity();
+                            break;
+                        case R.id.nav_logout:
+                            logout();
+                            break;
                     }
+                    // set item as selected to persist highlight
+                    menuItem.setChecked(true);
+                    // close drawer when item is tapped
+                    mDrawerLayout.closeDrawers();
+
+                    // Add code here to update the UI based on the item selected
+                    // For example, swap UI fragments here
+
+                    return true;
                 });
 
         mDrawerLayout.addDrawerListener(
@@ -158,7 +162,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
                     @Override
                     public void onDrawerStateChanged(int newState) {
-                        // Respond when the drawer motion state changes
+                        if(newState == DrawerLayout.STATE_SETTLING){
+                            if(!mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+                                changeMenuBarUserState(currentUser.getUserId() != 0);
+                            }
+                        }
                     }
                 }
         );
@@ -177,17 +185,22 @@ public class MainActivity extends AppCompatActivity implements Observer {
         currentUser = new User(0, "","","","");
         currentUser.addObserver(this);
         invalidateOptionsMenu();
+        mainPageFragment.update();
+        changeMenuBarUserState(false);
+        switchToMainPageFragment();
     }
 
     private void forwardToLoginActivity() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivityForResult(intent, 123);
+        changeMenuBarUserState(true);
     }
 
     private void switchToMainPageFragment() {
         mainPageFragment.setMain(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 mainPageFragment).commit();
+        navView.getMenu().findItem(R.id.nav_main).setChecked(true);
     }
 
     private void switchToRatingsFragment() {
@@ -195,13 +208,15 @@ public class MainActivity extends AppCompatActivity implements Observer {
         ratingsFragment.setListRating(listRating);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 ratingsFragment).commit();
+        navView.getMenu().findItem(R.id.nav_all_ratings).setChecked(true);
     }
 
-    private void switchToUserRatingsFragment() {
+    public void switchToUserRatingsFragment() {
         userRatingFragment.setMainActivity(this);
         userRatingFragment.setListRating(listRating);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 userRatingFragment).commit();
+        navView.getMenu().findItem(R.id.nav_my_ratings).setChecked(true);
     }
 
     private void switchToCreateRatingsFragment() {
@@ -209,6 +224,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         createRatingFragment.setMenu(menu);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 createRatingFragment).commit();
+        navView.getMenu().findItem(R.id.nav_create_rating).setChecked(true);
     }
 
     public void switchToCreateRatingsFragment(int id) {
@@ -216,75 +232,78 @@ public class MainActivity extends AppCompatActivity implements Observer {
         switchToCreateRatingsFragment();
     }
 
+    public void switchToEditRatingsFragment(Rating rating)
+    {
+        editRatingFragment.setRating(rating);
+        editRatingFragment.setMain(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                editRatingFragment).commit();
+    }
+
     private void getMenuFromServer() {
-        final Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonResponse = new JSONObject(response);
-                    boolean success = jsonResponse.getBoolean("success");
-                    if (success) {
-                        System.out.println("menus received");
-                        for (int i = 0; i < 3; i++) {
-                            Dish d = menu.getDishes().get(i);
-                            d.setTitle(jsonResponse.getString("dish" + (i + 1)));
-                            int price = jsonResponse.getInt("price" + (i + 1));
-                            d.setPrice(((float) price) / 100);
-                            System.out.println(i + ": " + d.getTitle() + ", " + d.getPrice() + "€");
-                        }
-                    } else {
-                        System.out.println("couldn't get menus from Server");
-                        System.out.println(jsonResponse);
+        final Response.Listener<String> responseListener = response -> {
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                boolean success = jsonResponse.getBoolean("success");
+                if (success) {
+                    System.out.println("menus received");
+                    for (int i = 0; i < 3; i++) {
+                        Dish d = menu.getDishes().get(i);
+                        d.setTitle(jsonResponse.getString("dish" + (i + 1)));
+                        int price = jsonResponse.getInt("price" + (i + 1));
+                        d.setPrice(((float) price) / 100);
+                        System.out.println(i + ": " + d.getTitle() + ", " + d.getPrice() + "€");
                     }
-                } catch (JSONException e) {
-                    System.out.println("JSON Exception");
-                    e.printStackTrace();
+                } else {
+                    System.out.println("couldn't get menus from Server");
+                    System.out.println(jsonResponse);
                 }
+            } catch (JSONException e) {
+                System.out.println("JSON Exception");
+                e.printStackTrace();
             }
         };
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String date = dateFormat.format(new Date());
-        System.out.println(date);
-        System.out.println(new Date());
         RetrieveMenuRequest menuRequest = new RetrieveMenuRequest(date, responseListener);
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         queue.add(menuRequest);
     }
 
     private void getAllRatings() {
-        final Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonResponse = new JSONObject(response);
-                    boolean success = jsonResponse.getBoolean("success");
-                    if (success) {
-                        for (int i = 0; i<jsonResponse.length()-1; i++) {
-                            System.out.println("ratings received");
-                            JSONArray jsonRating = jsonResponse.getJSONArray(""+i);
-                            int rating_id = jsonRating.getInt(0);
-                            String date = jsonRating.getString(1);
-                            String dish = jsonRating.getString(2);
-                            int rating = jsonRating.getInt(3);
-                            String comment = jsonRating.getString(4);
-                            String username = jsonRating.getString(5);
+        final Response.Listener<String> responseListener = response -> {
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                boolean success = jsonResponse.getBoolean("success");
+                if (success) {
+                    listRating.clear();
+                    for (int i = 0; i<jsonResponse.length()-1; i++) {
+                        JSONArray jsonRating = jsonResponse.getJSONArray(""+i);
+                        int rating_id = jsonRating.getInt(0);
+                        String date = jsonRating.getString(1);
+                        String time = jsonRating.getString(2);
+                        String dish = jsonRating.getString(3);
+                        int rating = jsonRating.getInt(4);
+                        String comment = jsonRating.getString(5);
+                        String username = jsonRating.getString(6);
 
-                            listRating.add(new Rating(rating_id, new GregorianCalendar(), dish, rating, comment, username));
-                        }
-                    } else {
-                        System.out.println("couldn't get menus from Server");
-                        System.out.println(jsonResponse);
+                        Date date1=new SimpleDateFormat("yyyy-MM-dd,hh:mm:ss").parse(date + "," + time);
+                        listRating.add(new Rating(rating_id, new Calendar.Builder().setInstant(date1).build(), dish, rating, comment, username));
                     }
-                } catch (JSONException e) {
-                    System.out.println("JSON Exception");
-                    e.printStackTrace();
+                } else {
+                    System.out.println("couldn't get menus from Server");
+                    System.out.println(jsonResponse);
                 }
+            } catch (JSONException e) {
+                System.out.println("JSON Exception");
+                e.printStackTrace();
+            } catch (ParseException e) {
+                System.out.println("Couldn't parse date");
+                e.printStackTrace();
             }
         };
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String date = dateFormat.format(new Date());
-        System.out.println(date);
-        System.out.println(new Date());
         RetrieveRatingsRequest ratingsRequest = new RetrieveRatingsRequest(date, responseListener);
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         queue.add(ratingsRequest);
@@ -401,30 +420,43 @@ public class MainActivity extends AppCompatActivity implements Observer {
         return super.onKeyDown(keyCode, event);
     }
 
-    public void refreshRatingLists()
+    public void updateLocalRating(Rating rating)
     {
-        ratingsFragment.refreshList();
-        userRatingFragment.refreshList();
+        Rating matchingRating  = listRating.stream().filter(r -> r.getId() == rating.getId()).findFirst().orElse(null);
+        Collections.replaceAll(listRating, matchingRating, rating);
     }
 
     public void btnSendClicked(View view) {
-        createRatingFragment.attemptAddRating(view);
+        createRatingFragment.attemptAddRating();
+    }
+
+    public void btnEditClicked(View view)
+    {
+        editRatingFragment.attemptEditRating(view);
         switchToUserRatingsFragment();
+    }
+
+    public void changeMenuBarUserState(boolean loggedIn) {
+        navView.getMenu().findItem(R.id.nav_login).setEnabled(!loggedIn);
+        navView.getMenu().findItem(R.id.nav_logout).setEnabled(loggedIn);
+        navView.getMenu().findItem(R.id.nav_create_rating).setEnabled(loggedIn);
+        navView.getMenu().findItem(R.id.nav_my_ratings).setEnabled(loggedIn);
     }
 
     public User getCurrentUser() {
         return currentUser;
     }
 
-    public void addRating(int rating, String comment, User user, Calendar date, String dish ){
-        listRating.add(new Rating(date, dish, rating, comment, user.getUsername()));
-    }
-
     public void addRating(int id, int rating, String comment, User user, Calendar date, String dish ){
+        System.out.println(user.getUsername());
         listRating.add(new Rating(id, date, dish, rating, comment, user.getUsername()));
     }
 
     public List<String> getDefValues() {
         return defValues;
+    }
+
+    public void refeshDataFromServer(){
+        getAllRatings();
     }
 }

@@ -6,18 +6,14 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreateRatingRequest extends StringRequest {
-
-    private static final String CREATE_RATING_REQUEST_URL = "https://dhbwwe.cu.ma/AddRating.php";
+public class EditRatingRequest extends StringRequest {
+    private static final String CREATE_RATING_REQUEST_URL = "https://dhbwwe.cu.ma/EditRating.php";
     private Map<String, String> params;
 
-    public CreateRatingRequest(String userId, String dish, String date, String time, String rating, String comment, Response.Listener<String> listener) {
+    public EditRatingRequest(int ratingId, String rating, String comment, Response.Listener<String> listener) {
         super(Method.POST, CREATE_RATING_REQUEST_URL, listener, null);
         params = new HashMap<>();
-        params.put("user_id", userId);
-        params.put("dish", dish);
-        params.put("date", date);
-        params.put("time", time);
+        params.put("rating_id", Integer.toString(ratingId));
         params.put("rating", rating);
         params.put("comment", comment);
     }
