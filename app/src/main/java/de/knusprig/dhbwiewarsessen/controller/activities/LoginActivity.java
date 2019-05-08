@@ -1,5 +1,6 @@
 package de.knusprig.dhbwiewarsessen.controller.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,10 +11,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,7 +32,7 @@ import de.knusprig.dhbwiewarsessen.httprequest.LoginRequest;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity{
+public class LoginActivity extends AppCompatActivity {
 
     // UI references.
     private AutoCompleteTextView mUsernameView;
@@ -43,24 +46,16 @@ public class LoginActivity extends AppCompatActivity{
         mUsernameView = findViewById(R.id.username);
 
         mPasswordView = findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
+        mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
+            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                attemptLogin();
+                return true;
             }
+            return false;
         });
 
-        Button mLoginButton = (Button) findViewById(R.id.login_button);
-        mLoginButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+        Button mLoginButton = findViewById(R.id.login_button);
+        mLoginButton.setOnClickListener(view -> attemptLogin());
     }
 
     /**
@@ -69,6 +64,8 @@ public class LoginActivity extends AppCompatActivity{
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
+
+        hideKeyboard(this);
         // Store values at the time of the login attempt.
         final String username = mUsernameView.getText().toString();
         final String password = mPasswordView.getText().toString();
@@ -78,7 +75,7 @@ public class LoginActivity extends AppCompatActivity{
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password)) {
-            if(!Validation.isPasswordTooShort(password)){
+            if (!Validation.isPasswordTooShort(password)) {
                 mPasswordView.setError(getString(R.string.error_short_password));
                 focusView = mPasswordView;
                 cancel = true;
@@ -97,48 +94,49 @@ public class LoginActivity extends AppCompatActivity{
             // form field with an error.
             focusView.requestFocus();
         } else {
-            Response.Listener<String> responseListener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject jsonResponse = new JSONObject(response);
-                        boolean success = jsonResponse.getBoolean("success");
+            Response.Listener<String> responseListener = response -> {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
 
-                        if (success) {
-                            int userId = jsonResponse.getInt("userId");
-                            String name = jsonResponse.getString("name");
-                            String email = jsonResponse.getString("email");
+                    if (success) {
+                        int userId = jsonResponse.getInt("userId");
+                        String name = jsonResponse.getString("name");
+                        String email = jsonResponse.getString("email");
 
-                            Intent data = new Intent();
-                            data.putExtra("userId", userId);
-                            data.putExtra("username", username);
-                            data.putExtra("password", password);
-                            data.putExtra("name",name);
-                            data.putExtra("email", email);
+                        Intent data = new Intent();
+                        data.putExtra("userId", userId);
+                        data.putExtra("username", username);
+                        data.putExtra("password", password);
+                        data.putExtra("name", name);
+                        data.putExtra("email", email);
 
-                            setResult(RESULT_OK, data);
-                            finish();
-                        } else {
-                            try {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("Login Failed")
-                                        .setNegativeButton("Retry", null)
-                                        .create()
-                                        .show();
-                            }catch(Exception e){
-                                System.out.println("Couldn't create Error Message 'Login failed'");
-                                e.printStackTrace();
-                            }
+                        setResult(RESULT_OK, data);
+                        finish();
+                    } else {
+                        try {
+                            String error = "Login Failed:\n";
+                            error += jsonResponse.getString("error");
+                            Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+//                          AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+//                          builder.setMessage("Login Failed:\n"+error)
+//                                  .setNegativeButton("Retry", null)
+//                                  .create()
+//                                  .show();
+                        } catch (Exception e) {
+                            System.out.println("Couldn't create Error Message 'Login failed'");
+                            e.printStackTrace();
                         }
-
-                    } catch (JSONException e) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                        builder.setMessage("JSON Exception")
-                                .setNegativeButton("Retry", null)
-                                .create()
-                                .show();
-                        e.printStackTrace();
                     }
+
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "JSON Exception", Toast.LENGTH_LONG).show();
+//                  AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+//                  builder.setMessage("JSON Exception")
+//                          .setNegativeButton("Retry", null)
+//                          .create()
+//                          .show();
+                    e.printStackTrace();
                 }
             };
 
@@ -156,11 +154,21 @@ public class LoginActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==124&&resultCode==RESULT_OK) {
+        if (requestCode == 124 && resultCode == RESULT_OK) {
             setResult(RESULT_OK, data);
             finish();
         }
     }
 
+    public void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }
 

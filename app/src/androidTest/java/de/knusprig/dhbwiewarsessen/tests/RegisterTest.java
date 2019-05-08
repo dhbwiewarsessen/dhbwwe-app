@@ -14,8 +14,7 @@ import org.junit.runners.Parameterized;
 import java.io.IOException;
 
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
-import de.knusprig.dhbwiewarsessen.steps.BasicSteps;
-import de.knusprig.dhbwiewarsessen.steps.RegisterSteps;
+import de.knusprig.dhbwiewarsessen.steps.Stepdefinitions;
 
 @RunWith(Parameterized.class)
 public class RegisterTest extends GreenCoffeeTest
@@ -41,6 +40,6 @@ public class RegisterTest extends GreenCoffeeTest
     @Test
     public void test()
     {
-        start(new BasicSteps(), new RegisterSteps());
+        start(new Stepdefinitions());
     }
 }

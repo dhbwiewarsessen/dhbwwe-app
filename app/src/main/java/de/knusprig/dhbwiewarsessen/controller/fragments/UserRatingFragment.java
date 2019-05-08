@@ -15,6 +15,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +33,7 @@ import java.util.List;
 
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
+import de.knusprig.dhbwiewarsessen.httprequest.DeleteRatingRequest;
 import de.knusprig.dhbwiewarsessen.model.Dish;
 import de.knusprig.dhbwiewarsessen.model.Menu;
 import de.knusprig.dhbwiewarsessen.model.Rating;
@@ -43,28 +52,22 @@ public class UserRatingFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_user_rating, container, false);
-
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        listView = (ListView) view.findViewById(R.id.rating_list);
-        filterSpinner = (Spinner) view.findViewById(R.id.filterSpinner);
-        pullToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.pullToRefresh);
+        listView = view.findViewById(R.id.rating_list);
+        filterSpinner = view.findViewById(R.id.filterSpinner);
 
-        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                System.out.println("test");
-
-                //TODO: add request for the server
-                //when new data is fetched
-                refreshList();
-                //when request is done
-                pullToRefresh.setRefreshing(false);
-            }
+        pullToRefresh = view.findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(() -> {
+            System.out.println("pull to refresh");
+            mainActivity.refeshDataFromServer();
+            //when new data is fetched
+            refreshList();
+            //when request is done
+            pullToRefresh.setRefreshing(false);
         });
 
         listRating.sort(Comparator.comparing(Rating::getDate)); //Default sorting
@@ -88,23 +91,40 @@ public class UserRatingFragment extends Fragment {
         ratingAdapter = new RatingAdapter(getActivity(), listRating);
 
         listView.setAdapter(ratingAdapter); //Displaying the list in the listView
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final int pos = position;
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Do you want to delete this entry?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                listRating.remove(pos);
-                                listView.invalidateViews();
+        listView.setOnItemLongClickListener((parent, view1, position, id) -> {
+            final int pos = position;
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Choose action for this rating")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        Rating ratingToDelete = (Rating) listView.getAdapter().getItem((int)id);
+                        int idToDelete = ratingToDelete.getId();
+                        System.out.println("id: " + idToDelete);
+                        DeleteRatingRequest drr = new DeleteRatingRequest(""+idToDelete, response -> {
+                            try {
+                                JSONObject jsonResponse = new JSONObject(response);
+                                boolean success = jsonResponse.getBoolean("success");
+                                if (success) {
+                                    listRating.remove(pos);
+                                    listView.invalidateViews();
+                                    Toast.makeText(mainActivity.getApplicationContext(), "Rating successfully deleted", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(mainActivity.getApplicationContext(), "Error while deleting rating", Toast.LENGTH_LONG).show();
+                                    System.out.println("Couldn't delete rating from server");
+                                }
                             }
-                        }).setNegativeButton("No", null)
-                        .create()
-                        .show();
-                return false;
-            }
+                            catch(JSONException e){
+                                e.printStackTrace();
+                                Toast.makeText(mainActivity.getApplicationContext(), "JSON Error", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        RequestQueue queue = Volley.newRequestQueue(getActivity());
+                        queue.add(drr);
+                    }).setNegativeButton("Edit", ((dialog, which) -> {
+                        mainActivity.switchToEditRatingsFragment(listRating.get(pos));
+                    }))
+                    .create()
+                    .show();
+            return false;
         });
     }
 
@@ -132,12 +152,7 @@ public class UserRatingFragment extends Fragment {
                 break;
             case "Date":
                 listRating.sort(Comparator.comparing(Rating::getDate).reversed());
-                Collections.sort(listRating, new Comparator<Rating>() {
-                    @Override
-                    public int compare(Rating o1, Rating o2) {
-                        return o2.getDate().compareTo(o1.getDate());
-                    }
-                });
+                Collections.sort(listRating, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
                 break;
         }
     }
@@ -149,5 +164,5 @@ public class UserRatingFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+}
 }

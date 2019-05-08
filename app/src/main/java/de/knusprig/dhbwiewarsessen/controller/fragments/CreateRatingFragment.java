@@ -1,6 +1,5 @@
 package de.knusprig.dhbwiewarsessen.controller.fragments;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Spinner;
@@ -34,7 +32,6 @@ import de.knusprig.dhbwiewarsessen.model.Menu;
 public class CreateRatingFragment extends Fragment {
 
     private MainActivity main;
-    private Menu menu;
     private View view;
     private EditText comment;
     private Spinner menuSpinner;
@@ -66,11 +63,7 @@ public class CreateRatingFragment extends Fragment {
         comment.setHint("Additional comment (optional)");
         ratingBar = view.findViewById(R.id.ratingBar);
 
-
-//      Set action listener
-        Button btnSendRating = (Button) view.findViewById(R.id.btnSend);
-
-        ArrayAdapter adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, items);
+        ArrayAdapter adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);//simple_spin‌​ner_dropdown_item);
         menuSpinner.setAdapter(adapter);
 
@@ -85,7 +78,7 @@ public class CreateRatingFragment extends Fragment {
 
     private void initializeMenuSpinner() {
         try {
-            ArrayAdapter adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_list_item_1, items);
+            ArrayAdapter adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, items);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);//simple_spin‌​ner_dropdown_item);
             menuSpinner.setAdapter(adapter);
         } catch (Exception e) {
@@ -94,59 +87,57 @@ public class CreateRatingFragment extends Fragment {
     }
 
     public void setMenu(Menu menu) {
-        this.menu = menu;
         items = new String[]{
                 menu.getDishes().get(0).getTitle().split("\\[")[0],
                 menu.getDishes().get(1).getTitle().split("\\[")[0],
                 menu.getDishes().get(2).getTitle().split("\\[")[0]
         };
         initializeMenuSpinner();
-
     }
 
     public void setMain(MainActivity main) {
         this.main = main;
     }
 
-    public void attemptAddRating(View view) {
-
+    public boolean attemptAddRating() {
         final int rating = (int)(ratingBar.getRating()*10);
+
+        if(rating == 0) {
+            Toast.makeText(main.getApplicationContext(), "Please add a rating", Toast.LENGTH_LONG).show();
+            return false;
+        }
 
         final String userId = "" + main.getCurrentUser().getUserId();
         final String comment = this.comment.getText().toString(); //if comment is just whitespaces put "null" into database
         final String selectedDish = menuSpinner.getSelectedItem().toString();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
         final String date = dateFormat.format(new Date());
-        System.out.println("Rating: " + rating);
-        System.out.println("Selected menu: " + selectedDish);
-        System.out.println("Additional comment: " + comment);
+        final String time = timeFormat.format(new Date());
 
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonResponse = new JSONObject(response);
-                    boolean success = jsonResponse.getBoolean("success");
+        Response.Listener<String> responseListener = response -> {
+            try {
+                JSONObject jsonResponse = new JSONObject(response);
+                boolean success = jsonResponse.getBoolean("success");
 
-                    if (success) {
-                        main.addRating(rating, comment, main.getCurrentUser(), new GregorianCalendar(), selectedDish);
-                        Toast.makeText(main.getApplicationContext(), "Rating successfully added", Toast.LENGTH_LONG).show();
-                        System.out.println("rating successfully send to server");
-                    } else {
-                        Toast.makeText(main.getApplicationContext(), "Error while adding rating", Toast.LENGTH_LONG).show();
-                        System.out.println("couldn't send rating to server");
-                    }
-                    main.refreshRatingLists();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (success) {
+                    int id = jsonResponse.getInt("ratingId");
+                    main.addRating(id, rating, comment, main.getCurrentUser(), new GregorianCalendar(), selectedDish);
+                    Toast.makeText(main.getApplicationContext(), "Rating successfully added", Toast.LENGTH_LONG).show();
+                    System.out.println("rating successfully send to server");
+                    main.switchToUserRatingsFragment();
+                } else {
+                    Toast.makeText(main.getApplicationContext(), "Error while adding rating", Toast.LENGTH_LONG).show();
+                    System.out.println("couldn't send rating to server");
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         };
-
-        CreateRatingRequest createRatingRequest = new CreateRatingRequest(userId, selectedDish, date, ""+rating, comment, responseListener);
+        CreateRatingRequest createRatingRequest = new CreateRatingRequest(userId, selectedDish, date,time, "" + rating, comment, responseListener);
         RequestQueue queue = Volley.newRequestQueue(main.getApplicationContext());
         queue.add(createRatingRequest);
-
+        return true;
     }
 
     public void setSelectedMenu(int id) {
