@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         navView.getMenu().findItem(R.id.nav_all_ratings).setChecked(true);
     }
 
-    private void switchToUserRatingsFragment() {
+    public void switchToUserRatingsFragment() {
         userRatingFragment.setMainActivity(this);
         userRatingFragment.setListRating(listRating);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -420,12 +420,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         return super.onKeyDown(keyCode, event);
     }
 
-    public void refreshRatingLists()
-    {
-        ratingsFragment.refreshList();
-        userRatingFragment.refreshList();
-    }
-
     public void updateLocalRating(Rating rating)
     {
         Rating matchingRating  = listRating.stream().filter(r -> r.getId() == rating.getId()).findFirst().orElse(null);
@@ -433,9 +427,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void btnSendClicked(View view) {
-        if(createRatingFragment.attemptAddRating()){
-            switchToUserRatingsFragment();
-        }
+        createRatingFragment.attemptAddRating();
     }
 
     public void btnEditClicked(View view)
@@ -456,6 +448,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void addRating(int id, int rating, String comment, User user, Calendar date, String dish ){
+        System.out.println(user.getUsername());
         listRating.add(new Rating(id, date, dish, rating, comment, user.getUsername()));
     }
 
