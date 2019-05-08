@@ -112,10 +112,14 @@ public class CreateRatingFragment extends Fragment {
         final String comment = this.comment.getText().toString(); //if comment is just whitespaces put "null" into database
         final String selectedDish = menuSpinner.getSelectedItem().toString();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
         final String date = dateFormat.format(new Date());
+        final String time = timeFormat.format(new Date());
+
         System.out.println("Rating: " + rating);
         System.out.println("Selected menu: " + selectedDish);
         System.out.println("Additional comment: " + comment);
+
 
         Response.Listener<String> responseListener = response -> {
             try {
@@ -137,7 +141,7 @@ public class CreateRatingFragment extends Fragment {
             }
         };
 
-        CreateRatingRequest createRatingRequest = new CreateRatingRequest(userId, selectedDish, date, "" + rating, comment, responseListener);
+        CreateRatingRequest createRatingRequest = new CreateRatingRequest(userId, selectedDish, date,time, "" + rating, comment, responseListener);
         RequestQueue queue = Volley.newRequestQueue(main.getApplicationContext());
         queue.add(createRatingRequest);
         return true;
