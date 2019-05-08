@@ -66,11 +66,16 @@
     function sendConfirmationEmail(){
         global $email, $name;
         
+        $confirmation_link = "https://dhbwwe.cu.ma/EmailConfirmation.php?".generateRandomString(16);
         $to_email = $email;
         $subject = 'Welcome to DHBWieWarsEssen';
-        $message = "What's poppin' ".$name."!\n\nOur humble team welcomes you to a new chapter of your life.\nForget what you know and prepare to be amazed.\nA new paradise awaits in the corporeal form of this android application.\nBear witness to its divinty and stay true to the will of your new god: DHBWieWarsEssen.\n\nRejoice, for this is the solution!\n\nGodspeed to you,\n\nthe DHBWieWarsEssen-Team";
+        $message = "What's poppin' ".$name."!\n\nOur humble team welcomes you to a new chapter of your life.\nForget what you know and prepare to be amazed.\nA new paradise awaits in the corporeal form of this android application.\nBear witness to its divinty and stay true to the will of your new god: DHBWieWarsEssen.\n\nRejoice, for this is the solution!\n\nGodspeed to you,\n\nthe DHBWieWarsEssen-Team\n\n\nPS: Please confirm your email address here:\n".$confirmation_link;
         $headers = 'From: noreply@dhbwwe.cu.ma';
         mail($to_email,$subject,$message,$headers);
+    }
+    
+    function generateRandomString($length = 10) {
+        return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
     }
     
     if(usernameAvailable()){
