@@ -26,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -264,8 +265,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         };
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String date = dateFormat.format(new Date());
-        System.out.println(date);
-        System.out.println(new Date());
         RetrieveMenuRequest menuRequest = new RetrieveMenuRequest(date, responseListener);
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         queue.add(menuRequest);
@@ -279,16 +278,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 if (success) {
                     listRating.clear();
                     for (int i = 0; i<jsonResponse.length()-1; i++) {
-                        System.out.println("ratings received");
                         JSONArray jsonRating = jsonResponse.getJSONArray(""+i);
                         int rating_id = jsonRating.getInt(0);
                         String date = jsonRating.getString(1);
-                        String dish = jsonRating.getString(2);
-                        int rating = jsonRating.getInt(3);
-                        String comment = jsonRating.getString(4);
-                        String username = jsonRating.getString(5);
+                        String time = jsonRating.getString(2);
+                        String dish = jsonRating.getString(3);
+                        int rating = jsonRating.getInt(4);
+                        String comment = jsonRating.getString(5);
+                        String username = jsonRating.getString(6);
 
-                        listRating.add(new Rating(rating_id, new GregorianCalendar(), dish, rating, comment, username));
+                        Date date1=new SimpleDateFormat("yyyy-MM-dd,hh:mm:ss").parse(date + "," + time);
+                        listRating.add(new Rating(rating_id, new Calendar.Builder().setInstant(date1).build(), dish, rating, comment, username));
                     }
                 } else {
                     System.out.println("couldn't get menus from Server");
@@ -297,12 +297,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
             } catch (JSONException e) {
                 System.out.println("JSON Exception");
                 e.printStackTrace();
+            } catch (ParseException e) {
+                System.out.println("Couldn't parse date");
+                e.printStackTrace();
             }
         };
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String date = dateFormat.format(new Date());
-        System.out.println(date);
-        System.out.println(new Date());
         RetrieveRatingsRequest ratingsRequest = new RetrieveRatingsRequest(date, responseListener);
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         queue.add(ratingsRequest);
