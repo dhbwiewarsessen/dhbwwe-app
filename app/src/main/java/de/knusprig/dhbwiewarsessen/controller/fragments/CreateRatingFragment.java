@@ -127,7 +127,7 @@ public class CreateRatingFragment extends Fragment {
                     System.out.println("rating successfully send to server");
                     main.switchToUserRatingsFragment();
                 } else {
-                    Toast.makeText(main.getApplicationContext(), "Error while adding rating", Toast.LENGTH_LONG).show();
+                    Toast.makeText(main.getApplicationContext(), "Error: " + jsonResponse.getString("error"), Toast.LENGTH_LONG).show();
                     System.out.println("couldn't send rating to server");
                 }
             } catch (JSONException e) {
