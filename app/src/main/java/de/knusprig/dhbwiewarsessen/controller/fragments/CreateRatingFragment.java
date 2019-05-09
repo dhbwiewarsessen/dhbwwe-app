@@ -121,7 +121,7 @@ public class CreateRatingFragment extends Fragment {
         final String comment = this.comment.getText().toString(); //if comment is just whitespaces put "null" into database
         final String selectedDish = menuSpinner.getSelectedItem().toString();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         final String date = dateFormat.format(new Date());
         final String time = timeFormat.format(new Date());
 
