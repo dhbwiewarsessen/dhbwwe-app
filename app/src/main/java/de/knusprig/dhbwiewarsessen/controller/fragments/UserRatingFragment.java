@@ -33,6 +33,7 @@ import java.util.List;
 
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
+import de.knusprig.dhbwiewarsessen.controller.activities.RegisterActivity;
 import de.knusprig.dhbwiewarsessen.httprequest.DeleteRatingRequest;
 import de.knusprig.dhbwiewarsessen.model.Dish;
 import de.knusprig.dhbwiewarsessen.model.Menu;
@@ -99,6 +100,16 @@ public class UserRatingFragment extends Fragment {
                         Rating ratingToDelete = (Rating) listView.getAdapter().getItem((int)id);
                         int idToDelete = ratingToDelete.getId();
                         System.out.println("id: " + idToDelete);
+
+                        if(!mainActivity.isNetworkAvailable()) {
+                            AlertDialog.Builder errorBuilder = new AlertDialog.Builder(getActivity());
+                            errorBuilder .setMessage("No internet connection")
+                                    .setNegativeButton("Retry", null)
+                                    .create()
+                                    .show();
+                            return;
+                        }
+
                         DeleteRatingRequest drr = new DeleteRatingRequest(""+idToDelete, response -> {
                             try {
                                 JSONObject jsonResponse = new JSONObject(response);

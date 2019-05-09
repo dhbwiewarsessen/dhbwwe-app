@@ -1,5 +1,6 @@
 package de.knusprig.dhbwiewarsessen.controller.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -101,6 +102,15 @@ public class CreateRatingFragment extends Fragment {
 
     public boolean attemptAddRating() {
         final int rating = (int)(ratingBar.getRating()*10);
+
+        if(!main.isNetworkAvailable()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("No internet connection")
+                    .setNegativeButton("Retry", null)
+                    .create()
+                    .show();
+            return false;
+        }
 
         if(rating == 0) {
             Toast.makeText(main.getApplicationContext(), "Please add a rating", Toast.LENGTH_LONG).show();

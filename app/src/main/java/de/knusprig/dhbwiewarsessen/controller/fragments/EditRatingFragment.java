@@ -1,5 +1,6 @@
 package de.knusprig.dhbwiewarsessen.controller.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import java.util.GregorianCalendar;
 
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
+import de.knusprig.dhbwiewarsessen.controller.activities.RegisterActivity;
 import de.knusprig.dhbwiewarsessen.httprequest.CreateRatingRequest;
 import de.knusprig.dhbwiewarsessen.httprequest.EditRatingRequest;
 import de.knusprig.dhbwiewarsessen.model.Rating;
@@ -70,6 +72,15 @@ public class EditRatingFragment extends Fragment {
         editedRating.setRating(rating);
         editedRating.setComment(comment);
 
+        if(!main.isNetworkAvailable()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("No internet connection")
+                    .setNegativeButton("Retry", null)
+                    .create()
+                    .show();
+            return;
+        }
+
         Response.Listener<String> responseListener = response -> {
             try {
                 JSONObject jsonResponse = new JSONObject(response);
@@ -79,6 +90,7 @@ public class EditRatingFragment extends Fragment {
                     main.updateLocalRating(editedRating);
                     Toast.makeText(main.getApplicationContext(), "Rating successfully edited", Toast.LENGTH_LONG).show();
                     System.out.println("rating successfully edited in server");
+                    main.switchToUserRatingsFragment();
                 } else {
                     Toast.makeText(main.getApplicationContext(), "Error while editing rating", Toast.LENGTH_LONG).show();
                     System.out.println("couldn't edit rating on server");
