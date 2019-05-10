@@ -10,21 +10,46 @@
         android:id="@+id/filterSpinner"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHeight_percent="0.07"
+        app:layout_constraintWidth_percent="0.3"
+        app:layout_constraintLeft_toRightOf="@+id/guideline70"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="1" />
+         />
+
+    <EditText
+        android:id="@+id/filterText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:lines="1"
+        android:singleLine="true"
+        android:hint="Filter"
+        app:layout_constraintHeight_percent="0.07"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/guideline70"
+        />
+
+    <android.support.constraint.Guideline
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/guideline70"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7"
+
+        />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/pullToRefresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/filterSpinner">
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.93"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filterText">
 
     <ListView
         android:id="@+id/rating_list"
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content"
         />
 
