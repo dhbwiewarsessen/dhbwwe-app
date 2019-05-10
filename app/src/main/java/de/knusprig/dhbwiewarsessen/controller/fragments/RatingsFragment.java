@@ -78,7 +78,7 @@ public class RatingsFragment extends Fragment {
                 System.out.println("changed");
                 if(s.length() > 0){
                     System.out.println(s);
-                    filterByText(s, currentSpinnerItem);
+                    filterByText(s.toString().toLowerCase(), currentSpinnerItem);
                 }
                 else{
                     filteredListRating.clear();
@@ -190,14 +190,14 @@ public class RatingsFragment extends Fragment {
         switch (sortBy){
             case "Name":
                 for(Rating r : listRating){
-                    if(r.getUsername().contains(s)){
+                    if(r.getUsername().toLowerCase().contains(s)){
                         filteredListRating.add(r);
                     }
                 }
                 break;
             case "Dish":
                 for(Rating r : listRating){
-                    if(r.getDish().contains(s)){
+                    if(r.getDish().toLowerCase().contains(s)){
                         filteredListRating.add(r);
                     }
                  }
