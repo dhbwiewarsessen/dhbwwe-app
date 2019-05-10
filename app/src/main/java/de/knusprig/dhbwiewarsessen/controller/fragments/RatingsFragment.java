@@ -117,7 +117,7 @@ public class RatingsFragment extends Fragment {
 
     public void refreshList(){
         try {
-            listView.invalidateViews();
+            ratingAdapter.notifyDataSetChanged();
             sortBySpinner(filterSpinner.getSelectedItem().toString()); //If there is a new dish added it gets sorted automatically
         } catch (Exception e) {
             e.printStackTrace();

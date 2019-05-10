@@ -415,6 +415,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
             //update User on MainPageFragment
             mainPageFragment.update();
             userRatingFragment.refreshList();
+            ratingsFragment.refreshList();
         } else if (o.getClass().equals(Menu.class)) {
             //update Menu on MainPageFragment
             mainPageFragment.setMenu(menu);
@@ -474,4 +475,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void refeshDataFromServer(){
         getAllRatings();
     }
+
+    public void deleteRatingFromList(Rating ratingToDelete) {listRating.remove(ratingToDelete);}
 }
