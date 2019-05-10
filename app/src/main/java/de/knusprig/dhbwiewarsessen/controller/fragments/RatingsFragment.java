@@ -80,6 +80,11 @@ public class RatingsFragment extends Fragment {
                     System.out.println(s);
                     filterByText(s, currentSpinnerItem);
                 }
+                else{
+                    filteredListRating.clear();
+                    filteredListRating.addAll(listRating);
+                    refreshList();
+                }
             }
 
             @Override
