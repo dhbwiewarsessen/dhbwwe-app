@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.github.kt3k.coveralls'
 
 android {
     compileSdkVersion 28
@@ -51,4 +52,8 @@ dependencies {
     //androidTestImplementation 'info.cukes:cucumber-android:1.2.5@jar'
     //androidTestImplementation 'info.cukes:cucumber-picocontainer:1.2.4'
     //androidTestImplementation 'com.mauriciotogneri:greencoffee:3.2.1'
+}
+
+coveralls {
+    jacocoReportPath = "${buildDir}/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
 }
