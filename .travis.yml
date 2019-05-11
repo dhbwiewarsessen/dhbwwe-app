@@ -10,6 +10,7 @@ android:
 script:
 - echo "starting script"
 - ./gradlew clean build
+- ./gradlew build connectedCheck
 
 # Emulator Management: Create, Start and Wait
 before_script:
@@ -18,3 +19,6 @@ before_script:
 - emulator -avd test -no-window -skin 768x1280 &
 - android-wait-for-emulator
 - adb shell input keyevent 82 &
+
+after_success:
+- ./gradlew jacocoTestReport coveralls
