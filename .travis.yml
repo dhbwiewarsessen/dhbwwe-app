@@ -2,10 +2,11 @@ language: android
 sudo: false
 android:
   components:
+  - tools
+  - platform-tools
   - android-28
   - build-tools-28.0.3
-  - android-26
-  - sys-img-x86-android-26
+  - sys-img-armeabi-v7a-android-28
 
 script:
 - echo "starting script"
@@ -14,7 +15,7 @@ script:
 # Emulator Management: Create, Start and Wait
 before_script:
 - echo "Starting emulator"
-- echo no | android create avd --force -n test -t android-26 --abi x86 -c 100M
-- emulator -avd test -no-window -skin 768x1280 &
+- echo no | android create avd --force -n test -t android-28 --abi x86 -c 100M
+- emulator -avd test -no-window &
 - android-wait-for-emulator
 - adb shell input keyevent 82 &
