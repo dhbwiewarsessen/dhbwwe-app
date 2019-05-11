@@ -33,6 +33,7 @@ import java.util.List;
 
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
+import de.knusprig.dhbwiewarsessen.controller.activities.RegisterActivity;
 import de.knusprig.dhbwiewarsessen.httprequest.DeleteRatingRequest;
 import de.knusprig.dhbwiewarsessen.model.Dish;
 import de.knusprig.dhbwiewarsessen.model.Menu;
@@ -99,13 +100,24 @@ public class UserRatingFragment extends Fragment {
                         Rating ratingToDelete = (Rating) listView.getAdapter().getItem((int)id);
                         int idToDelete = ratingToDelete.getId();
                         System.out.println("id: " + idToDelete);
+
+                        if(!mainActivity.isNetworkAvailable()) {
+                            AlertDialog.Builder errorBuilder = new AlertDialog.Builder(getActivity());
+                            errorBuilder .setMessage("No internet connection")
+                                    .setNegativeButton("Retry", null)
+                                    .create()
+                                    .show();
+                            return;
+                        }
+
                         DeleteRatingRequest drr = new DeleteRatingRequest(""+idToDelete, response -> {
                             try {
                                 JSONObject jsonResponse = new JSONObject(response);
                                 boolean success = jsonResponse.getBoolean("success");
                                 if (success) {
-                                    listRating.remove(pos);
-                                    listView.invalidateViews();
+                                    mainActivity.deleteRatingFromList(ratingToDelete);
+                                    listRating.remove(ratingToDelete);
+                                    ratingAdapter.notifyDataSetChanged();
                                     Toast.makeText(mainActivity.getApplicationContext(), "Rating successfully deleted", Toast.LENGTH_LONG).show();
                                 } else {
                                     Toast.makeText(mainActivity.getApplicationContext(), "Error while deleting rating", Toast.LENGTH_LONG).show();
@@ -159,7 +171,7 @@ public class UserRatingFragment extends Fragment {
 
     public void refreshList(){
         try {
-            listView.invalidateViews();
+            ratingAdapter.notifyDataSetChanged();
             sortBySpinner(filterSpinner.getSelectedItem().toString()); //If there is a new dish added it gets sorted automatically
         } catch (Exception e) {
             e.printStackTrace();

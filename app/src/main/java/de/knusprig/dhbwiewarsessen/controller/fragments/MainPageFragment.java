@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 
@@ -85,7 +86,11 @@ public class MainPageFragment extends Fragment {
                     return true;
                 case MotionEvent.ACTION_UP:
                     dishText1.setTextColor(Color.WHITE);
-                    main.switchToCreateRatingsFragment(0);
+                    if(main.getCurrentUser().getUserId() == 0){
+                        Toast.makeText(main.getApplicationContext(), "Please log in to create ratings.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        main.switchToCreateRatingsFragment(0);
+                    }
                     return true;
             }
             return false;
@@ -97,7 +102,11 @@ public class MainPageFragment extends Fragment {
                     return true;
                 case MotionEvent.ACTION_UP:
                     dishText2.setTextColor(Color.WHITE);
-                    main.switchToCreateRatingsFragment(1);
+                    if(main.getCurrentUser().getUserId() == 0){
+                        Toast.makeText(main.getApplicationContext(), "Please log in to create ratings.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        main.switchToCreateRatingsFragment(1);
+                    }
                     return true;
             }
             return false;
@@ -109,7 +118,11 @@ public class MainPageFragment extends Fragment {
                     return true;
                 case MotionEvent.ACTION_UP:
                     dishText3.setTextColor(Color.WHITE);
-                    main.switchToCreateRatingsFragment(2);
+                    if(main.getCurrentUser().getUserId() == 0){
+                        Toast.makeText(main.getApplicationContext(), "Please log in to create ratings.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        main.switchToCreateRatingsFragment(2);
+                    }
                     return true;
             }
             return false;

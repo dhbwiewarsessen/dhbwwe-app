@@ -1,7 +1,11 @@
 package de.knusprig.dhbwiewarsessen.controller.activities;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -9,7 +13,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -17,6 +20,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -241,6 +245,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void getMenuFromServer() {
+        if(!isNetworkAvailable()) {
+            Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
+            return;
+        }
         final Response.Listener<String> responseListener = response -> {
             try {
                 JSONObject jsonResponse = new JSONObject(response);
@@ -271,6 +279,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void getAllRatings() {
+        if(!isNetworkAvailable()) {
+            Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
+            return;
+        }
         final Response.Listener<String> responseListener = response -> {
             try {
                 JSONObject jsonResponse = new JSONObject(response);
@@ -403,6 +415,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
             //update User on MainPageFragment
             mainPageFragment.update();
             userRatingFragment.refreshList();
+            ratingsFragment.refreshList();
         } else if (o.getClass().equals(Menu.class)) {
             //update Menu on MainPageFragment
             mainPageFragment.setMenu(menu);
@@ -430,11 +443,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         createRatingFragment.attemptAddRating();
     }
 
-    public void btnEditClicked(View view)
-    {
-        editRatingFragment.attemptEditRating(view);
-        switchToUserRatingsFragment();
-    }
+    public void btnEditClicked(View view) { editRatingFragment.attemptEditRating(view); }
 
     public void changeMenuBarUserState(boolean loggedIn) {
         navView.getMenu().findItem(R.id.nav_login).setEnabled(!loggedIn);
@@ -452,6 +461,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
         listRating.add(new Rating(id, date, dish, rating, comment, user.getUsername()));
     }
 
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     public List<String> getDefValues() {
         return defValues;
     }
@@ -459,4 +475,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void refeshDataFromServer(){
         getAllRatings();
     }
+
+    public void deleteRatingFromList(Rating ratingToDelete) {listRating.remove(ratingToDelete);}
 }
