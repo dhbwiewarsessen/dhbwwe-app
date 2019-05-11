@@ -1,5 +1,6 @@
 package de.knusprig.dhbwiewarsessen.controller.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -102,6 +103,15 @@ public class CreateRatingFragment extends Fragment {
     public boolean attemptAddRating() {
         final int rating = (int)(ratingBar.getRating()*10);
 
+        if(!main.isNetworkAvailable()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("No internet connection")
+                    .setNegativeButton("Retry", null)
+                    .create()
+                    .show();
+            return false;
+        }
+
         if(rating == 0) {
             Toast.makeText(main.getApplicationContext(), "Please add a rating", Toast.LENGTH_LONG).show();
             return false;
@@ -111,7 +121,7 @@ public class CreateRatingFragment extends Fragment {
         final String comment = this.comment.getText().toString(); //if comment is just whitespaces put "null" into database
         final String selectedDish = menuSpinner.getSelectedItem().toString();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         final String date = dateFormat.format(new Date());
         final String time = timeFormat.format(new Date());
 
@@ -127,7 +137,7 @@ public class CreateRatingFragment extends Fragment {
                     System.out.println("rating successfully send to server");
                     main.switchToUserRatingsFragment();
                 } else {
-                    Toast.makeText(main.getApplicationContext(), "Error while adding rating", Toast.LENGTH_LONG).show();
+                    Toast.makeText(main.getApplicationContext(), "Error: " + jsonResponse.getString("error"), Toast.LENGTH_LONG).show();
                     System.out.println("couldn't send rating to server");
                 }
             } catch (JSONException e) {

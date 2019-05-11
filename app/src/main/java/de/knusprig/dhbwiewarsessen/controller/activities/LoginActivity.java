@@ -2,7 +2,10 @@ package de.knusprig.dhbwiewarsessen.controller.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -72,6 +75,15 @@ public class LoginActivity extends AppCompatActivity {
 
         boolean cancel = false;
         View focusView = null;
+
+        if(!isNetworkAvailable()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+            builder.setMessage("No internet connection")
+            .setNegativeButton("Retry", null)
+            .create()
+            .show();
+            return;
+        }
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password)) {
@@ -158,6 +170,13 @@ public class LoginActivity extends AppCompatActivity {
             setResult(RESULT_OK, data);
             finish();
         }
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public void hideKeyboard(Activity activity) {
