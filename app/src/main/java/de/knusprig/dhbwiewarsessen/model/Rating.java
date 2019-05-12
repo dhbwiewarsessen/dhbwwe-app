@@ -1,5 +1,6 @@
 package de.knusprig.dhbwiewarsessen.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Rating {
@@ -10,6 +11,8 @@ public class Rating {
     private String username;
     private Calendar date;
     private String dish;
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy | HH:mm");
 
     public Rating(Calendar date, String dish, int rating, String comment, String username) {
         this.rating = rating;
@@ -62,6 +65,10 @@ public class Rating {
 
     public Calendar getDate() {
         return date;
+    }
+
+    public String getStringDate(){
+        return simpleDateFormat.format(date.getTime());
     }
 
     public String getDish() {
