@@ -103,7 +103,7 @@ public class RatingsFragment extends Fragment {
             pullToRefresh.setRefreshing(false);
         });
 
-        listRating.sort(Comparator.comparing(Rating::getDate)); //Default sorting
+        //listRating.sort(Comparator.comparing(Rating::getDate)); //Default sorting
 
         ArrayAdapter<String> adapterS = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item, mainActivity.getDefValues());
         adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -173,13 +173,15 @@ public class RatingsFragment extends Fragment {
     public void sortBySpinner(String sortBy){
         switch (sortBy){
             case "Name":
-                //TODO: add name sorting
+                //filteredListRating.sort(Comperator.comparing(Rating::getUsername));
+                Collections.sort(filteredListRating, ((o1, o2) -> o1.getUsername().compareTo(o2.getUsername())));
                 break;
             case "Dish":
-                filteredListRating.sort(Comparator.comparing(Rating::getDish));
+                //filteredListRating.sort(Comparator.comparing(Rating::getDish));
+                Collections.sort(filteredListRating, ((o1, o2) -> o1.getDish().compareTo(o2.getDish())));
                 break;
             case "Date":
-                filteredListRating.sort(Comparator.comparing(Rating::getDate).reversed());
+                //filteredListRating.sort(Comparator.comparing(Rating::getDate).reversed());
                 Collections.sort(filteredListRating, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
                 break;
         }
@@ -203,7 +205,11 @@ public class RatingsFragment extends Fragment {
                  }
                 break;
             case "Date":
-
+                for(Rating r : listRating){
+                    if(r.getStringDate().contains(s)){
+                        filteredListRating.add(r);
+                    }
+                }
                 break;
         }
         refreshList();
