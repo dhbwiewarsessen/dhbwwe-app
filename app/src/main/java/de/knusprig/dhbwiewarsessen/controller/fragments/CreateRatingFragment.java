@@ -101,9 +101,9 @@ public class CreateRatingFragment extends Fragment {
     }
 
     public boolean attemptAddRating() {
-        final int rating = (int)(ratingBar.getRating()*10);
+        final int rating = (int) (ratingBar.getRating() * 10);
 
-        if(!main.isNetworkAvailable()) {
+        if (!main.isNetworkAvailable()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage("No internet connection")
                     .setNegativeButton("Retry", null)
@@ -112,7 +112,7 @@ public class CreateRatingFragment extends Fragment {
             return false;
         }
 
-        if(rating == 0) {
+        if (rating == 0) {
             Toast.makeText(main.getApplicationContext(), "Please add a rating", Toast.LENGTH_LONG).show();
             return false;
         }
@@ -132,7 +132,7 @@ public class CreateRatingFragment extends Fragment {
 
                 if (success) {
                     int id = jsonResponse.getInt("ratingId");
-                    main.addRating(id, rating, comment, main.getCurrentUser(), new GregorianCalendar(), selectedDish);
+                    main.addRating(id, rating, comment, main.getCurrentUser(), new Date(), selectedDish);
                     Toast.makeText(main.getApplicationContext(), "Rating successfully added", Toast.LENGTH_LONG).show();
                     System.out.println("rating successfully send to server");
                     main.switchToUserRatingsFragment();
@@ -144,7 +144,7 @@ public class CreateRatingFragment extends Fragment {
                 e.printStackTrace();
             }
         };
-        CreateRatingRequest createRatingRequest = new CreateRatingRequest(userId, selectedDish, date,time, "" + rating, comment, responseListener);
+        CreateRatingRequest createRatingRequest = new CreateRatingRequest(userId, selectedDish, date, time, "" + rating, comment, responseListener);
         RequestQueue queue = Volley.newRequestQueue(main.getApplicationContext());
         queue.add(createRatingRequest);
         return true;

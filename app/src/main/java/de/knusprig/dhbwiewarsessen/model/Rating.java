@@ -1,6 +1,6 @@
 package de.knusprig.dhbwiewarsessen.model;
 
-import java.util.Calendar;
+import java.util.Date;
 
 public class Rating {
 
@@ -8,18 +8,10 @@ public class Rating {
     private int rating;
     private String comment;
     private String username;
-    private Calendar date;
+    private Date date;
     private String dish;
 
-    public Rating(Calendar date, String dish, int rating, String comment, String username) {
-        this.rating = rating;
-        this.comment = comment;
-        this.date = date;
-        this.dish = dish;
-        this.username = username;
-    }
-
-    public Rating(int id, Calendar date, String dish, int rating, String comment, String username) {
+    public Rating(int id, Date date, String dish, int rating, String comment, String username) {
         this.id = id;
         this.rating = rating;
         this.comment = comment;
@@ -60,7 +52,7 @@ public class Rating {
         this.comment = comment;
     }
 
-    public Calendar getDate() {
+    public Date getDate() {
         return date;
     }
 

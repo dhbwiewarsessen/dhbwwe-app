@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         getMenuFromServer();
     }
 
-    private void initializeRatingsFragment(){
+    private void initializeRatingsFragment() {
         ratingsFragment.setListRating(listRating);
         getAllRatings();
     }
@@ -166,8 +166,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
                     @Override
                     public void onDrawerStateChanged(int newState) {
-                        if(newState == DrawerLayout.STATE_SETTLING){
-                            if(!mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+                        if (newState == DrawerLayout.STATE_SETTLING) {
+                            if (!mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
                                 changeMenuBarUserState(currentUser.getUserId() != 0);
                             }
                         }
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void logout() {
-        currentUser = new User(0, "","","","");
+        currentUser = new User(0, "", "", "", "");
         currentUser.addObserver(this);
         invalidateOptionsMenu();
         mainPageFragment.update();
@@ -236,8 +236,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         switchToCreateRatingsFragment();
     }
 
-    public void switchToEditRatingsFragment(Rating rating)
-    {
+    public void switchToEditRatingsFragment(Rating rating) {
         editRatingFragment.setRating(rating);
         editRatingFragment.setMain(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -245,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void getMenuFromServer() {
-        if(!isNetworkAvailable()) {
+        if (!isNetworkAvailable()) {
             Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
             return;
         }
@@ -279,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void getAllRatings() {
-        if(!isNetworkAvailable()) {
+        if (!isNetworkAvailable()) {
             Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_LONG).show();
             return;
         }
@@ -289,18 +288,18 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 boolean success = jsonResponse.getBoolean("success");
                 if (success) {
                     listRating.clear();
-                    for (int i = 0; i<jsonResponse.length()-1; i++) {
-                        JSONArray jsonRating = jsonResponse.getJSONArray(""+i);
+                    for (int i = 0; i < jsonResponse.length() - 1; i++) {
+                        JSONArray jsonRating = jsonResponse.getJSONArray("" + i);
                         int rating_id = jsonRating.getInt(0);
-                        String date = jsonRating.getString(1);
+                        String dateString = jsonRating.getString(1);
                         String time = jsonRating.getString(2);
                         String dish = jsonRating.getString(3);
                         int rating = jsonRating.getInt(4);
                         String comment = jsonRating.getString(5);
                         String username = jsonRating.getString(6);
 
-                        Date date1=new SimpleDateFormat("yyyy-MM-dd,hh:mm:ss").parse(date + "," + time);
-                        listRating.add(new Rating(rating_id, new Calendar.Builder().setInstant(date1).build(), dish, rating, comment, username));
+                        Date date = new SimpleDateFormat("yyyy-MM-dd,hh:mm:ss").parse(dateString + "," + time);
+                        listRating.add(new Rating(rating_id, date, dish, rating, comment, username));
                     }
                 } else {
                     System.out.println("couldn't get menus from Server");
@@ -425,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             System.out.println("BACK BUTTON PRESSED");
             return true;
         }
@@ -433,9 +432,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
         return super.onKeyDown(keyCode, event);
     }
 
-    public void updateLocalRating(Rating rating)
-    {
-        Rating matchingRating  = listRating.stream().filter(r -> r.getId() == rating.getId()).findFirst().orElse(null);
+    public void updateLocalRating(Rating rating) {
+        Rating matchingRating = listRating.stream().filter(r -> r.getId() == rating.getId()).findFirst().orElse(null);
         Collections.replaceAll(listRating, matchingRating, rating);
     }
 
@@ -443,7 +441,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
         createRatingFragment.attemptAddRating();
     }
 
-    public void btnEditClicked(View view) { editRatingFragment.attemptEditRating(view); }
+    public void btnEditClicked(View view) {
+        editRatingFragment.attemptEditRating(view);
+    }
 
     public void changeMenuBarUserState(boolean loggedIn) {
         navView.getMenu().findItem(R.id.nav_login).setEnabled(!loggedIn);
@@ -456,7 +456,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         return currentUser;
     }
 
-    public void addRating(int id, int rating, String comment, User user, Calendar date, String dish ){
+    public void addRating(int id, int rating, String comment, User user, Date date, String dish) {
         System.out.println(user.getUsername());
         listRating.add(new Rating(id, date, dish, rating, comment, user.getUsername()));
     }
@@ -472,9 +472,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
         return defValues;
     }
 
-    public void refeshDataFromServer(){
+    public void refeshDataFromServer() {
         getAllRatings();
     }
 
-    public void deleteRatingFromList(Rating ratingToDelete) {listRating.remove(ratingToDelete);}
+    public void deleteRatingFromList(Rating ratingToDelete) {
+        listRating.remove(ratingToDelete);
+    }
 }
