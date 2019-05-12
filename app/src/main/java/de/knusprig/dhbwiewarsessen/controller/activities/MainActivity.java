@@ -1,6 +1,5 @@
 package de.knusprig.dhbwiewarsessen.controller.activities;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,10 +32,8 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -433,8 +430,16 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void updateLocalRating(Rating rating) {
-        Rating matchingRating = listRating.stream().filter(r -> r.getId() == rating.getId()).findFirst().orElse(null);
-        Collections.replaceAll(listRating, matchingRating, rating);
+        Rating matchingRating = null;
+        for (Rating r : listRating) {
+            if (r.getId() == rating.getId()) {
+                matchingRating = r;
+                break;
+            }
+        }
+        if (matchingRating != null) {
+            Collections.replaceAll(listRating, matchingRating, rating);
+        }
     }
 
     public void btnSendClicked(View view) {
