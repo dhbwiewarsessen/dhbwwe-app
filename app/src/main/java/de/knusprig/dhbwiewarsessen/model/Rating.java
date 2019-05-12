@@ -1,5 +1,6 @@
 package de.knusprig.dhbwiewarsessen.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Rating {
@@ -10,6 +11,9 @@ public class Rating {
     private String username;
     private Date date;
     private String dish;
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy | HH:mm");
+
 
     public Rating(int id, Date date, String dish, int rating, String comment, String username) {
         this.id = id;
@@ -54,6 +58,10 @@ public class Rating {
 
     public Date getDate() {
         return date;
+    }
+
+    public String getStringDate() {
+        return simpleDateFormat.format(date.getTime());
     }
 
     public String getDish() {
