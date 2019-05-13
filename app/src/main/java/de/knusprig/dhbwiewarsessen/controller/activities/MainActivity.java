@@ -354,8 +354,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        ((TextView) findViewById(R.id.header_name)).setText(currentUser.getName());
-        ((TextView) findViewById(R.id.header_email)).setText(currentUser.getEmail());
+        if (currentUser != null) {
+            ((TextView) findViewById(R.id.header_name)).setText(currentUser.getName());
+            ((TextView) findViewById(R.id.header_email)).setText(currentUser.getEmail());
+        }
         return true;
     }
 
