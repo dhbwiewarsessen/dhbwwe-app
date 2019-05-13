@@ -37,7 +37,7 @@ public class ListRatingsTest extends GreenCoffeeTest
                 ); // the locales used to run the scenarios (optional)
     }
 
-    @Test
+    //@Test
     public void test()
     {
         start(new Stepdefinitions());
