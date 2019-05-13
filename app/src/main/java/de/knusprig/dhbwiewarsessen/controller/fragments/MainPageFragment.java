@@ -54,9 +54,9 @@ public class MainPageFragment extends Fragment {
 
     private void updateWelcomeMessage() {
         TextView welcomeMessage = view.findViewById(R.id.Welcome);
-        String name = main.getCurrentUser().getName();
-        if (name.startsWith("default-")) {
-            name = "";
+        String name = "";
+        if (main.getCurrentUser() != null) {
+            name = main.getCurrentUser().getName();
         }
         welcomeMessage.setText("Welcome " + name);
     }
