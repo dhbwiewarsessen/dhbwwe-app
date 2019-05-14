@@ -1,5 +1,6 @@
 package de.knusprig.dhbwiewarsessen.controller.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -154,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     @Override
                     public void onDrawerOpened(View drawerView) {
                         // Respond when the drawer is opened
+                        hideKeyboard(MainActivity.this);
                     }
 
                     @Override
@@ -442,6 +445,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
         if (matchingRating != null) {
             Collections.replaceAll(listRating, matchingRating, rating);
         }
+    }
+
+    public void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     public void btnSendClicked(View view) {
