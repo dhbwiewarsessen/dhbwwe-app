@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         defValues.add("Date");
         defValues.add("Dish");
+        defValues.add("Rating");
         defValues.add("Name");
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
