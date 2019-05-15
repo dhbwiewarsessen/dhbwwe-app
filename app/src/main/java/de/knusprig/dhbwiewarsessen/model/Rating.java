@@ -68,4 +68,7 @@ public class Rating {
         return dish;
     }
 
+    public String getStringRating(){
+        return rating+"" ;
+    }
 }
