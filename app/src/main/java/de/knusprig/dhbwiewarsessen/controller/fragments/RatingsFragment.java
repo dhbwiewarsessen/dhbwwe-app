@@ -143,15 +143,15 @@ public class RatingsFragment extends Fragment {
     public void sortBySpinner(String sortBy){
         switch (sortBy){
             case "Name":
-                //filteredListRating.sort(Comperator.comparing(Rating::getUsername));
                 Collections.sort(filteredListRating, ((o1, o2) -> o1.getUsername().compareTo(o2.getUsername())));
                 break;
             case "Dish":
-                //filteredListRating.sort(Comparator.comparing(Rating::getDish));
                 Collections.sort(filteredListRating, ((o1, o2) -> o1.getDish().compareTo(o2.getDish())));
                 break;
+            case "Rating":
+                Collections.sort(filteredListRating, ((o1, o2) -> o2.getStringRating().compareTo(o1.getStringRating())));
+                break;
             case "Date":
-                //filteredListRating.sort(Comparator.comparing(Rating::getDate).reversed());
                 Collections.sort(filteredListRating, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
                 break;
         }
@@ -173,6 +173,16 @@ public class RatingsFragment extends Fragment {
                         filteredListRating.add(r);
                     }
                  }
+                break;
+            case "Rating":
+                double sDouble = Double.parseDouble(s.toString()) * 10;
+                s = ((int) (sDouble)) +"";
+                for(Rating r : listRating){
+                    if (r.getStringRating().toLowerCase().equals(s)){
+                        filteredListRating.add(r);
+                    }
+                }
+
                 break;
             case "Date":
                 for(Rating r : listRating){
