@@ -41,8 +41,9 @@
         android:onClick="btnSendClicked"
         android:saveEnabled="false"
         android:text="@string/btnSend"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tfAdditionalComment"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="35dp"/>
 
     <EditText
         android:id="@+id/tfAdditionalComment"
