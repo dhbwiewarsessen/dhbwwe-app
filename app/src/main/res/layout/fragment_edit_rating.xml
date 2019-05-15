@@ -37,15 +37,17 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewDish" />
 
     <Button
-        android:id="@+id/btnSendEdit"
+        android:id="@+id/btnSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:onClick="btnEditClicked"
-        android:text="Edit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:onClick="btnSendClicked"
+        android:saveEnabled="false"
+        android:text="@string/btnSend"
+        app:layout_constraintTop_toBottomOf="@+id/tfEditComment"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="35dp"
+        />
 
     <EditText
         android:id="@+id/tfEditComment"
