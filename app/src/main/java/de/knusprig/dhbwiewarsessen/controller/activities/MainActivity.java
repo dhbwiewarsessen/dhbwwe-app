@@ -461,10 +461,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     public void btnSendClicked(View view) {
         createRatingFragment.attemptAddRating();
+        hideKeyboard(this);
     }
 
     public void btnEditClicked(View view) {
         editRatingFragment.attemptEditRating(view);
+        hideKeyboard(this);
     }
 
     public void changeMenuBarUserState(boolean loggedIn) {
