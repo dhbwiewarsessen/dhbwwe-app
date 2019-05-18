@@ -39,7 +39,7 @@ import de.knusprig.dhbwiewarsessen.httprequest.DeleteRatingRequest;
 import de.knusprig.dhbwiewarsessen.model.Rating;
 import de.knusprig.dhbwiewarsessen.model.RatingAdapter;
 
-public class RatingsFragment extends Fragment {
+public class RatingsFragment extends Ratings  {
     private MainActivity mainActivity;
     private List<Rating> listRating;
     private RatingAdapter ratingAdapter;
@@ -52,7 +52,6 @@ public class RatingsFragment extends Fragment {
 
 
     @Nullable
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_user_rating, container, false);
     }
@@ -112,7 +111,7 @@ public class RatingsFragment extends Fragment {
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                sortBySpinner(mainActivity.getDefValues().get(position));
+                sortBySpinner(mainActivity.getDefValues().get(position), filteredListRating);
                 currentSpinnerItem = mainActivity.getDefValues().get(position);
                 refreshList();
                 filterText.setHint("Filter by: " + currentSpinnerItem);
@@ -140,22 +139,26 @@ public class RatingsFragment extends Fragment {
         this.listRating = listRating;
     }
 
-    public void sortBySpinner(String sortBy){
-        switch (sortBy){
-            case "Name":
-                Collections.sort(filteredListRating, ((o1, o2) -> o1.getUsername().compareTo(o2.getUsername())));
-                break;
-            case "Dish":
-                Collections.sort(filteredListRating, ((o1, o2) -> o1.getDish().compareTo(o2.getDish())));
-                break;
-            case "Rating":
-                Collections.sort(filteredListRating, ((o1, o2) -> o2.getStringRating().compareTo(o1.getStringRating())));
-                break;
-            case "Date":
-                Collections.sort(filteredListRating, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
-                break;
-        }
-    }
+
+
+//    public void sortBySpinner(String sortBy){
+//        switch (sortBy){
+//            case "Name":
+//                Collections.sort(filteredListRating, ((o1, o2) -> o1.getUsername().compareTo(o2.getUsername())));
+//                break;
+//            case "Dish":
+//                Collections.sort(filteredListRating, ((o1, o2) -> o1.getDish().compareTo(o2.getDish())));
+//                break;
+//            case "Rating":
+//                Collections.sort(filteredListRating, ((o1, o2) -> o2.getStringRating().compareTo(o1.getStringRating())));
+//                break;
+//            case "Date":
+//                Collections.sort(filteredListRating, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
+//                break;
+//        }
+//    }
+
+
 
     public void filterByText(CharSequence s, String sortBy){
         filteredListRating.clear();
@@ -198,7 +201,7 @@ public class RatingsFragment extends Fragment {
     public void refreshList(){
         try {
             listView.invalidateViews();
-            sortBySpinner(filterSpinner.getSelectedItem().toString()); //If there is a new dish added it gets sorted automatically
+            sortBySpinner(filterSpinner.getSelectedItem().toString(), filteredListRating); //If there is a new dish added it gets sorted automatically
         } catch (Exception e) {
             e.printStackTrace();
         }
