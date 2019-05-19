@@ -138,8 +138,6 @@ public class RatingsFragment extends Ratings  {
         this.listRating = listRating;
     }
 
-
-
 //    public void sortBySpinner(String sortBy){
 //        switch (sortBy){
 //            case "Name":
@@ -156,8 +154,6 @@ public class RatingsFragment extends Ratings  {
 //                break;
 //        }
 //    }
-
-
 
     public void filterByText(CharSequence s, String sortBy){
         filteredListRating.clear();
