@@ -41,14 +41,13 @@ public abstract class Ratings extends Fragment {
     private String currentSpinnerItem;
 
 
+    public abstract View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
-    public void setMainActivity(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
-    }
+    public abstract void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState);
 
-    public void setListRating(List<Rating> listRating) {
-        this.listRating = listRating;
-    }
+    public abstract void setMainActivity(MainActivity mainActivity);
+
+    public abstract void setListRating(List<Rating> listRating);
 
     public void sortBySpinner(String sortBy, List<Rating> filteredListRating){
         switch (sortBy){
@@ -67,52 +66,14 @@ public abstract class Ratings extends Fragment {
         }
     }
 
-//    public void filterByText(CharSequence s, String sortBy){
-//        filteredListRating.clear();
-//        switch (sortBy){
-//            case "Name":
-//                for(Rating r : listRating){
-//                    if(r.getUsername().toLowerCase().contains(s)){
-//                        filteredListRating.add(r);
-//                    }
-//                }
-//                break;
-//            case "Dish":
-//                for(Rating r : listRating){
-//                    if(r.getDish().toLowerCase().contains(s)){
-//                        filteredListRating.add(r);
-//                    }
-//                }
-//                break;
-//            case "Rating":
-//                double sDouble = Double.parseDouble(s.toString()) * 10;
-//                s = ((int) (sDouble)) +"";
-//                for(Rating r : listRating){
-//                    if (r.getStringRating().toLowerCase().equals(s)){
-//                        filteredListRating.add(r);
-//                    }
-//                }
-//
-//                break;
-//            case "Date":
-//                for(Rating r : listRating){
-//                    if(r.getStringDate().contains(s)){
-//                        filteredListRating.add(r);
-//                    }
-//                }
-//                break;
-//        }
-//        refreshList(sortBy);
-//    }
-//
-//    public void refreshList(String sortBy){
-//        try {
-//            listView.invalidateViews();
-//            sortBySpinner(sortBy); //If there is a new dish added it gets sorted automatically
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public abstract void filterByText(CharSequence s, String sortBy);
+
+    //Maybe also able to generalize
+    public abstract void refreshList();
+
+
+
+
 
 
 }
