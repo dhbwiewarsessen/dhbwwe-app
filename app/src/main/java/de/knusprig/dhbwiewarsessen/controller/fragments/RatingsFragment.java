@@ -94,7 +94,6 @@ public class RatingsFragment extends Ratings  {
 
         pullToRefresh = view.findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(() -> {
-            System.out.println("pull to refresh");
             mainActivity.refeshDataFromServer();
             //when new data is fetched
             refreshList();
