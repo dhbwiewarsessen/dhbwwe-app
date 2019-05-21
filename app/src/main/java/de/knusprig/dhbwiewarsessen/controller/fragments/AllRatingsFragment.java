@@ -25,12 +25,8 @@ import de.knusprig.dhbwiewarsessen.model.Rating;
 import de.knusprig.dhbwiewarsessen.model.RatingAdapter;
 
 public class AllRatingsFragment extends AbstractRatingsFragment {
-    private MainActivity mainActivity;
-    private List<Rating> listRating;
+
     private RatingAdapter ratingAdapter;
-    private ListView listView;
-    private List<Rating> filteredListRating;
-    private Spinner filterSpinner;
     private SwipeRefreshLayout pullToRefresh;
     private EditText filterText;
     private String currentSpinnerItem;
@@ -128,14 +124,6 @@ public class AllRatingsFragment extends AbstractRatingsFragment {
         }
     }
 
-    public void setMainActivity(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
-    }
-
-    public void setListRating(List<Rating> listRating) {
-        this.listRating = listRating;
-    }
-
     public void filterByText(CharSequence s, String sortBy){
         filteredListRating.clear();
         switch (sortBy){
@@ -174,12 +162,5 @@ public class AllRatingsFragment extends AbstractRatingsFragment {
         refreshList();
     }
 
-    public void refreshList(){
-        try {
-            listView.invalidateViews();
-            sortBySpinner(filterSpinner.getSelectedItem().toString(), filteredListRating); //If there is a new dish added it gets sorted automatically
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 }
