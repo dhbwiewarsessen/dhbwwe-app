@@ -39,7 +39,7 @@ import de.knusprig.dhbwiewarsessen.httprequest.DeleteRatingRequest;
 import de.knusprig.dhbwiewarsessen.model.Rating;
 import de.knusprig.dhbwiewarsessen.model.RatingAdapter;
 
-public class RatingsFragment extends Ratings  {
+public class AllRatingsFragment extends Ratings  {
     private MainActivity mainActivity;
     private List<Rating> listRating;
     private RatingAdapter ratingAdapter;
