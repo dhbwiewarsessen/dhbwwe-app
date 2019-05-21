@@ -28,7 +28,7 @@ import de.knusprig.dhbwiewarsessen.model.RatingAdapter;
 
 
 
-public abstract class Ratings extends Fragment {
+public abstract class AbstractRatingsFragment extends Fragment {
 
     public abstract View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 

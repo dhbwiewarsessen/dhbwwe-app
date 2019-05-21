@@ -1,11 +1,8 @@
 package de.knusprig.dhbwiewarsessen.controller.fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,27 +16,15 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
-import com.google.android.gms.dynamic.IFragmentWrapper;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
-import de.knusprig.dhbwiewarsessen.httprequest.DeleteRatingRequest;
 import de.knusprig.dhbwiewarsessen.model.Rating;
 import de.knusprig.dhbwiewarsessen.model.RatingAdapter;
 
-public class AllRatingsFragment extends Ratings  {
+public class AllRatingsFragment extends AbstractRatingsFragment {
     private MainActivity mainActivity;
     private List<Rating> listRating;
     private RatingAdapter ratingAdapter;
