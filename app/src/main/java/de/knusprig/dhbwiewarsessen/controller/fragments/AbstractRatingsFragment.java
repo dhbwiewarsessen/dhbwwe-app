@@ -27,19 +27,28 @@ import de.knusprig.dhbwiewarsessen.model.Rating;
 import de.knusprig.dhbwiewarsessen.model.RatingAdapter;
 
 
-
 public abstract class AbstractRatingsFragment extends Fragment {
+
+    protected MainActivity mainActivity;
+    protected List<Rating> listRating;
+    protected Spinner filterSpinner;
+    protected ListView listView;
+    protected List<Rating> filteredListRating;
 
     public abstract View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
     public abstract void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState);
 
-    public abstract void setMainActivity(MainActivity mainActivity);
+    public void setMainActivity(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+    }
 
-    public abstract void setListRating(List<Rating> listRating);
+    public void setListRating(List<Rating> listRating) {
+        this.listRating = listRating;
+    }
 
-    public void sortBySpinner(String sortBy, List<Rating> filteredListRating){
-        switch (sortBy){
+    public void sortBySpinner(String sortBy, List<Rating> filteredListRating) {
+        switch (sortBy) {
             case "Name":
                 Collections.sort(filteredListRating, ((o1, o2) -> o1.getUsername().compareTo(o2.getUsername())));
                 break;
@@ -59,11 +68,14 @@ public abstract class AbstractRatingsFragment extends Fragment {
 
     public abstract void filterByText(CharSequence s, String sortBy);
 
-    public abstract void refreshList();
-
-
-
-
+    public void refreshList() {
+        try {
+            listView.invalidateViews();
+            sortBySpinner(filterSpinner.getSelectedItem().toString(), filteredListRating); //If there is a new dish added it gets sorted automatically
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
