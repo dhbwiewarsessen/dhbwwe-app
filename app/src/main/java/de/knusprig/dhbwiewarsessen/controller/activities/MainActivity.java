@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private User currentUser;
     private Menu menu;
     private List<Rating> listRating = new ArrayList<>();
-    private List<String> defValues = new ArrayList<>();
 
     private MainPageFragment mainPageFragment;
     private CreateRatingFragment createRatingFragment;
@@ -82,10 +81,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         restoreSavedData();
 
-        defValues.add("Date");
-        defValues.add("Dish");
-        defValues.add("Rating");
-        defValues.add("Name");
+
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
@@ -218,7 +214,15 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     public void switchToUserRatingsFragment() {
         userRatingFragment.setMainActivity(this);
-        userRatingFragment.setListRating(listRating);
+        //only ratings of the current user get passed
+        List<Rating> userListRating = new ArrayList<>();
+        for(Rating r : listRating){
+            if(r.getUsername().equals(currentUser.getName())){
+                userListRating.add(r);
+            }
+        }
+
+        userRatingFragment.setListRating(userListRating);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 userRatingFragment).commit();
         navView.getMenu().findItem(R.id.nav_my_ratings).setChecked(true);
@@ -492,9 +496,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public List<String> getDefValues() {
-        return defValues;
-    }
 
     public void refeshDataFromServer() {
         getAllRatings();
