@@ -30,17 +30,6 @@ import de.knusprig.dhbwiewarsessen.model.RatingAdapter;
 
 public abstract class Ratings extends Fragment {
 
-    private MainActivity mainActivity;
-    private List<Rating> listRating;
-    private RatingAdapter ratingAdapter;
-    private ListView listView;
-    private List<Rating> filteredListRating;
-    private Spinner filterSpinner;
-    private SwipeRefreshLayout pullToRefresh;
-    private EditText filterText;
-    private String currentSpinnerItem;
-
-
     public abstract View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
     public abstract void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState);
@@ -66,9 +55,10 @@ public abstract class Ratings extends Fragment {
         }
     }
 
+    public abstract void initDefValues();
+
     public abstract void filterByText(CharSequence s, String sortBy);
 
-    //Maybe also able to generalize
     public abstract void refreshList();
 
 

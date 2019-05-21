@@ -49,6 +49,7 @@ public class RatingsFragment extends Ratings  {
     private SwipeRefreshLayout pullToRefresh;
     private EditText filterText;
     private String currentSpinnerItem;
+    private List<String> defValues = new ArrayList<>();
 
 
     @Nullable
@@ -64,6 +65,8 @@ public class RatingsFragment extends Ratings  {
         listView = view.findViewById(R.id.rating_list);
         filterSpinner = view.findViewById(R.id.filterSpinner);
         filterText = view.findViewById(R.id.filterText);
+
+        initDefValues();
 
 
         filterText.addTextChangedListener(new TextWatcher() {
@@ -103,15 +106,15 @@ public class RatingsFragment extends Ratings  {
 
         //listRating.sort(Comparator.comparing(Rating::getDate)); //Default sorting
 
-        ArrayAdapter<String> adapterS = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item, mainActivity.getDefValues());
+        ArrayAdapter<String> adapterS = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item, defValues);
         adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         filterSpinner.setAdapter(adapterS);
 
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                sortBySpinner(mainActivity.getDefValues().get(position), filteredListRating);
-                currentSpinnerItem = mainActivity.getDefValues().get(position);
+                sortBySpinner(defValues.get(position), filteredListRating);
+                currentSpinnerItem = defValues.get(position);
                 refreshList();
                 filterText.setHint("Filter by: " + currentSpinnerItem);
             }
@@ -130,6 +133,16 @@ public class RatingsFragment extends Ratings  {
         });
     }
 
+    @Override
+    public void initDefValues() {
+        if(defValues.size() == 0){
+            defValues.add("Date");
+            defValues.add("Dish");
+            defValues.add("Rating");
+            defValues.add("Name");
+        }
+    }
+
     public void setMainActivity(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
@@ -137,23 +150,6 @@ public class RatingsFragment extends Ratings  {
     public void setListRating(List<Rating> listRating) {
         this.listRating = listRating;
     }
-
-//    public void sortBySpinner(String sortBy){
-//        switch (sortBy){
-//            case "Name":
-//                Collections.sort(filteredListRating, ((o1, o2) -> o1.getUsername().compareTo(o2.getUsername())));
-//                break;
-//            case "Dish":
-//                Collections.sort(filteredListRating, ((o1, o2) -> o1.getDish().compareTo(o2.getDish())));
-//                break;
-//            case "Rating":
-//                Collections.sort(filteredListRating, ((o1, o2) -> o2.getStringRating().compareTo(o1.getStringRating())));
-//                break;
-//            case "Date":
-//                Collections.sort(filteredListRating, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
-//                break;
-//        }
-//    }
 
     public void filterByText(CharSequence s, String sortBy){
         filteredListRating.clear();
