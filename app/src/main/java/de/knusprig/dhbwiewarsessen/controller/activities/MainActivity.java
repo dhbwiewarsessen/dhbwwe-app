@@ -51,7 +51,7 @@ import de.knusprig.dhbwiewarsessen.model.User;
 import de.knusprig.dhbwiewarsessen.model.Menu;
 import de.knusprig.dhbwiewarsessen.controller.fragments.CreateRatingFragment;
 import de.knusprig.dhbwiewarsessen.controller.fragments.MainPageFragment;
-import de.knusprig.dhbwiewarsessen.controller.fragments.RatingsFragment;
+import de.knusprig.dhbwiewarsessen.controller.fragments.AllRatingsFragment;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private MainPageFragment mainPageFragment;
     private CreateRatingFragment createRatingFragment;
-    private RatingsFragment ratingsFragment;
+    private AllRatingsFragment allRatingsFragment;
     private UserRatingFragment userRatingFragment;
     private EditRatingFragment editRatingFragment;
 
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         mainPageFragment = new MainPageFragment();
         createRatingFragment = new CreateRatingFragment();
-        ratingsFragment = new RatingsFragment();
+        allRatingsFragment = new AllRatingsFragment();
         userRatingFragment = new UserRatingFragment();
         editRatingFragment = new EditRatingFragment();
 
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void initializeRatingsFragment() {
-        ratingsFragment.setListRating(listRating);
+        allRatingsFragment.setListRating(listRating);
         getAllRatings();
     }
 
@@ -205,10 +205,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void switchToRatingsFragment() {
-        ratingsFragment.setMainActivity(this);
-        ratingsFragment.setListRating(listRating);
+        allRatingsFragment.setMainActivity(this);
+        allRatingsFragment.setListRating(listRating);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                ratingsFragment).commit();
+                allRatingsFragment).commit();
         navView.getMenu().findItem(R.id.nav_all_ratings).setChecked(true);
     }
 
@@ -421,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
             //update User on MainPageFragment
             mainPageFragment.update();
             userRatingFragment.refreshList();
-            ratingsFragment.refreshList();
+            allRatingsFragment.refreshList();
         } else if (o.getClass().equals(Menu.class)) {
             //update Menu on MainPageFragment
             mainPageFragment.setMenu(menu);
