@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         restoreSavedData();
 
 
-
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
         navView = findViewById(R.id.nav_view);
@@ -199,6 +198,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
         changeMenuBarUserState(true);
     }
 
+    private void forwardToSettingsActivity() {
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        intent.putExtra("serverUrl", serverUrl);
+        startActivityForResult(intent, 124);
+    }
+
     private void switchToMainPageFragment() {
         mainPageFragment.setMain(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -218,8 +223,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
         userRatingFragment.setMainActivity(this);
         //only ratings of the current user get passed
         List<Rating> userListRating = new ArrayList<>();
-        for(Rating r : listRating){
-            if(r.getUsername().equals(currentUser.getName())){
+        for (Rating r : listRating) {
+            if (r.getUsername().equals(currentUser.getName())) {
                 userListRating.add(r);
             }
         }
@@ -382,6 +387,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            forwardToSettingsActivity();
             return true;
         }
 
@@ -409,14 +415,25 @@ public class MainActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            currentUser.setUserId(data.getIntExtra("userId", 0));
-            currentUser.setUsername(data.getStringExtra("username"));
-            currentUser.setPassword(data.getStringExtra("password"));
-            currentUser.setName(data.getStringExtra("name"));
-            currentUser.setEmail(data.getStringExtra("email"));
+        switch (requestCode) {
+            case 123:
+                if (resultCode == RESULT_OK) {
+                    currentUser.setUserId(data.getIntExtra("userId", 0));
+                    currentUser.setUsername(data.getStringExtra("username"));
+                    currentUser.setPassword(data.getStringExtra("password"));
+                    currentUser.setName(data.getStringExtra("name"));
+                    currentUser.setEmail(data.getStringExtra("email"));
+                }
+                break;
+            case 124:
+                if (resultCode == RESULT_OK) {
+                    serverUrl = data.getStringExtra("serverUrl");
+                    System.out.println("new Server URL: " + serverUrl);
+                }
+                break;
         }
     }
+
 
     @Override
     public void update(Observable o, Object arg) {
@@ -489,7 +506,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
         return currentUser;
     }
 
-    public void addRating(int id, int rating, String comment, User user, Date date, String dish) {
+    public void addRating(int id, int rating, String comment, User user, Date date, String
+            dish) {
         System.out.println(user.getUsername());
         listRating.add(new Rating(id, date, dish, rating, comment, user.getUsername()));
     }
