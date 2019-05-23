@@ -7,13 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RetrieveRatingsRequest extends StringRequest {
-    private static final String RETRIEVE_RATINGS_REQUEST_URL = "https://dhbwwe.cu.ma/RetrieveRatings.php";
+    private static final String RETRIEVE_RATINGS_REQUEST_URL = "/RetrieveRatings.php";
     private Map<String, String> params;
 
-
-
-    public RetrieveRatingsRequest(String date, Response.Listener<String> listener) {
-        super(Method.POST, RETRIEVE_RATINGS_REQUEST_URL, listener, null);
+    public RetrieveRatingsRequest(String serverUrl, String date, Response.Listener<String> listener) {
+        super(Method.POST, serverUrl + RETRIEVE_RATINGS_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("date", date);
     }

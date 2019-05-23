@@ -40,10 +40,14 @@ public class RegisterActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private EditText mPasswordConfirmView;
+    private String serverUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent i = getIntent();
+        serverUrl = i.getStringExtra("serverUrl");
+
         setContentView(R.layout.activity_register);
         // Set up the login form.
         mUsernameView = findViewById(R.id.username);
@@ -81,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if(!isNetworkAvailable()) {
+        if (!isNetworkAvailable()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
             builder.setMessage("No internet connection")
                     .setNegativeButton("Retry", null)
@@ -166,7 +170,7 @@ public class RegisterActivity extends AppCompatActivity {
                         try {
                             String error = jsonResponse.getString("error");
                             AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                            builder.setMessage("Register Failed:\n"+error)
+                            builder.setMessage("Register Failed:\n" + error)
                                     .setNegativeButton("Retry", null)
                                     .create()
                                     .show();
@@ -179,14 +183,14 @@ public class RegisterActivity extends AppCompatActivity {
                     e.printStackTrace();
                     String error = "There is a problem with the DB Server";
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                    builder.setMessage("Register Failed:\n"+error)
+                    builder.setMessage("Register Failed:\n" + error)
                             .setNegativeButton("Retry", null)
                             .create()
                             .show();
                 }
             };
 
-            RegisterRequest registerRequest = new RegisterRequest(name, username, email, password, responseListener);
+            RegisterRequest registerRequest = new RegisterRequest(serverUrl, name, username, email, password, responseListener);
             RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
             queue.add(registerRequest);
         }

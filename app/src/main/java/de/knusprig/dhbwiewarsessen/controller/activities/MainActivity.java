@@ -55,6 +55,7 @@ import de.knusprig.dhbwiewarsessen.controller.fragments.AllRatingsFragment;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
+    private String serverUrl;
     private DrawerLayout mDrawerLayout;
     private NavigationView navView;
     private SharedPreferences prefs;
@@ -193,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private void forwardToLoginActivity() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.putExtra("serverUrl", serverUrl);
         startActivityForResult(intent, 123);
         changeMenuBarUserState(true);
     }
@@ -277,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         };
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String date = dateFormat.format(new Date());
-        RetrieveMenuRequest menuRequest = new RetrieveMenuRequest(date, responseListener);
+        RetrieveMenuRequest menuRequest = new RetrieveMenuRequest(serverUrl, date, responseListener);
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         queue.add(menuRequest);
     }
@@ -320,13 +322,15 @@ public class MainActivity extends AppCompatActivity implements Observer {
         };
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         String date = dateFormat.format(new Date());
-        RetrieveRatingsRequest ratingsRequest = new RetrieveRatingsRequest(date, responseListener);
+        RetrieveRatingsRequest ratingsRequest = new RetrieveRatingsRequest(serverUrl, date, responseListener);
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         queue.add(ratingsRequest);
     }
 
     private void restoreSavedData() {
         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        serverUrl = prefs.getString("serverUrl", "https://dhbwwe.cu.ma");
+
         int userId = prefs.getInt("userId", 0);
         String username = prefs.getString("username", "");
         String password = prefs.getString("password", "");
@@ -388,6 +392,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     protected void onPause() {
         super.onPause();
         SharedPreferences.Editor editPrefs = prefs.edit();
+        editPrefs.putString("serverUrl", serverUrl);
         editPrefs.putInt("userId", currentUser.getUserId());
         editPrefs.putString("username", currentUser.getUsername());
         editPrefs.putString("password", currentUser.getPassword());
@@ -504,4 +509,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void deleteRatingFromList(Rating ratingToDelete) {
         listRating.remove(ratingToDelete);
     }
+
+    public String getServerUrl() {
+        return serverUrl;
+    }
+
+    public void setServerUrl(String SERVER_URL) {
+        this.serverUrl = SERVER_URL;
+    }
+
 }

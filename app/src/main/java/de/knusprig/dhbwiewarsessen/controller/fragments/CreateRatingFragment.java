@@ -23,7 +23,6 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
@@ -144,7 +143,7 @@ public class CreateRatingFragment extends Fragment {
                 e.printStackTrace();
             }
         };
-        CreateRatingRequest createRatingRequest = new CreateRatingRequest(userId, selectedDish, date, time, "" + rating, comment, responseListener);
+        CreateRatingRequest createRatingRequest = new CreateRatingRequest(main.getServerUrl(), userId, selectedDish, date, time, "" + rating, comment, responseListener);
         RequestQueue queue = Volley.newRequestQueue(main.getApplicationContext());
         queue.add(createRatingRequest);
         return true;
