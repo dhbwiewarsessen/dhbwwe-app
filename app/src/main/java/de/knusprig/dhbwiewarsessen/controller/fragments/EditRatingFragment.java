@@ -99,7 +99,7 @@ public class EditRatingFragment extends Fragment {
                 e.printStackTrace();
             }
         };
-        EditRatingRequest editRatingRequest = new EditRatingRequest(editedRating.getId(), ""+rating, comment, responseListener);
+        EditRatingRequest editRatingRequest = new EditRatingRequest(main.getServerUrl(), editedRating.getId(), ""+rating, comment, responseListener);
         RequestQueue queue = Volley.newRequestQueue(main.getApplicationContext());
         queue.add(editRatingRequest);
     }

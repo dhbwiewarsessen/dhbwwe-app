@@ -7,13 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DeleteRatingRequest extends StringRequest {
-    private static final String DELETE_RATINGS_REQUEST_URL = "https://dhbwwe.cu.ma/DeleteRating.php";
+    private static final String DELETE_RATINGS_REQUEST_URL = "/DeleteRating.php";
     private Map<String, String> params;
 
-
-
-    public DeleteRatingRequest(String id, Response.Listener<String> listener) {
-        super(Method.POST, DELETE_RATINGS_REQUEST_URL, listener, null);
+    public DeleteRatingRequest(String serverUrl, String id, Response.Listener<String> listener) {
+        super(Method.POST, serverUrl + DELETE_RATINGS_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("ratingId", id);
     }

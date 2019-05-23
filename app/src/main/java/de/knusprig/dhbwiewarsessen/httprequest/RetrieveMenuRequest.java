@@ -7,13 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RetrieveMenuRequest extends StringRequest {
-    private static final String RETRIEVE_MENU_REQUEST_URL = "https://dhbwwe.cu.ma/RetrieveMenu.php";
+    private static final String RETRIEVE_MENU_REQUEST_URL = "/RetrieveMenu.php";
     private Map<String, String> params;
 
-
-
-    public RetrieveMenuRequest(String date, Response.Listener<String> listener) {
-        super(Method.POST, RETRIEVE_MENU_REQUEST_URL, listener, null);
+    public RetrieveMenuRequest(String serverUrl, String date, Response.Listener<String> listener) {
+        super(Method.POST, serverUrl + RETRIEVE_MENU_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("date", date);
     }

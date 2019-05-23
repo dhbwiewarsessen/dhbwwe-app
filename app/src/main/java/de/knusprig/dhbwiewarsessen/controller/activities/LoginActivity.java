@@ -10,15 +10,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -40,10 +37,13 @@ public class LoginActivity extends AppCompatActivity {
     // UI references.
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
+    private String serverUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent i = getIntent();
+        serverUrl = i.getStringExtra("serverUrl");
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mUsernameView = findViewById(R.id.username);
@@ -76,12 +76,12 @@ public class LoginActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if(!isNetworkAvailable()) {
+        if (!isNetworkAvailable()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
             builder.setMessage("No internet connection")
-            .setNegativeButton("Retry", null)
-            .create()
-            .show();
+                    .setNegativeButton("Retry", null)
+                    .create()
+                    .show();
             return;
         }
 
@@ -152,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             };
 
-            LoginRequest loginRequest = new LoginRequest(username, password, responseListener);
+            LoginRequest loginRequest = new LoginRequest(serverUrl, username, password, responseListener);
             RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
             queue.add(loginRequest);
         }
@@ -160,6 +160,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void register(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
+        intent.putExtra("serverUrl", serverUrl);
         startActivityForResult(intent, 124);
     }
 

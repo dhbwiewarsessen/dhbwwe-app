@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EditRatingRequest extends StringRequest {
-    private static final String CREATE_RATING_REQUEST_URL = "https://dhbwwe.cu.ma/EditRating.php";
+    private static final String CREATE_RATING_REQUEST_URL = "/EditRating.php";
     private Map<String, String> params;
 
-    public EditRatingRequest(int ratingId, String rating, String comment, Response.Listener<String> listener) {
-        super(Method.POST, CREATE_RATING_REQUEST_URL, listener, null);
+    public EditRatingRequest(String serverUrl, int ratingId, String rating, String comment, Response.Listener<String> listener) {
+        super(Method.POST, serverUrl + CREATE_RATING_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("rating_id", Integer.toString(ratingId));
         params.put("rating", rating);
@@ -19,7 +19,7 @@ public class EditRatingRequest extends StringRequest {
     }
 
     @Override
-    public Map<String, String> getParams(){
+    public Map<String, String> getParams() {
         return params;
     }
 }
