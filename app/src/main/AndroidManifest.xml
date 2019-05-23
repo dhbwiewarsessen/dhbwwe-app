@@ -19,7 +19,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activities.SettingsActivity"></activity>
+        <activity
+            android:name=".controller.activities.SettingsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".controller.activities.RegisterActivity"
             android:configChanges="orientation|keyboardHidden"

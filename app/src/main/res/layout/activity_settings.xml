@@ -15,7 +15,7 @@
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Server URL"
+        android:hint="https://dhbwwe.cu.ma"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvServerUrl"
         app:layout_constraintTop_toTopOf="parent" />
