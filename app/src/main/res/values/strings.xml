@@ -30,6 +30,7 @@
     <string name="prompt_password_confirm">Confirm password</string>
     <string name="prompt_username">Username</string>
     <string name="prompt_name">Name</string>
+    <string name="title_activity_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
