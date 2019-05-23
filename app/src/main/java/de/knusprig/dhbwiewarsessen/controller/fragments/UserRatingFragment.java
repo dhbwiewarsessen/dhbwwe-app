@@ -1,5 +1,6 @@
 package de.knusprig.dhbwiewarsessen.controller.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,11 +17,18 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import de.knusprig.dhbwiewarsessen.R;
 import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
+import de.knusprig.dhbwiewarsessen.httprequest.DeleteRatingRequest;
 import de.knusprig.dhbwiewarsessen.model.Rating;
 import de.knusprig.dhbwiewarsessen.model.RatingAdapter;
 
@@ -58,11 +66,10 @@ public class UserRatingFragment extends AbstractRatingsFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 System.out.println("changed");
-                if(s.length() > 0){
+                if (s.length() > 0) {
                     System.out.println(s);
                     filterByText(s.toString().toLowerCase(), currentSpinnerItem);
-                }
-                else{
+                } else {
                     filteredListRating.clear();
                     filteredListRating.addAll(listRating);
                     refreshList();
@@ -86,7 +93,7 @@ public class UserRatingFragment extends AbstractRatingsFragment {
 
         //listRating.sort(Comparator.comparing(Rating::getDate)); //Default sorting
 
-        ArrayAdapter<String> adapterS = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item, defValues);
+        ArrayAdapter<String> adapterS = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, defValues);
         adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         filterSpinner.setAdapter(adapterS);
 
@@ -108,50 +115,91 @@ public class UserRatingFragment extends AbstractRatingsFragment {
 
         listView.setAdapter(ratingAdapter); //Displaying the list in the listView
         listView.setOnItemLongClickListener((parent, view1, position, id) -> {
-            Toast.makeText(mainActivity.getApplicationContext(), "Delete/Edit ratings from \"My ratings\"", Toast.LENGTH_LONG).show();
+            final int pos = position;
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Choose action for this rating")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        Rating ratingToDelete = (Rating) listView.getAdapter().getItem((int) id);
+                        int idToDelete = ratingToDelete.getId();
+                        System.out.println("id: " + idToDelete);
+
+                        if (!mainActivity.isNetworkAvailable()) {
+                            AlertDialog.Builder errorBuilder = new AlertDialog.Builder(getActivity());
+                            errorBuilder.setMessage("No internet connection")
+                                    .setNegativeButton("Retry", null)
+                                    .create()
+                                    .show();
+                            return;
+                        }
+
+                        DeleteRatingRequest drr = new DeleteRatingRequest(mainActivity.getServerUrl(), "" + idToDelete, response -> {
+                            try {
+                                JSONObject jsonResponse = new JSONObject(response);
+                                boolean success = jsonResponse.getBoolean("success");
+                                if (success) {
+                                    mainActivity.deleteRatingFromList(ratingToDelete);
+                                    listRating.remove(ratingToDelete);
+                                    ratingAdapter.notifyDataSetChanged();
+                                    Toast.makeText(mainActivity.getApplicationContext(), "Rating successfully deleted", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(mainActivity.getApplicationContext(), "Error while deleting rating", Toast.LENGTH_LONG).show();
+                                    System.out.println("Couldn't delete rating from server");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(mainActivity.getApplicationContext(), "JSON Error", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        RequestQueue queue = Volley.newRequestQueue(getActivity());
+                        queue.add(drr);
+                    }).setNegativeButton("Edit", ((dialog, which) -> {
+                mainActivity.switchToEditRatingsFragment(listRating.get(pos));
+            }))
+                    .create()
+                    .show();
             return false;
         });
     }
 
     @Override
     public void initDefValues() {
-        if(defValues.size() == 0){
+        if (defValues.size() == 0) {
             defValues.add("Date");
             defValues.add("Dish");
             defValues.add("Rating");
         }
     }
 
-    public void filterByText(CharSequence s, String sortBy){
+    public void filterByText(CharSequence s, String sortBy) {
         filteredListRating.clear();
-        switch (sortBy){
+        switch (sortBy) {
             case "Name":
-                for(Rating r : listRating){
-                    if(r.getUsername().toLowerCase().contains(s)){
+                for (Rating r : listRating) {
+                    if (r.getUsername().toLowerCase().contains(s)) {
                         filteredListRating.add(r);
                     }
                 }
                 break;
             case "Dish":
-                for(Rating r : listRating){
-                    if(r.getDish().toLowerCase().contains(s)){
+                for (Rating r : listRating) {
+                    if (r.getDish().toLowerCase().contains(s)) {
                         filteredListRating.add(r);
                     }
                 }
                 break;
             case "Rating":
                 double sDouble = Double.parseDouble(s.toString()) * 10;
-                s = ((int) (sDouble)) +"";
-                for(Rating r : listRating){
-                    if (r.getStringRating().toLowerCase().equals(s)){
+                s = ((int) (sDouble)) + "";
+                for (Rating r : listRating) {
+                    if (r.getStringRating().toLowerCase().equals(s)) {
                         filteredListRating.add(r);
                     }
                 }
 
                 break;
             case "Date":
-                for(Rating r : listRating){
-                    if(r.getStringDate().contains(s)){
+                for (Rating r : listRating) {
+                    if (r.getStringDate().contains(s)) {
                         filteredListRating.add(r);
                     }
                 }
