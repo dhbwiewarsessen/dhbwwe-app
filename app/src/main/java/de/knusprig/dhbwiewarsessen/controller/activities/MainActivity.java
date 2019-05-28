@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         //only ratings of the current user get passed
         List<Rating> userListRating = new ArrayList<>();
         for (Rating r : listRating) {
-            if (r.getUsername().equals(currentUser.getName())) {
+            if (r.getUsername().equals(currentUser.getUsername())) {
                 userListRating.add(r);
             }
         }
@@ -528,6 +528,16 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     public void deleteRatingFromList(Rating ratingToDelete) {
         listRating.remove(ratingToDelete);
+        allRatingsFragment.setListRating(listRating);
+        allRatingsFragment.updateData();
+        List<Rating> userListRating = new ArrayList<>();
+        for (Rating r : listRating) {
+            if (r.getUsername().equals(currentUser.getUsername())) {
+                userListRating.add(r);
+            }
+        }
+        userRatingFragment.setListRating(userListRating);
+        userRatingFragment.updateData();
     }
 
     public String getServerUrl() {

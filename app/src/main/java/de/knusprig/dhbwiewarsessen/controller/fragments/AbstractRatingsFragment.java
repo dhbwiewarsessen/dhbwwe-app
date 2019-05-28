@@ -68,11 +68,10 @@ public abstract class AbstractRatingsFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 System.out.println("changed");
-                if(s.length() > 0){
+                if (s.length() > 0) {
                     System.out.println(s);
                     filterByText(s.toString().toLowerCase(), currentSpinnerItem);
-                }
-                else{
+                } else {
                     filteredListRating.clear();
                     filteredListRating.addAll(listRating);
                     refreshList();
@@ -96,7 +95,7 @@ public abstract class AbstractRatingsFragment extends Fragment {
 
         //listRating.sort(Comparator.comparing(Rating::getDate)); //Default sorting
 
-        ArrayAdapter<String> adapterS = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item, defValues);
+        ArrayAdapter<String> adapterS = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, defValues);
         adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         filterSpinner.setAdapter(adapterS);
 
@@ -164,36 +163,36 @@ public abstract class AbstractRatingsFragment extends Fragment {
         }
     }
 
-    public void filterByText(CharSequence s, String sortBy){
+    public void filterByText(CharSequence s, String sortBy) {
         filteredListRating.clear();
-        switch (sortBy){
+        switch (sortBy) {
             case "Name":
-                for(Rating r : listRating){
-                    if(r.getUsername().toLowerCase().contains(s)){
+                for (Rating r : listRating) {
+                    if (r.getUsername().toLowerCase().contains(s)) {
                         filteredListRating.add(r);
                     }
                 }
                 break;
             case "Dish":
-                for(Rating r : listRating){
-                    if(r.getDish().toLowerCase().contains(s)){
+                for (Rating r : listRating) {
+                    if (r.getDish().toLowerCase().contains(s)) {
                         filteredListRating.add(r);
                     }
                 }
                 break;
             case "Rating":
                 double sDouble = Double.parseDouble(s.toString()) * 10;
-                s = ((int) (sDouble)) +"";
-                for(Rating r : listRating){
-                    if (r.getStringRating().toLowerCase().equals(s)){
+                s = ((int) (sDouble)) + "";
+                for (Rating r : listRating) {
+                    if (r.getStringRating().toLowerCase().equals(s)) {
                         filteredListRating.add(r);
                     }
                 }
 
                 break;
             case "Date":
-                for(Rating r : listRating){
-                    if(r.getStringDate().contains(s)){
+                for (Rating r : listRating) {
+                    if (r.getStringDate().contains(s)) {
                         filteredListRating.add(r);
                     }
                 }
@@ -202,4 +201,18 @@ public abstract class AbstractRatingsFragment extends Fragment {
         refreshList();
     }
 
+    public void updateData() {
+        if (this.isVisible()) {
+            ratingAdapter.clear();
+
+            if (listRating != null) {
+
+                for (Rating r : listRating) {
+                    ratingAdapter.insert(r, ratingAdapter.getCount());
+                }
+            }
+
+            ratingAdapter.notifyDataSetChanged();
+        }
+    }
 }
