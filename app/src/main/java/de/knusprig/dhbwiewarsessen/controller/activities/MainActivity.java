@@ -313,6 +313,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
                         Date date = new SimpleDateFormat("yyyy-MM-dd,hh:mm:ss").parse(dateString + "," + time);
                         listRating.add(new Rating(rating_id, date, dish, rating, comment, username));
                     }
+                    userRatingFragment.updateData();
+                    allRatingsFragment.updateData();
                 } else {
                     System.out.println("couldn't get menus from Server");
                     System.out.println(jsonResponse);
