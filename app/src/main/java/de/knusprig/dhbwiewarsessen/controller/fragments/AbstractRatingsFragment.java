@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,7 +160,7 @@ public abstract class AbstractRatingsFragment extends Fragment {
             listView.invalidateViews();
             sortBySpinner(filterSpinner.getSelectedItem().toString(), filteredListRating); //If there is a new dish added it gets sorted automatically
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("refreshList", "Error refreshing List", e);
         }
     }
 
