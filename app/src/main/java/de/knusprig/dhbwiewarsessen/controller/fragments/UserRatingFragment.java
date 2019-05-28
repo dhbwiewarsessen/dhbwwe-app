@@ -42,8 +42,6 @@ public class UserRatingFragment extends AbstractRatingsFragment {
                                 boolean success = jsonResponse.getBoolean("success");
                                 if (success) {
                                     mainActivity.deleteRatingFromList(ratingToDelete);
-                                    listRating.remove(ratingToDelete);
-                                    ratingAdapter.notifyDataSetChanged();
                                     Toast.makeText(mainActivity.getApplicationContext(), "Rating successfully deleted", Toast.LENGTH_LONG).show();
                                 } else {
                                     Toast.makeText(mainActivity.getApplicationContext(), "Error while deleting rating", Toast.LENGTH_LONG).show();
