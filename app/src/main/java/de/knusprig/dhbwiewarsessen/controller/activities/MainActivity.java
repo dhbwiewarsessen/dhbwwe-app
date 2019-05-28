@@ -427,8 +427,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 break;
             case 124:
                 if (resultCode == RESULT_OK) {
-                    serverUrl = data.getStringExtra("serverUrl");
-                    System.out.println("new Server URL: " + serverUrl);
+                    if (data != null) {
+                        serverUrl = data.getStringExtra("serverUrl");
+                        System.out.println("new Server URL: " + serverUrl);
+                    }
                 }
                 break;
         }
