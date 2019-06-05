@@ -55,5 +55,5 @@ dependencies {
 }
 
 coveralls {
-    jacocoReportPath = "${buildDir}/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+    jacocoReportPath = "build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
 }
