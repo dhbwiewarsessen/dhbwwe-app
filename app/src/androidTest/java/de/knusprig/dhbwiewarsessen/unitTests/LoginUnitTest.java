@@ -16,6 +16,7 @@ public class LoginUnitTest {
 
     Stepdefinitions steps = new Stepdefinitions();
 
+    /*
     @Test
     public void correctLogIn() throws Throwable {
         final String username = "max";
@@ -56,6 +57,7 @@ public class LoginUnitTest {
         steps.userShouldSeeToast(errorMessage);
         Espresso.pressBack();
     }
+    */
 
     @After
     public void logoutAfterTest(){
