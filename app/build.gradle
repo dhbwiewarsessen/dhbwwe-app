@@ -2,6 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.github.kt3k.coveralls'
 
 android {
+
+    lintOptions{
+        abortOnError false
+    }
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "de.knusprig.dhbwiewarsessen"
