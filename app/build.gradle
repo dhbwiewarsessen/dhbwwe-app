@@ -64,6 +64,6 @@ coveralls {
     jacocoReportPath = "${buildDir}/reports/jacoco/unitTestCoverage/unitTestCoverage.xml"
 }
 tasks.coveralls {
-    dependsOn 'unitTestCoverage'
+    dependsOn 'connectedAndroidTest'
     onlyIf { System.env.'CI' }
 }
