@@ -28,7 +28,6 @@ android {
     sourceSets {
         androidTest {
             //assets.srcDirs = ['src/androidTest/assets'] // Feature Tests
-            assets.srcDirs = ['src/androidTest/java/de/knusprig/dhbwiewarsessen/unitTests'] // Unit Tests
         }
     }
     productFlavors {
