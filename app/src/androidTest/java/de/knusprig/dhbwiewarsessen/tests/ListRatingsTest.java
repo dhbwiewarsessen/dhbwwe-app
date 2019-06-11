@@ -37,11 +37,11 @@ public class ListRatingsTest extends GreenCoffeeTest
                 ); // the locales used to run the scenarios (optional)
     }
 
-    /*
+
     @Test
     public void test()
     {
-        start(new Stepdefinitions());
+        //start(new Stepdefinitions());
     }
-    */
+
 }
