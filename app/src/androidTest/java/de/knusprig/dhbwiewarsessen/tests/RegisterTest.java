@@ -17,19 +17,16 @@ import de.knusprig.dhbwiewarsessen.controller.activities.MainActivity;
 import de.knusprig.dhbwiewarsessen.steps.Stepdefinitions;
 
 @RunWith(Parameterized.class)
-public class RegisterTest extends GreenCoffeeTest
-{
+public class RegisterTest extends GreenCoffeeTest {
     @Rule
     public ActivityTestRule activity = new ActivityTestRule<>(MainActivity.class);
 
-    public RegisterTest(ScenarioConfig scenarioConfig)
-    {
+    public RegisterTest(ScenarioConfig scenarioConfig) {
         super(scenarioConfig);
     }
 
     @Parameterized.Parameters(name = "{0}")
-    public static Iterable scenarios() throws IOException
-    {
+    public static Iterable scenarios() throws IOException {
         return new GreenCoffeeConfig()
                 .withFeatureFromAssets("assets/register.feature")
                 .scenarios(
@@ -37,11 +34,8 @@ public class RegisterTest extends GreenCoffeeTest
                 ); // the locales used to run the scenarios (optional)
     }
 
-    /*
     @Test
-    public void test()
-    {
-        start(new Stepdefinitions());
+    public void test() {
+        //start(new Stepdefinitions());
     }
-    */
 }
