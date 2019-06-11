@@ -65,7 +65,7 @@ dependencies {
 }
 
 coveralls {
-    jacocoReportPath = "${buildDir}/reports/jacoco/unitTestCoverage/unitTestCoverage.xml"
+    jacocoReportPath = "${buildDir}/reports/coverage/debug/report.xml"
 }
 tasks.coveralls {
     dependsOn 'connectedAndroidTest'
